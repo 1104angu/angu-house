@@ -248,9 +248,9 @@ function drawSoma(x,y,t){
 const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
-const ROOM_VER=6; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
+const ROOM_VER=7; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
 const ASSETS={}; // name -> Image
-const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room','soma','player_down','player_down2','player_left','player_upleft','player_up'];
+const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room','soma','player_down','player_down2','player_left','player_upleft','player_up','buck_down','buck_down2','buck_left','buck_upleft','buck_up'];
 let loaded=0;
 ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/room.png?v='+ROOM_VER:'img/sprites/'+n+'.png?v='+ROOM_VER);});
 
@@ -458,7 +458,22 @@ function render(){tick++;
     }}
   if(SOMA.at)drawSoma(SOMA.at[0]*T,SOMA.at[1]*T,tick);
   CATS.forEach(c=>{const im=ASSETS[c.id];if(im){const h=24,w=im.width*h/im.height,bob=((tick+c.x*7)>>5)&1;ctx.drawImage(im,c.x*T+16-w/2,c.y*T+32-h-bob,w,h);}else drawCat(c.x*T,c.y*T,c.c,tick+c.x*7);});
-  if(ASSETS.buck){const im=ASSETS.buck,h=44,w=im.width*h/im.height,bob=(tick>>3)&1,sway=Math.round(Math.sin(tick/9)*1.5);ctx.drawImage(im,BUCK.x*T+BUCK.mx+16-w/2+sway,BUCK.y*T+BUCK.my+32-h-bob,w,h);}else drawBuck(BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,tick);
+  { // 巴克：四方向圖，頭（扭蛋機）跟身體分開晃
+    const dirKey=BUCK.moving?(BUCK.ddy===-1?'up':BUCK.ddy===1?'down':BUCK.ddx===-1?'left':'right'):(BUCK.face||'down');if(BUCK.moving)BUCK.face=dirKey;
+    const walkF=BUCK.moving?((tick>>3)&1):0;
+    const im=ASSETS[{down:walkF?'buck_down2':'buck_down',up:'buck_up',left:'buck_left',right:'buck_left'}[dirKey]]||ASSETS.buck;
+    if(im){const h=44,w=im.width*h/im.height,bx=BUCK.x*T+BUCK.mx+16,by=BUCK.y*T+BUCK.my+32;
+      const bob=BUCK.moving?((tick>>3)&1):((tick>>5)&1);                 // 身體：走路一拍一拍，站著慢呼吸
+      const sway=Math.round(Math.sin(tick/7)*2),nod=Math.round(Math.sin(tick/7+1)*1); // 頭：左右晃＋輕點頭
+      const split=Math.round(h*0.56);                                    // 頭身分界（紅色機身底部）
+      ctx.save();if(dirKey==='right'){ctx.translate(bx*2,0);ctx.scale(-1,1);ctx.translate(-bx*2,0);} // 畫布是 2 倍座標要補
+      ctx.restore();
+      const flip=dirKey==='right';
+      const draw=(sy,sh,dx,dy)=>{ctx.save();if(flip){ctx.translate(bx+dx,0);ctx.scale(-1,1);ctx.translate(-(bx+dx),0);}
+        ctx.drawImage(im,0,sy*im.height/h,im.width,sh*im.height/h,bx+dx-w/2,by-h+sy+dy,w,sh);ctx.restore();};
+      draw(split,h-split,0,-bob);          // 身體
+      draw(0,split,sway,-bob+nod);         // 頭
+    }else drawBuck(BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,tick);}
   if(meowBubble&&tick<meowBubble.until){const c=CATS.find(k=>k.id===meowBubble.id);if(c){const bx=c.x*T+6,by=c.y*T-12;ctx.fillStyle='#0a0809';ctx.fillRect(bx,by,22,11);ctx.fillStyle='#e8e0d0';ctx.font='9px DotGothic16,monospace';ctx.fillText(window.t('ui.meow'),bx+3,by+9);}}
   // 玩家（走路插值）
   const px_=P.x*T+P.mx, py_=P.y*T+P.my;
@@ -503,9 +518,10 @@ function tryMove(){if(P.moving||dlgOpen){return;}
 function stepMove(){if(!P.moving)return;P.step++;P.mx+=P.ddx*4;P.my+=P.ddy*4;
   if(Math.abs(P.mx)>=T||Math.abs(P.my)>=T){P.x=P.tx;P.y=P.ty;P.mx=0;P.my=0;P.moving=false;if(path.length===0&&autoKey)finishAuto();}}
 function buckWander(){if(dlgOpen)return;if(BUCK.hold>0){BUCK.hold--;return;}
-  if(BUCK.moving){BUCK.mx+=BUCK.ddx*2;BUCK.my+=BUCK.ddy*2;if(Math.abs(BUCK.mx)>=T||Math.abs(BUCK.my)>=T){BUCK.x=BUCK.tx;BUCK.y=BUCK.ty;BUCK.mx=0;BUCK.my=0;BUCK.moving=false;BUCK.timer=40+Math.random()*80;}return;}
+  if(BUCK.moving){BUCK.mx+=BUCK.ddx;BUCK.my+=BUCK.ddy;if(Math.abs(BUCK.mx)>=T||Math.abs(BUCK.my)>=T){BUCK.x=BUCK.tx;BUCK.y=BUCK.ty;BUCK.mx=0;BUCK.my=0;BUCK.moving=false;BUCK.steps=(BUCK.steps||0)-1;BUCK.timer=BUCK.steps>0?1:30+Math.random()*90;}return;}
   if(--BUCK.timer>0)return;BUCK.timer=30;
-  const d=[[0,-1],[0,1],[-1,0],[1,0]][Math.floor(Math.random()*4)];const nx=BUCK.x+d[0],ny=BUCK.y+d[1];
+  if(!(BUCK.steps>0)){BUCK.steps=1+Math.floor(Math.random()*3);BUCK.dirPick=[[0,-1],[0,1],[-1,0],[1,0]][Math.floor(Math.random()*4)];}
+  const d=BUCK.dirPick;const nx=BUCK.x+d[0],ny=BUCK.y+d[1];
   const t=tile(nx,ny);if(t!=='.'&&t!=='r')return;
   if(CATS.some(c=>c.x===nx&&c.y===ny))return;if(nx===P.x&&ny===P.y)return;if(P.moving&&P.tx===nx&&P.ty===ny)return;
   BUCK.moving=true;BUCK.tx=nx;BUCK.ty=ny;BUCK.ddx=d[0];BUCK.ddy=d[1];}

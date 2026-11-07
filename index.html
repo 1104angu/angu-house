@@ -127,7 +127,7 @@ const cv=document.getElementById('c'), ctx=cv.getContext('2d'); ctx.scale(2,2); 
 const ROOM_HAS_FLAMES=true; // 底圖已經畫了燭火，就不再疊程式畫的火苗
 const ROOM_HAS_LIGHT=true;  // 底圖已經畫了窗光，程式只留很淡的燭光閃爍
 // 相馬出現的玻璃範圍（靠床那扇窗，邏輯座標 512x288）。換底圖時量一下窗玻璃的位置改這裡；設成 null 就用程式畫的窗。
-const SOMA_PANE={x:336,y:24,w:38,h:24,ox:3,oy:-3};
+const SOMA_PANE={x:334,y:23,w:38,h:25,ox:3,oy:-3};
 
 /* 地圖：每個字元一格
    # 牆  . 地板  r 地毯  W 窗  B 書架  D 書桌(含電腦)  b 床頭 d 床尾  S 獎盃架  C 燭台  P 畫框  G 門墊
@@ -230,30 +230,29 @@ function drawSoma(x,y,t){
   const PANE=SOMA_PANE||{x:x,y:y+4,w:24,h:24};const px0=PANE.x,py0=PANE.y,pw=PANE.w,ph=PANE.h;
   ctx.save();ctx.beginPath();ctx.rect(px0,py0,pw,ph);ctx.clip();
   // 逐列位移：頭往左上探、身體在右下，形成斜角；整體往右下偏，像從窗角探進來
-  if(SOMA_PANE)ctx.globalAlpha=1;
-  for(let r=0;r<40;r++){const lean=Math.round((r-6)*0.3);ctx.drawImage(somaCv,0,r,32,1,px0+(SOMA_PANE?SOMA_PANE.ox:-2)+lean,py0+(SOMA_PANE?SOMA_PANE.oy:-5)+r,32,1);}
-  ctx.globalAlpha=1;
+  if(ASSETS.soma&&SOMA_PANE){const im=ASSETS.soma,w=20,h=im.height*w/im.width;ctx.drawImage(im,px0+16,py0-1-k,w,h);}
+  else{for(let r=0;r<40;r++){const lean=Math.round((r-6)*0.3);ctx.drawImage(somaCv,0,r,32,1,px0+(SOMA_PANE?SOMA_PANE.ox:-2)+lean,py0+(SOMA_PANE?SOMA_PANE.oy:-5)+r,32,1);}}
   // 玻璃：把底圖的那塊窗（含窗櫺、窗光）半透明蓋回他身上，他就在玻璃後面；再補一點反光
-  if(SOMA_PANE&&ASSETS.room){ctx.globalAlpha=0.38;ctx.imageSmoothingEnabled=true;const sx=px0*ASSETS.room.width/512,sy=py0*ASSETS.room.height/288,sw=pw*ASSETS.room.width/512,sh=ph*ASSETS.room.height/288;
+  if(SOMA_PANE&&ASSETS.room){ctx.globalAlpha=0.22;ctx.imageSmoothingEnabled=true;const sx=px0*ASSETS.room.width/512,sy=py0*ASSETS.room.height/288,sw=pw*ASSETS.room.width/512,sh=ph*ASSETS.room.height/288;
     ctx.drawImage(ASSETS.room,sx,sy,sw,sh,px0,py0,pw,ph);ctx.imageSmoothingEnabled=false;ctx.globalAlpha=1;}
   else{ctx.fillStyle='rgba(255,255,255,.18)';for(let i=0;i<3;i++)ctx.fillRect(px0+4+i*8,py0,2,ph);ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(px0,py0,pw,6);}
   ctx.restore();
   // 影子：背光的人影投在窗下的地板光裡，拉長、往下倒、微微斜
-  if(SOMA_PANE){shctx.clearRect(0,0,32,40);shctx.drawImage(somaCv,0,0);shctx.globalCompositeOperation='source-in';shctx.fillStyle='#1a0c10';shctx.fillRect(0,0,32,40);shctx.globalCompositeOperation='source-over';
+  if(SOMA_PANE){shctx.clearRect(0,0,32,40);if(ASSETS.soma){shctx.drawImage(ASSETS.soma,12,8,17,20);}else shctx.drawImage(somaCv,0,0);shctx.globalCompositeOperation='source-in';shctx.fillStyle='#1a0c10';shctx.fillRect(0,0,32,40);shctx.globalCompositeOperation='source-over';
     const sill=py0+ph+2,sk=0.18,st=1.7;ctx.save();ctx.globalAlpha=0.32;ctx.setTransform(2,0,0,2,0,0); // 畫布是 2 倍，先回到邏輯座標
     ctx.transform(1,0,sk,-st,px0+SOMA_PANE.ox+4,sill+st*40);ctx.drawImage(shadowCv,0,0);ctx.restore();ctx.setTransform(2,0,0,2,0,0);}
   if(!SOMA_PANE){ctx.fillStyle='#3a2a20';ctx.fillRect(px0,y+15,pw,1);}
-  if(SOMA.timer>20&&((t>>5)&1)){ctx.fillStyle='#0a0809';ctx.fillRect(x+4,y-14,30,12);ctx.fillStyle='#e8e0d0';ctx.font='10px DotGothic16,monospace';ctx.fillText(window.t('ui.knock'),x+10,y-4);}
+  if(SOMA.timer>20&&((t>>5)&1)){ctx.fillStyle='#0a0809';ctx.fillRect(x+34,y-10,30,12);ctx.fillStyle='#e8e0d0';ctx.font='10px DotGothic16,monospace';ctx.fillText(window.t('ui.knock'),x+40,y);}
 }
 /* 玩家 */
 const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
-const ROOM_VER=3; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
+const ROOM_VER=6; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
 const ASSETS={}; // name -> Image
-const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room','soma'];
+const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room','soma','player_down','player_down2','player_left','player_upleft','player_up'];
 let loaded=0;
-ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/room.png?v='+ROOM_VER:'img/sprites/'+n+'.png');});
+ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/room.png?v='+ROOM_VER:'img/sprites/'+n+'.png?v='+ROOM_VER);});
 
 /* ---------- 程式畫的佔位像素圖 ---------- */
 const px=(x,y,w,h,col)=>{ctx.fillStyle=col;ctx.fillRect(x,y,w,h)};
@@ -299,12 +298,130 @@ function drawBuck(x,y,t){const bob=((t>>3)&1);const sway=Math.round(Math.sin(t/9
   px(hx+14,hy+12,4,2,'#111');                                       // 出口
   px(hx+21,hy+9,3,2,'#c9a227');px(hx+22,hy+7,1,3,'#c9a227');       // 搖桿
 }
-function drawPlayer(x,y){const f=P.moving?((P.step>>2)&1):0;const leg=f?2:0;
-  px(x+10,y+2,12,10,'#f4f4f4');px(x+8,y+0,3,4,'#c9a227');px(x+21,y+0,3,4,'#c9a227');px(x+9,y+0,1,2,'#c9a227');px(x+22,y+0,1,2,'#c9a227');
-  px(x+11,y+12,10,6,'#f1dcc8');
-  if(P.dir!=='up'){const ox=P.dir==='left'?-2:P.dir==='right'?2:0;px(x+13+ox,y+14,2,2,'#2a4fd6');px(x+17+ox,y+14,2,2,'#2a4fd6');}
-  px(x+10,y+18,12,10,'#111');px(x+10,y+18,12,1,'#c9a227');px(x+8,y+24,16,4,'#111');px(x+8,y+27,16,1,'#c9a227');px(x+14,y+20,4,2,'#c9a227');
-  px(x+11+leg,y+28,3,4,'#111');px(x+18-leg,y+28,3,4,'#111');}
+/* ---------- 安谷本人：手繪像素圖（24x32，字元畫） ----------
+   . 透明  W 白髮  w 髮影  F 黑羽耳翼  g 鹿角  S 膚  s 膚影  B 眼  b 眼光  L 藍舌  K 黑  k 深灰  G 金  R 黃緞帶 */
+const PAL={o:'#2a1a22',h:'#d8cbb4',W:'#f4f4f4',w:'#cfcfd6',F:'#1a1a22',g:'#9a8366',S:'#f6dfca',s:'#e0b9a0',B:'#2a4fd6',b:'#9cc0ff',L:'#2a4fd6',K:'#111115',k:'#2a2630',G:'#c9a227',R:'#e8c23a'};
+const SPR={
+down:[
+".....h...h.....h...h....",
+"......h.h.......h.h.....",
+".......h.........h......",
+"......oh.........ho.....",
+"....ooWWWWWWWWWWWWoo....",
+"...oWWWWWWWWWWWWWWWWo...",
+"..oFWWWWWWWWWWWWWWWWFo..",
+"..oFWWWWWWWWWWWWWWWWFo..",
+"..oFWwWWWWWWWWWWWWwFo...",
+"...oWWSSSSSSSSSSSSWWo...",
+"...oWSSSSSSSSSSSSSSWo...",
+"...oSSSooSSSSSSooSSSo...",
+"...oSSSoBbSSSSoBbSSSo...",
+"...oSSSoBBSSSSoBBSSSo...",
+"...oSSSSSSSSSSSSSSSSo...",
+"....oSSSSSSLLSSSSSSo....",
+"....osSSSSSSSSSSSSso....",
+".....oosSSSSSSSSsoo.....",
+".......ooooooooooo......",
+".......oKKGKKKKGKo......",
+"......oKKKKRRKKKKKo.....",
+"......oKKGGGGGGGGKo.....",
+".....oKKKKKKKKKKKKKo....",
+".....oKKKKKKKKKKKKKo....",
+"....oKKKKKKKKKKKKKKKo...",
+"....oGGGGGGGGGGGGGGGo...",
+"....ooooooooooooooooo...",
+".......oKKo...oKKo......",
+".......oKKo...oKKo......",
+".......oKKo...oKKo......",
+"......okkkko.okkkko.....",
+"......oooooo.oooooo....."],
+up:[
+".....h...h.....h...h....",
+"......h.h.......h.h.....",
+".......h.........h......",
+"......oh.........ho.....",
+"....ooWWWWWWWWWWWWoo....",
+"...oWWWWWWWWWWWWWWWWo...",
+"..oFWWWWWWWWWWWWWWWWFo..",
+"..oFWWWWWWWWWWWWWWWWFo..",
+"..oFWWWWWWWWWWWWWWWWFo..",
+"...oWWWWWWWWWWWWWWWWo...",
+"...oWWWWWWWWWWWWWWWWo...",
+"...oWWWWWWWWWWWWWWWWo...",
+"...owWWWWWWWWWWWWWWwo...",
+"...owwWWWWWWWWWWWWwwo...",
+"...oowwwWWWWWWWWwwwoo...",
+"....oowwwwwwwwwwwwoo....",
+".....oSSwwwwwwwwSSo.....",
+"......oSSSSSSSSSSo......",
+".......oooooooooo.......",
+".......oKKKKKKKKKo......",
+"......oKKKRRRRKKKKo.....",
+"......oKKRRKKKKRRKo.....",
+".....oKKKGGGGGGGGKKo....",
+".....oKKKKKKKKKKKKKo....",
+"....oKKKKKKKKKKKKKKKo...",
+"....oGGGGGGGGGGGGGGGo...",
+"....ooooooooooooooooo...",
+".......oKKo...oKKo......",
+".......oKKo...oKKo......",
+".......oKKo...oKKo......",
+"......okkkko.okkkko.....",
+"......oooooo.oooooo....."],
+left:[
+".........h...h..........",
+"..........h.h...........",
+"...........h............",
+"........oooho.oooo......",
+"......ooWWWWWWWWWWoo....",
+".....oWWWWWWWWWWWWWWo...",
+"....oWWWWWWWWWWWWWWWFo..",
+"....oWWWWWWWWWWWWWWWFo..",
+"....oWwWWWWWWWWWWWWFo...",
+"....oSSSSSWWWWWWWWWo....",
+"....oSSSSSSWWWWWWWWo....",
+"....oSSooSSWWWWWWWWo....",
+"....oSSoBbSWWWWWWWWo....",
+"....oSSoBBSWWWWWWwWo....",
+"....oSSSSSSWWWWWWWo.....",
+"....oLSSSSSSWWWWWo......",
+".....osSSSSSSWWWo.......",
+"......oosSSSSoo.........",
+"........oooooo..........",
+"........oKKGKKo.........",
+".......oKKKKKKKo........",
+".......oKGGGGGKo........",
+"......oKKKKKKKKKo.......",
+"......oKKKKKKKKKo.......",
+".....oKKKKKKKKKKKo......",
+".....oGGGGGGGGGGGo......",
+".....ooooooooooooo......",
+"........oKKo.oKKo.......",
+"........oKKo.oKKo.......",
+"........oKKo.oKKo.......",
+".......okkkkokkkko......",
+".......oooooooooooo....."]};
+SPR.right=SPR.left.map(r=>r.split('').reverse().join(''));
+// 把字元畫烤成離屏畫布：每個方向 3 幀（站、左腳、右腳）
+const SPRC={};
+(function(){for(const d in SPR){SPRC[d]=[];for(let f=0;f<3;f++){const c=document.createElement('canvas');c.width=24;c.height=32;const g=c.getContext('2d');
+  const rows=SPR[d];const legTop=27;const bob=f?1:0;
+  for(let y=0;y<32;y++)for(let x=0;x<24;x++){const ch=rows[y][x];if(ch==='.')continue;
+    let dy=0;if(y>=legTop){ // 腿：走路時一隻抬一格
+      const isLeft=x<12;if(f===1&&isLeft)dy=-1;if(f===2&&!isLeft)dy=-1;if(y+dy<legTop-1)continue;}
+    else dy=-bob; // 身體隨步伐上下 1px
+    g.fillStyle=PAL[ch];g.fillRect(x,y+dy+(y>=legTop?0:0),1,1);}
+  // 走路幀補回腿頂那一列，免得抬腿時斷掉
+  SPRC[d].push(c);}}})();
+function drawPlayer(x,y){const f=P.moving?(1+((P.step>>3)&1)):0;
+  // 有 img/sprites/player_*.png（64px 高、畫布 2 倍）就用圖；沒有就用字元畫
+  const pick={down:f===2?'player_down2':'player_down',left:'player_left',right:'player_left',up:'player_up'}[P.dir];
+  const im=ASSETS[pick]||ASSETS.player_down;
+  if(im){const h=38,w=im.width*h/im.height,bob=P.moving?((P.step>>3)&1):0;ctx.save();
+    if(P.dir==='right'){ctx.translate(x+16+w/2,0);ctx.scale(-1,1);ctx.drawImage(im,0,y+32-h-bob,w,h);}
+    else ctx.drawImage(im,x+16-w/2,y+32-h-bob,w,h);
+    ctx.restore();return;}
+  ctx.drawImage(SPRC[P.dir][f],x+4,y);}
 
 /* 格子型別 */
 function tile(cx,cy){return (MAP[cy]||'')[cx]||'#';}
@@ -318,7 +435,9 @@ function render(){tick++;
     ctx.imageSmoothingEnabled=true;ctx.drawImage(ASSETS.room,0,0,512,288);ctx.imageSmoothingEnabled=false;
     for(let y=0;y<H;y++)for(let x=0;x<W;x++){const t=MAP[y][x];
       if(t==='C'&&!ROOM_HAS_FLAMES)drawFlame(x*T,y*T,tick);
-      if(t==='M'){ASSETS.gramophone?ctx.drawImage(ASSETS.gramophone,x*T,y*T,T,T):drawGramophone(x*T,y*T,tick);}}
+      if(t==='M'){const im=ASSETS.gramophone;if(im){const h=34,w=im.width*h/im.height,bob=bgmOn?((tick>>4)&1):0;ctx.drawImage(im,x*T+16-w/2,y*T+32-h-bob,w,h);
+          if(bgmOn){const n=(tick>>4)&1;px(x*T+24,y*T-2-n*3,2,2,'#f0d27a');px(x*T+28,y*T+3-n*2,2,2,'#f0d27a');}}
+        else drawGramophone(x*T,y*T,tick);}}
   }else
   for(let y=0;y<H;y++)for(let x=0;x<W;x++){const t=MAP[y][x],X=x*T,Y=y*T;
     const useImg=n=>{if(ASSETS[n]){ctx.drawImage(ASSETS[n],X,Y,T,T);return true}return false};
@@ -337,9 +456,9 @@ function render(){tick++;
       case 'G':useImg('mat')||drawMat(X,Y);break;
       case 'M':useImg('gramophone')||drawGramophone(X,Y,tick);break;
     }}
-  if(SOMA.at){ASSETS.soma?ctx.drawImage(ASSETS.soma,SOMA.at[0]*T,SOMA.at[1]*T,T,T):drawSoma(SOMA.at[0]*T,SOMA.at[1]*T,tick);}
-  CATS.forEach(c=>{if(ASSETS[c.id])ctx.drawImage(ASSETS[c.id],c.x*T,c.y*T,T,T);else drawCat(c.x*T,c.y*T,c.c,tick+c.x*7);});
-  if(ASSETS.buck)ctx.drawImage(ASSETS.buck,BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,T,T);else drawBuck(BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,tick);
+  if(SOMA.at)drawSoma(SOMA.at[0]*T,SOMA.at[1]*T,tick);
+  CATS.forEach(c=>{const im=ASSETS[c.id];if(im){const h=24,w=im.width*h/im.height,bob=((tick+c.x*7)>>5)&1;ctx.drawImage(im,c.x*T+16-w/2,c.y*T+32-h-bob,w,h);}else drawCat(c.x*T,c.y*T,c.c,tick+c.x*7);});
+  if(ASSETS.buck){const im=ASSETS.buck,h=44,w=im.width*h/im.height,bob=(tick>>3)&1,sway=Math.round(Math.sin(tick/9)*1.5);ctx.drawImage(im,BUCK.x*T+BUCK.mx+16-w/2+sway,BUCK.y*T+BUCK.my+32-h-bob,w,h);}else drawBuck(BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,tick);
   if(meowBubble&&tick<meowBubble.until){const c=CATS.find(k=>k.id===meowBubble.id);if(c){const bx=c.x*T+6,by=c.y*T-12;ctx.fillStyle='#0a0809';ctx.fillRect(bx,by,22,11);ctx.fillStyle='#e8e0d0';ctx.font='9px DotGothic16,monospace';ctx.fillText(window.t('ui.meow'),bx+3,by+9);}}
   // 玩家（走路插值）
   const px_=P.x*T+P.mx, py_=P.y*T+P.my;

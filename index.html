@@ -26,6 +26,11 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rend
 .dlg{position:absolute;left:3%;right:3%;bottom:3%;background:rgba(8,6,10,.94);border:3px solid var(--gold);
   box-shadow:inset 0 0 0 2px #000, inset 0 0 0 3px var(--gold2);padding:14px 18px;font-size:clamp(14px,1.8vw,18px);line-height:1.7;display:none}
 .dlg.on{display:block}
+.dlg{z-index:6}
+.dbtns{display:none;justify-content:flex-end;gap:10px;margin-top:8px}
+.dbtns button{background:#141015;border:2px solid var(--gold2);color:var(--gold);font-family:inherit;font-size:15px;padding:6px 18px}
+.dbtns button:active{background:var(--wine);color:#fff}
+.dbtns #dgo{border-color:var(--gold);color:#fff;background:var(--wine)}
 .dlg .name{color:var(--gold);font-size:.85em;margin-bottom:4px;letter-spacing:.2em}
 .dlg .hint{color:var(--muted);font-size:.75em;text-align:right;margin-top:6px}
 .dlg .hint b{color:var(--gold)}
@@ -40,7 +45,10 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rend
 @media (hover:none) and (pointer:coarse){
   body .pad{display:flex}
   body .keys{display:none}
-  body .bgm{font-size:12px;padding:3px 8px;opacity:.55;top:auto;bottom:8px;right:8px}
+  body .bgm{font-size:12px;padding:3px 8px;opacity:.55;top:auto;bottom:8px;left:8px;right:auto}
+  body .dbtns{display:flex}
+  body .dlg .hint{display:none}
+  body .wrap{padding-top:40px}
   body .dlg{font-size:14px;padding:10px 12px;line-height:1.6}
   body .radio{position:static;margin:12px auto 0;transform:none;opacity:1;display:none}
   body.playing .radio{display:block}
@@ -79,7 +87,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
   <button class="bgm" id="bgm">♪ 音樂：關</button>
   <audio id="audio" loop preload="none"></audio>
   <canvas id="c" width="512" height="288"></canvas>
-  <div class="dlg" id="dlg"><div class="name" id="dname"></div><div id="dtext"></div><div class="hint" id="dhint"></div></div>
+  <div class="dlg" id="dlg"><div class="name" id="dname"></div><div id="dtext"></div><div class="hint" id="dhint"></div><div class="dbtns"><button id="dgo" data-i18n="ui.go"></button><button id="dclose" data-i18n="ui.close"></button></div></div>
 </div>
 
 <div class="pad">
@@ -373,13 +381,15 @@ function openDlg(key){let d=TALK[key];
     if(c.id==='95056203')text=t('buck.self');
     d={name:t('buck.name'),text,go:c.url};TALK.buck=d;}
   if(!d)return;dlgOpen=true;dlgGo=d.go||null;dname.textContent=d.name;dtext.textContent='';dlg.classList.add('on');
-  dhint.innerHTML=d.go?t('ui.hint.go'):t('ui.hint.close');
+  dhint.innerHTML=d.go?t('ui.hint.go'):t('ui.hint.close');document.getElementById('dgo').style.display=d.go?'':'none';
   let i=0;clearInterval(typing);typing=setInterval(()=>{dtext.textContent=d.text.slice(0,++i);if(i>=d.text.length)clearInterval(typing);},28);}
 function closeDlg(){dlgOpen=false;dlg.classList.remove('on');clearInterval(typing);}
 function action(){if(dlgOpen){if(dtext.textContent.length<(TALK[curKey]||{text:''}).text.length){clearInterval(typing);dtext.textContent=TALK[curKey].text;return;}
     if(dlgGo)location.href=LOC(dlgGo);else closeDlg();return;}
   const f=front();if(f.key){curKey=f.key;openDlg(f.key);}}
 let curKey=null;
+document.getElementById('dgo').addEventListener('click',e=>{e.stopPropagation();action();});
+document.getElementById('dclose').addEventListener('click',e=>{e.stopPropagation();closeDlg();});
 
 /* ---------- 點哪走哪 ---------- */
 let path=[];let autoKey=null;
@@ -404,7 +414,7 @@ function goTo(tx,ty){if(dlgOpen)return;autoKey=null;
   if(!best)return;path=best.p;autoKey={dir:best.dx===0?(best.dy===1?'up':'down'):(best.dx===1?'left':'right')};
   if(path.length===0)finishAuto();}
 function finishAuto(){if(autoKey){P.dir=autoKey.dir;autoKey=null;action();}}
-cv.addEventListener('pointerdown',e=>{if(dlgOpen){action();return;}const r=cv.getBoundingClientRect();
+cv.addEventListener('pointerdown',e=>{if(dlgOpen){const full=(TALK[curKey]||{text:''}).text;if(dtext.textContent.length<full.length){clearInterval(typing);dtext.textContent=full;}else closeDlg();return;}const r=cv.getBoundingClientRect();
   const tx=Math.floor((e.clientX-r.left)/r.width*W),ty=Math.floor((e.clientY-r.top)/r.height*H);goTo(tx,ty);});
 
 /* ---------- 輸入 ---------- */

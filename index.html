@@ -23,7 +23,7 @@ h1 small{display:block;font-family:"Press Start 2P",monospace;font-size:9px;colo
 canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 /* 對話框 */
 .dlg{position:absolute;left:3%;right:3%;bottom:3%;background:rgba(8,6,10,.94);border:3px solid var(--gold);
-  box-shadow:inset 0 0 0 2px #000, inset 0 0 0 3px var(--gold2);padding:14px 18px;font-size:clamp(13px,1.8vw,18px);line-height:1.7;display:none}
+  box-shadow:inset 0 0 0 2px #000, inset 0 0 0 3px var(--gold2);padding:14px 18px;font-size:clamp(14px,1.8vw,18px);line-height:1.7;display:none}
 .dlg.on{display:block}
 .dlg .name{color:var(--gold);font-size:.85em;margin-bottom:4px;letter-spacing:.2em}
 .dlg .hint{color:var(--muted);font-size:.75em;text-align:right;margin-top:6px}
@@ -36,7 +36,14 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rend
 .dpad button:active,.act button:active{background:var(--wine);color:#fff}
 .dpad .u{grid-column:2;grid-row:1}.dpad .l{grid-column:1;grid-row:2}.dpad .r{grid-column:3;grid-row:2}.dpad .d{grid-column:2;grid-row:3}
 .act button{width:84px;height:84px;border-radius:50%;font-size:16px}
-@media (hover:none) and (pointer:coarse){.pad{display:flex}}
+@media (hover:none) and (pointer:coarse){
+  .pad{display:flex}
+  .keys{display:none}
+  .bgm{font-size:12px;padding:3px 8px}
+  .dlg{font-size:14px;padding:10px 12px;line-height:1.6}
+  .radio{position:static;margin:12px auto 0;transform:none;opacity:1;display:none}
+  body.playing .radio{display:block}
+}
 .radio{position:fixed;right:14px;bottom:14px;z-index:20;width:200px;padding:8px 8px 20px;background:#2b1a14;border:2px solid #8a6d1c;outline:1px solid var(--gold);outline-offset:2px;box-shadow:4px 4px 0 #000;border-radius:8px 8px 4px 4px;
   transform:translateY(130%);opacity:0;transition:.35s}
 body.playing .radio{transform:none;opacity:1}
@@ -302,9 +309,10 @@ function render(){tick++;
 
 /* ---------- 移動 ---------- */
 const DIRS={ArrowUp:[0,-1,'up'],ArrowDown:[0,1,'down'],ArrowLeft:[-1,0,'left'],ArrowRight:[1,0,'right']};
-const held=new Set();
-function tryMove(){if(P.moving||dlgOpen)return;
-  for(const k of ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight']){if(!held.has(k))continue;const [dx,dy,d]=DIRS[k];P.dir=d;
+const held=new Set();let tapQueue=null; // 手機點一下至少走一格
+function tryMove(){if(P.moving||dlgOpen){return;}
+  const order=tapQueue?[tapQueue,'ArrowUp','ArrowDown','ArrowLeft','ArrowRight']:['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+  for(const k of order){if(k!==tapQueue&&!held.has(k))continue;if(k===tapQueue)tapQueue=null;const [dx,dy,d]=DIRS[k];P.dir=d;
     if(!solid(P.x+dx,P.y+dy)){P.moving=true;P.tx=P.x+dx;P.ty=P.y+dy;P.mx=0;P.my=0;P.ddx=dx;P.ddy=dy;}return;}}
 function stepMove(){if(!P.moving)return;P.step++;P.mx+=P.ddx*4;P.my+=P.ddy*4;
   if(Math.abs(P.mx)>=T||Math.abs(P.my)>=T){P.x=P.tx;P.y=P.ty;P.mx=0;P.my=0;P.moving=false;}}
@@ -344,7 +352,7 @@ addEventListener('keydown',e=>{if(DIRS[e.key]){held.add(e.key);e.preventDefault(
   if(e.key==='Escape'&&dlgOpen)closeDlg();});
 addEventListener('keyup',e=>held.delete(e.key));
 document.querySelectorAll('.pad button').forEach(b=>{const k=b.dataset.k;
-  const down=e=>{e.preventDefault();if(k===' ')action();else held.add(k);};const up=e=>{e.preventDefault();held.delete(k);};
+  const down=e=>{e.preventDefault();if(k===' ')action();else{held.add(k);tapQueue=k;}};const up=e=>{e.preventDefault();held.delete(k);};
   b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointerleave',up);b.addEventListener('pointercancel',up);});
 cv.addEventListener('click',()=>{if(dlgOpen)action();});
 

@@ -72,6 +72,7 @@ window.I18N = {
   },
 
   "about.title":"關於我","about.lead":"安谷，製作人，超絕黑化作者。",
+  "about.quote":"「我的小蟑螂在哪裡呀♡」",
   "about.h1":"做什麼","about.1a":"在 CAVEDUCK 寫角色卡，耽美為核心，玩家性別不設限。","about.1b":"寫卡是因為找不到想玩的耽美強強，乾脆自己做，順便做大世界觀。","about.1c":"從狛胡開始，每張卡都在諷刺官僚與體制，這是共同的味道。",
   "about.h2":"口味","about.2a":"黑色幽默、夢核恐怖、魔幻寫實。","about.2b":"人外身體性。","about.2c":"反烏托邦是賽博龐克的精髓。",
   "about.h3":"也做這些","about.3a":"SUNO 配樂，會放進卡裡當 BGM：",
@@ -154,6 +155,7 @@ window.I18N = {
     "95056203":""
   },
   "about.title":"私について","about.lead":"安谷。プロデューサー、超絶闇堕ち作者。",
+  "about.quote":"「わたしの小さなゴキブリちゃんはどこかな♡」",
   "about.h1":"やっていること","about.1a":"CAVEDUCKでキャラカードを書いている。BLが核、プレイヤーの性別は問わない。","about.1b":"遊びたい強×強のBLが見つからなかったから自分で作った。ついでに大きな世界観も。","about.1c":"狛胡から始まり、どのカードも官僚と体制を風刺している。それが共通の味。",
   "about.h2":"好み","about.2a":"ブラックユーモア、ドリームコアホラー、マジックリアリズム。","about.2b":"人外の身体性。","about.2c":"ディストピアこそサイバーパンクの髄。",
   "about.h3":"こんなことも","about.3a":"SUNOで作った音楽をカードのBGMに：",
@@ -236,6 +238,7 @@ window.I18N = {
     "95056203":""
   },
   "about.title":"소개","about.lead":"안구. 프로듀서, 초절정 흑화 작가.",
+  "about.quote":"「내 작은 바퀴벌레는 어디 있을까♡」",
   "about.h1":"하는 일","about.1a":"CAVEDUCK에서 캐릭터 카드를 쓴다. BL이 핵심, 플레이어 성별은 제한 없음.","about.1b":"놀고 싶은 강공×강수 BL을 못 찾아서 직접 만들었다. 겸사겸사 큰 세계관도.","about.1c":"고마코부터 시작해 모든 카드가 관료와 체제를 풍자한다. 그게 공통의 맛.",
   "about.h2":"취향","about.2a":"블랙 유머, 드림코어 호러, 마술적 리얼리즘.","about.2b":"인외의 신체성.","about.2c":"디스토피아야말로 사이버펑크의 정수.",
   "about.h3":"이런 것도","about.3a":"SUNO로 만든 음악을 카드 BGM으로:",
@@ -318,6 +321,7 @@ window.I18N = {
     "95056203":""
   },
   "about.title":"About","about.lead":"Angu. Producer. Ultra-dark author.",
+  "about.quote":"“Now where’s my little cockroach♡”",
   "about.h1":"What I do","about.1a":"I write character cards on CAVEDUCK. BL at the core, any player gender welcome.","about.1b":"I started because I couldn't find the strong-×-strong BL I wanted to play, so I made it myself, plus the big worlds to go with it.","about.1c":"Since Komako, every card has satirized bureaucracy and the system. That's the shared flavor.",
   "about.h2":"Tastes","about.2a":"Black humor, dreamcore horror, magical realism.","about.2b":"Non-human bodies.","about.2c":"Dystopia is the essence of cyberpunk.",
   "about.h3":"Also","about.3a":"Music made with SUNO, used as BGM in cards:",
@@ -400,6 +404,7 @@ window.I18N = {
     "95056203":""
   },
   "about.title":"Sobre mí","about.lead":"Angu. Productora. Autora ultraoscura.",
+  "about.quote":"«¿Dónde está mi cucarachita♡?»",
   "about.h1":"Qué hago","about.1a":"Escribo tarjetas de personaje en CAVEDUCK. BL en el centro, cualquier género de jugador es bienvenido.","about.1b":"Empecé porque no encontraba el BL fuerte×fuerte que quería jugar, así que lo hice yo misma, con los grandes mundos que lo acompañan.","about.1c":"Desde Komako, cada tarjeta satiriza la burocracia y el sistema. Ese es el sabor común.",
   "about.h2":"Gustos","about.2a":"Humor negro, terror dreamcore, realismo mágico.","about.2b":"Cuerpos no humanos.","about.2c":"La distopía es la esencia del ciberpunk.",
   "about.h3":"También","about.3a":"Música hecha con SUNO, usada como BGM en las tarjetas:",

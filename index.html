@@ -231,10 +231,11 @@ function drawSoma(x,y,t){
 const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
+const ROOM_VER=3; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
 const ASSETS={}; // name -> Image
 const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room','soma'];
 let loaded=0;
-ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/':'img/sprites/')+n+'.png';});
+ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/room.png?v='+ROOM_VER:'img/sprites/'+n+'.png');});
 
 /* ---------- 程式畫的佔位像素圖 ---------- */
 const px=(x,y,w,h,col)=>{ctx.fillStyle=col;ctx.fillRect(x,y,w,h)};

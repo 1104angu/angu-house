@@ -76,9 +76,16 @@ footer a{color:var(--gold);text-decoration:none}
 .langbar button.on{color:#fff;background:var(--wine);border-color:var(--gold)}
 @media (max-width:640px){.langbar{top:6px;right:6px}.langbar button{font-size:11px;padding:2px 5px}}
 footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;margin-top:40px}
+/* 進場：點蠟燭 */
+#loader{position:fixed;inset:0;background:#050305;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .9s}
+#loader.out{opacity:0;pointer-events:none}
+#loader canvas{width:256px;height:256px;image-rendering:pixelated}
+#loader .txt{font-family:"DotGothic16",monospace;color:var(--muted);letter-spacing:.3em;font-size:14px}
+#loader .txt b{color:var(--gold);font-weight:normal}
 </style>
 </head>
 <body>
+<div id="loader"><canvas id="lc" width="64" height="64"></canvas><div class="txt" id="ltxt"></div></div>
 <div class="wrap">
 <header>
   <h1>安谷屋<small>ANGU'S CHAMBER</small></h1>
@@ -500,6 +507,28 @@ if(matchMedia('(hover:none) and (pointer:coarse)').matches){const tg=document.ge
 /* ---------- 語言 ---------- */
 window.LANG=getLang();buildTalk();
 window.onLangChange=function(){buildTalk();if(dlgOpen)closeDlg();bgmBtn.textContent=bgmOn?t('ui.bgm.on'):t('ui.bgm.off');setMeow(meowOn);};
+
+/* ---------- 進場：點蠟燭 ---------- */
+(function(){const L=document.getElementById('loader'),lc=document.getElementById('lc'),x=lc.getContext('2d'),tx=document.getElementById('ltxt');
+  const t0=performance.now();let done=false;
+  const words={zh:['安谷還沒睡','點蠟燭中','牆上的東西在看你'],ja:['安谷はまだ起きている','蝋燭に火を','壁のものが見ている'],ko:['안구는 아직 안 잤다','촛불을 켜는 중','벽의 것이 보고 있다'],en:['Angu is still up','Lighting the candle','The things on the wall are watching'],es:['Angu sigue despierta','Encendiendo la vela','Lo de la pared te mira']};
+  function frame(){const el=(performance.now()-t0)/1000;const q=Math.min(1,el/2.2); // 0→1 進度
+    x.fillStyle='#050305';x.fillRect(0,0,64,64);
+    // 光圈：實邊同心圓，隨進度擴大，微抖
+    const j=Math.round(Math.sin(el*9)*1.5);const R=4+q*34+j;
+    x.fillStyle='rgba(120,55,15,.55)';x.beginPath();x.arc(32,30,R,0,7);x.fill();
+    x.fillStyle='rgba(220,130,40,.5)';x.beginPath();x.arc(32,30,R*0.6,0,7);x.fill();
+    x.fillStyle='rgba(255,210,110,.45)';x.beginPath();x.arc(32,30,R*0.3,0,7);x.fill();
+    // 燭台＋蠟燭
+    x.fillStyle='#8a6d1c';x.fillRect(24,52,16,3);x.fillRect(29,46,6,6);x.fillStyle='#c9a227';x.fillRect(25,51,14,1);
+    x.fillStyle='#e8e0d0';x.fillRect(29,32,6,14);x.fillStyle='#c9bfae';x.fillRect(29,32,1,14);
+    // 火苗：進度 0.15 之後才點起來，先小後大
+    if(q>0.15){const h=Math.min(10,Math.round((q-0.15)*16))+((Math.floor(el*10)%2));x.fillStyle='#ff8c42';x.fillRect(31,32-h,2,h);x.fillStyle='#f0d27a';x.fillRect(31,34-Math.round(h*0.6),2,Math.round(h*0.6));x.fillStyle='#fff';x.fillRect(31,33-Math.round(h*0.25),2,Math.max(1,Math.round(h*0.2)));}
+    const w=words[window.LANG]||words.zh;const i=Math.min(w.length-1,Math.floor(el/0.9));tx.innerHTML='<b>'+w[i]+'</b>'+'.'.repeat(1+Math.floor(el*2)%3);
+    const ready=!!ASSETS.room||el>5; // 底圖到了，或等太久就直接進
+    if(q>=1&&ready&&!done){done=true;L.classList.add('out');setTimeout(()=>L.remove(),1000);return;}
+    if(!done)requestAnimationFrame(frame);}
+  frame();})();
 
 /* ---------- 主迴圈 ---------- */
 function loop(){tryMove();stepMove();buckWander();somaUpdate();meowTick();render();requestAnimationFrame(loop);}

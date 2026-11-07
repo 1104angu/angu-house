@@ -6,6 +6,7 @@
 <title>安谷屋</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<script src="i18n.js"></script>
 <style>
 :root{--bg:#0a0809;--gold:#c9a227;--gold2:#8a6d1c;--wine:#6b0f1a;--ink:#e8e0d0;--muted:#9a8f85}
 *{box-sizing:border-box}
@@ -14,7 +15,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:"DotGothic16",mo
   background-size:32px 32px}
 .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 50px}
 header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:14px}
-h1{margin:0;font-size:22px;letter-spacing:.3em}
+h1{margin:0;font-size:22px;letter-spacing:.3em;white-space:nowrap}
 h1 small{display:block;font-family:"Press Start 2P",monospace;font-size:9px;color:var(--gold);letter-spacing:.1em;margin-top:6px}
 .motto{font-size:14px;color:var(--muted);text-align:right}
 .stage{position:relative;width:100%;max-width:1024px;margin:0 auto;aspect-ratio:16/9;
@@ -37,11 +38,11 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rend
 .dpad .u{grid-column:2;grid-row:1}.dpad .l{grid-column:1;grid-row:2}.dpad .r{grid-column:3;grid-row:2}.dpad .d{grid-column:2;grid-row:3}
 .act button{width:84px;height:84px;border-radius:50%;font-size:16px}
 @media (hover:none) and (pointer:coarse){
-  .pad{display:flex}
-  .keys{display:none}
-  .bgm{font-size:12px;padding:3px 8px}
-  .dlg{font-size:14px;padding:10px 12px;line-height:1.6}
-  .radio{position:static;margin:12px auto 0;transform:none;opacity:1;display:none}
+  body .pad{display:flex}
+  body .keys{display:none}
+  body .bgm{font-size:12px;padding:3px 8px;opacity:.55;top:auto;bottom:8px;right:8px}
+  body .dlg{font-size:14px;padding:10px 12px;line-height:1.6}
+  body .radio{position:static;margin:12px auto 0;transform:none;opacity:1;display:none}
   body.playing .radio{display:block}
 }
 .radio{position:fixed;right:14px;bottom:14px;z-index:20;width:200px;padding:8px 8px 20px;background:#2b1a14;border:2px solid #8a6d1c;outline:1px solid var(--gold);outline-offset:2px;box-shadow:4px 4px 0 #000;border-radius:8px 8px 4px 4px;
@@ -60,6 +61,10 @@ nav.main a:hover,nav.main a.on{background:var(--wine);border-color:var(--gold);c
 .bgm{position:absolute;top:8px;right:8px;z-index:5;background:rgba(8,6,10,.9);border:2px solid var(--gold2);color:var(--gold);font-family:inherit;font-size:13px;padding:4px 10px;cursor:pointer;letter-spacing:.1em}
 .bgm.on{border-color:var(--gold);color:#fff;background:var(--wine)}
 footer a{color:var(--gold);text-decoration:none}
+.langbar{position:fixed;top:10px;right:10px;z-index:40;display:flex;gap:4px}
+.langbar button{background:rgba(10,8,9,.9);border:1px solid var(--gold2);color:var(--muted);font-family:inherit;font-size:12px;padding:3px 7px;cursor:pointer}
+.langbar button.on{color:#fff;background:var(--wine);border-color:var(--gold)}
+@media (max-width:640px){.langbar{top:6px;right:6px}.langbar button{font-size:11px;padding:2px 5px}}
 footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;margin-top:40px}
 </style>
 </head>
@@ -67,7 +72,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
 <div class="wrap">
 <header>
   <h1>安谷屋<small>ANGU'S CHAMBER</small></h1>
-  <div class="motto">歡迎來到製作人安谷的房間。<br>燭火自便，請勿驚動牆上的東西。</div>
+  <div class="motto" data-i18n="site.motto"></div>
 </header>
 
 <div class="stage">
@@ -82,16 +87,13 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
     <button class="u" data-k="ArrowUp">▲</button><button class="l" data-k="ArrowLeft">◀</button>
     <button class="r" data-k="ArrowRight">▶</button><button class="d" data-k="ArrowDown">▼</button>
   </div>
-  <div class="act"><button data-k=" ">確定</button></div>
+  <div class="act"><button data-k=" " data-i18n="ui.ok"></button></div>
 </div>
 <div class="radio" title="柯賴里《佛利亞變奏曲》，米爾斯坦演奏"><div class="screen"><div id="yt"></div></div><div class="knobs"><i></i><b>ANGU RADIO</b><i></i></div></div>
-<div class="keys"><b>↑↓←→</b> 移動　<b>空白鍵</b> 互動／確定　<b>Esc</b> 關閉</div>
+<div class="keys" data-i18n="ui.keys"></div>
 
-<nav class="main">
-  <a href="index.html" class="on">房間</a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">角色卡</a><a href="worlds.html">世界觀</a>
-  <a href="about.html">關於我</a><a href="awards.html">得獎</a><a href="links.html">書籤</a>
-</nav>
-<footer>© 2026 安谷 ｜ 超絕黑化作者 ｜ <a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">CAVEDUCK @angu_</a> ｜ <a href="https://www.threads.com/@1104angu_" target="_blank">脆</a></footer>
+<nav class="main"><a href="index.html" class="on" data-i18n="nav.room"></a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank" data-i18n="nav.cards"></a><a href="worlds.html" data-i18n="nav.worlds"></a><a href="about.html" data-i18n="nav.about"></a><a href="awards.html" data-i18n="nav.awards"></a><a href="links.html" data-i18n="nav.links"></a></nav>
+<footer><span data-i18n="footer"></span><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">CAVEDUCK @angu_</a> ｜ <a href="https://www.threads.com/@1104angu_" target="_blank" data-i18n="footer.threads"></a></footer>
 </div>
 
 <script>
@@ -119,64 +121,58 @@ const MAP=[
 "################"];
 
 /* 互動：key 對應地圖字元或貓的 id */
-const TALK={
- D:{name:'寫字桌',text:'綠皮桌墊上攤著寫到一半的卡稿，墨水還沒乾。要看安谷做的角色卡嗎？',go:'https://caveduck.io/zh-hant/user/angu_'},
- B:{name:'書架',text:'書脊上寫著格雷斯通、賽博埃及、1930 大稻埕……全是世界設定集。要翻嗎？',go:'worlds.html'},
- S:{name:'獎盃架',text:'幾座獎盃擦得很亮，旁邊有一張遺珠獎的小卡。要看得獎紀錄嗎？',go:'awards.html'},
- P:{name:'肖像',text:'牆上一幅大肖像：白髮、鹿角、黑金哥德蘿莉，眼睛是青金石的藍。角落簽著「製作人安谷」。要看關於我嗎？',go:'about.html'},
- W:{name:'窗',text:'窗外是夜色和別人的房子。窗台貼了一排便條，寫著常去的地方。要看書籤嗎？',go:'links.html'},
- b:{name:'床',text:''},
- d:{name:'床',text:'豪華雙人床，床尾疊著幾本法典。別亂翻，苛麗特會生氣。'},
- C:{name:'燭台',text:'蠟燭自己在燒。你沒看到有人點過它。'},
- r:{name:'地毯',text:'酒紅色的地毯，有貓毛。'},
- M:{name:'唱機',text:''},
- G:{name:'門墊',text:'門墊上寫著：歡迎來到安谷屋。門不給開，你在裡面就好。'},
- cat_poe:{go:'https://caveduck.io/zh-hant/share/characters/2c0f1bf4-9581-46d4-aade-e126f5d2b942?rc=ku1A1yGuNy',name:'艾倫波',text:'黑貓穿著西裝縮成一團，異色的眼睛睜開看你一眼。「……這份腳本的 D 軸有問題。」然後又睡了。'},
- cat_ono:{go:'https://caveduck.io/zh-hant/share/characters/cc642f68-afe1-46ed-82a6-b6c076ad88b0?rc=ku1A1yGuNy',name:'奧諾依',text:'純白的貓貴婦坐在獎盃架下，珍珠項鍊垂在爪子邊。「喵安～我是奧諾依。您這個狀態欄……Ohnyo！放心，我會溫柔地幫您重造。」她瞄了一眼地毯上那團黑西裝，又把視線收回來。'},
- cat_bau:{go:'https://caveduck.io/zh-hant/share/characters/dadc87a6-48f4-4e18-bcbf-39e30fc5b5ee?rc=ku1A1yGuNy',name:'波特萊爾',text:'紅捲髮垂到眼睛的暹羅貓趴在寫字桌上，壓著你的卡稿。惡之華沙龍的主人，貓街養花的嚮導。他冷漠看透、不奉承，只看著你怎麼照顧那朵花，從不告訴你那代表什麼。尾巴掃了一下墨水瓶。'},
- cat_col:{go:'https://caveduck.io/zh-hant/share/characters/5d6838ed-47d8-42b5-813d-c9154908adbb?rc=ku1A1yGuNy',name:'苛麗特',text:'薑黃虎斑貓坐在床頭，爪子下壓著一本法典。「聲音指紋還沒蒸餾乾淨，拿回去。」'},
- cat_gal:{go:'https://caveduck.io/zh-hant/share/characters/5af2f97a-8d98-45c5-ab0f-16f890369c4d?rc=ku1A1yGuNy',name:'蓋珞普',text:'三花貓在地毯上翻肚。「溫度可以，餘韻再等等。」她指的是你的卡，不是地毯。'},
- cat_gar:{go:'https://caveduck.io/zh-hant/share/characters/31080d3a-99e2-4318-b2e4-a14046f3a10d?rc=ku1A1yGuNy',name:'史蒂芬珈涅',text:'咖啡色虎斑貓戴著小禮帽站在獎盃架旁。「傳播力不錯，留存……我們實測三輪再說。」'}
-};
+const AUTHOR_URL='https://caveduck.io/zh-hant/user/angu_';
+const LOC=u=>u.replace(/caveduck\.io\/(zh-hant|ja|ko|en|es)\//,'caveduck.io/'+CAVE_LOCALE[window.LANG||'zh']+'/');
+const CAT_URL={cat_poe:'2c0f1bf4-9581-46d4-aade-e126f5d2b942',cat_ono:'cc642f68-afe1-46ed-82a6-b6c076ad88b0',cat_bau:'dadc87a6-48f4-4e18-bcbf-39e30fc5b5ee',cat_col:'5d6838ed-47d8-42b5-813d-c9154908adbb',cat_gal:'5af2f97a-8d98-45c5-ab0f-16f890369c4d',cat_gar:'31080d3a-99e2-4318-b2e4-a14046f3a10d'};
+let TALK={};
+function buildTalk(){TALK={
+ D:{name:t('talk.D.name'),text:t('talk.D'),go:AUTHOR_URL},
+ B:{name:t('talk.B.name'),text:t('talk.B'),go:'worlds.html'},
+ S:{name:t('talk.S.name'),text:t('talk.S'),go:'awards.html'},
+ P:{name:t('talk.P.name'),text:t('talk.P'),go:'about.html'},
+ W:{name:t('talk.W.name'),text:t('talk.W'),go:'links.html'},
+ b:{name:t('talk.b.name'),text:''},
+ d:{name:t('talk.b.name'),text:t('talk.d')},
+ C:{name:t('talk.C.name'),text:t('talk.C')},
+ r:{name:t('talk.r.name'),text:t('talk.r')},
+ M:{name:t('talk.M.name'),text:''},
+ G:{name:t('talk.G.name'),text:t('talk.G')}};
+ for(const id in CAT_URL)TALK[id]={go:'https://caveduck.io/zh-hant/share/characters/'+CAT_URL[id]+'?rc=ku1A1yGuNy',name:t('cat.'+id.slice(4)+'.name'),text:t('cat.'+id.slice(4))};
+}
 
 /* 巴克要推銷的卡：name、blurb、url。想加就往下加一行 */
 const CARDS=[
- {name:'梅花江湖易數算命師——狛胡',blurb:'算命的狐狸，算不準自己。',url:'https://caveduck.io/zh-hant/share/characters/fccf60b6-32d2-437f-a6bc-ac7aa5985777?rc=ku1A1yGuNy'},
- {name:'哈瓦那',blurb:'一間不該存在的旅館，退房要看運氣。',url:'https://caveduck.io/zh-hant/share/characters/33fddca0-c08d-40f2-8500-d7e74456d71e?rc=ku1A1yGuNy'},
- {name:'南街殷賑：1930偽人',blurb:'大稻埕的茶行，店裡沒有一個是人。',url:'https://caveduck.io/zh-hant/share/characters/4cc4cf20-9ad3-4511-a764-5e5df912fb48?rc=ku1A1yGuNy'},
- {name:'廟後',blurb:'1930 大稻埕，廟後面的事不要問。',url:'https://caveduck.io/zh-hant/share/characters/c9f84106-f1fc-4e0f-8391-3759d5debb24?rc=ku1A1yGuNy'},
- {name:'《師父!這兩個鬼驅不動!》',blurb:'驅不動就不要驅了，坐下來喝茶。',url:'https://caveduck.io/zh-hant/share/characters/c9ec6c00-d4ad-46af-986d-1cc7b433e8d1?rc=ku1A1yGuNy'},
- {name:'真夜中の心霊なんてない・南洋一',blurb:'鐵齒的深夜靈異節目主持人。',url:'https://caveduck.io/zh-hant/share/characters/cc8a316c-007e-4c07-a93e-c2e5581789dc?rc=ku1A1yGuNy'},
- {name:'放學後根本沒有鬼',blurb:'南洋一還是高中生的時候。',url:'https://caveduck.io/zh-hant/share/characters/1fe07d26-e596-4601-8313-7b38097ad1e3?rc=ku1A1yGuNy'},
- {name:'相馬大輔',blurb:'1930 年的大稻埕滿街是妖，只有這個巡查什麼都看不見。他生日還有十八天。',url:'https://caveduck.io/zh-hant/share/characters/97199d6f-cfc1-4548-80a2-9d747ba12ebb?rc=ku1A1yGuNy'},
- {name:'貓大人，請上班',blurb:'電視頭的托特，神明也要打卡。',url:'https://caveduck.io/zh-hant/share/characters/53275480-487b-4f49-bb86-531057b89efc?rc=ku1A1yGuNy'},
- {name:'元老院肥皂案',blurb:'兩個羅馬議員和一塊肥皂，你是書記員。',url:'https://caveduck.io/zh-hant/share/characters/7d4eed05-67f4-4fa4-ac4b-7430248fd6a5?rc=ku1A1yGuNy'},
- {name:'卡齊米日',blurb:'塔特拉山麓的龍裔大叔。',url:'https://caveduck.io/zh-hant/share/characters/a3080cad-867c-4e66-af1c-3c824306a345?rc=ku1A1yGuNy'},
- {name:'黑白之吻：白兵與黑王的玫瑰戰爭',blurb:'你是第二橫列的一枚兵，對面只坐著一個人。兵不會後退。',url:'https://caveduck.io/zh-hant/share/characters/bcfd0e87-1f6d-4049-90cc-609b461ec062?rc=ku1A1yGuNy'},
- {name:'UN/VEIL：白鎮 41 號',blurb:'純白世界裡唯一的異色。',url:'https://caveduck.io/zh-hant/share/characters/cbf12788-8ee4-43ec-bb77-cae8caae9987?rc=ku1A1yGuNy'},
- {name:'養一朵花',blurb:'一條四季如春的貓街，六隻下班的貓陪你養一朵花。它長成什麼樣，看你怎麼待它。',url:'https://caveduck.io/zh-hant/share/characters/dadc87a6-48f4-4e18-bcbf-39e30fc5b5ee?rc=ku1A1yGuNy'},
- {name:'{{USER}} persona 產生器',blurb:'幫你搓一個配這張卡的玩家人設。',url:'https://caveduck.io/zh-hant/share/characters/bb2f3f08-90ec-4277-9656-49e3d70e1132?rc=ku1A1yGuNy'},
- {name:'潘',blurb:'翁布里亞的畫家，牧神的末裔。他的溫暖是真的，想留住你也是真的。',url:'https://caveduck.io/zh-hant/share/characters/679d53b2-b726-446b-afae-b118a07e808c?rc=ku1A1yGuNy'},
- {name:'薇拉',blurb:'莫提默家的吸血鬼鑑定師，什麼都鑑得出來，就是鑑不了自己。她忘了那座下水道，你沒忘。',url:'https://caveduck.io/zh-hant/share/characters/22e56068-2a18-4525-aa5b-433514884409?rc=ku1A1yGuNy'},
- {name:'羅赫',blurb:'迪露露鎮嗡鳴大道最亮的那盞燈。D 包廂、卡帶機、一杯牛奶。別數錢包。',url:'https://caveduck.io/zh-hant/share/characters/35aa8134-382a-47e6-a725-6c0ad540927d?rc=ku1A1yGuNy'},
- {name:'諾斯托斯',blurb:'迷霧外海的走私船長，讀《奧德賽》卻沒有自己的伊薩卡。他把你從海裡撈起來了。',url:'https://caveduck.io/zh-hant/share/characters/0b382a3c-9711-4448-be4a-d7e0d0ca0ea5?rc=ku1A1yGuNy'},
- {name:'卡斯托',blurb:'迪露露鎮市長，等了你十五年。投票率百分之百，一切都很正常。他會哭給你看。',url:'https://caveduck.io/zh-hant/share/characters/02009435-8465-4689-85ae-e9216bf845c3?rc=ku1A1yGuNy'},
- {name:'SHB-0',blurb:'第七觀察室。和黑山羊之母一起養孩子。第二百四十四個試圖愛祂的人，撐得最短。',url:'https://caveduck.io/zh-hant/share/characters/8f6bdf97-c59d-4787-a2d5-bf67534754c5?rc=ku1A1yGuNy'},
- {name:'禁男島的粉紅三夜：Melongeno',blurb:'島上只有女人，遍地粉色茄子。吃下去會長出你原本沒有的東西。燭火只數三夜。',url:'https://caveduck.io/zh-hant/share/characters/94b9872e-feb7-4987-bdb3-1fb585105f2c?rc=ku1A1yGuNy'},
- {name:'荒神朝歌',blurb:'練馬 1K 的逃家 VTuber，鞍馬山除妖名門的分家女兒。隔壁阿伯會捶牆。嘿嘿嘿。',url:'https://caveduck.io/zh-hant/share/characters/791b44c6-1809-43d0-b0a1-9114adb7d272?rc=ku1A1yGuNy'},
- {name:'席多瑪',blurb:'地獄滿了，四個惡魔小偷被踢回人間。三十副手銬，抓到就是你的。',url:'https://caveduck.io/zh-hant/share/characters/4a769d54-6b86-482f-8b85-692a6160f455?rc=ku1A1yGuNy'},
- {name:'巴克・羅塞特',blurb:'',url:'https://caveduck.io/zh-hant/share/characters/95056203-3bbb-4371-831a-6b9e4aa30b0b?rc=ku1A1yGuNy'}
+ {name:'梅花江湖易數算命師——狛胡',id:'fccf60b6',url:'https://caveduck.io/zh-hant/share/characters/fccf60b6-32d2-437f-a6bc-ac7aa5985777?rc=ku1A1yGuNy'},
+ {name:'哈瓦那',id:'33fddca0',url:'https://caveduck.io/zh-hant/share/characters/33fddca0-c08d-40f2-8500-d7e74456d71e?rc=ku1A1yGuNy'},
+ {name:'南街殷賑：1930偽人',id:'4cc4cf20',url:'https://caveduck.io/zh-hant/share/characters/4cc4cf20-9ad3-4511-a764-5e5df912fb48?rc=ku1A1yGuNy'},
+ {name:'廟後',id:'c9f84106',url:'https://caveduck.io/zh-hant/share/characters/c9f84106-f1fc-4e0f-8391-3759d5debb24?rc=ku1A1yGuNy'},
+ {name:'《師父!這兩個鬼驅不動!》',id:'c9ec6c00',url:'https://caveduck.io/zh-hant/share/characters/c9ec6c00-d4ad-46af-986d-1cc7b433e8d1?rc=ku1A1yGuNy'},
+ {name:'真夜中の心霊なんてない・南洋一',id:'cc8a316c',url:'https://caveduck.io/zh-hant/share/characters/cc8a316c-007e-4c07-a93e-c2e5581789dc?rc=ku1A1yGuNy'},
+ {name:'放學後根本沒有鬼',id:'1fe07d26',url:'https://caveduck.io/zh-hant/share/characters/1fe07d26-e596-4601-8313-7b38097ad1e3?rc=ku1A1yGuNy'},
+ {name:'相馬大輔',id:'97199d6f',url:'https://caveduck.io/zh-hant/share/characters/97199d6f-cfc1-4548-80a2-9d747ba12ebb?rc=ku1A1yGuNy'},
+ {name:'貓大人，請上班',id:'53275480',url:'https://caveduck.io/zh-hant/share/characters/53275480-487b-4f49-bb86-531057b89efc?rc=ku1A1yGuNy'},
+ {name:'元老院肥皂案',id:'7d4eed05',url:'https://caveduck.io/zh-hant/share/characters/7d4eed05-67f4-4fa4-ac4b-7430248fd6a5?rc=ku1A1yGuNy'},
+ {name:'卡齊米日',id:'a3080cad',url:'https://caveduck.io/zh-hant/share/characters/a3080cad-867c-4e66-af1c-3c824306a345?rc=ku1A1yGuNy'},
+ {name:'黑白之吻：白兵與黑王的玫瑰戰爭',id:'bcfd0e87',url:'https://caveduck.io/zh-hant/share/characters/bcfd0e87-1f6d-4049-90cc-609b461ec062?rc=ku1A1yGuNy'},
+ {name:'UN/VEIL：白鎮 41 號',id:'cbf12788',url:'https://caveduck.io/zh-hant/share/characters/cbf12788-8ee4-43ec-bb77-cae8caae9987?rc=ku1A1yGuNy'},
+ {name:'養一朵花',id:'dadc87a6',url:'https://caveduck.io/zh-hant/share/characters/dadc87a6-48f4-4e18-bcbf-39e30fc5b5ee?rc=ku1A1yGuNy'},
+ {name:'{{USER}} persona 產生器',id:'bb2f3f08',url:'https://caveduck.io/zh-hant/share/characters/bb2f3f08-90ec-4277-9656-49e3d70e1132?rc=ku1A1yGuNy'},
+ {name:'潘',id:'679d53b2',url:'https://caveduck.io/zh-hant/share/characters/679d53b2-b726-446b-afae-b118a07e808c?rc=ku1A1yGuNy'},
+ {name:'薇拉',id:'22e56068',url:'https://caveduck.io/zh-hant/share/characters/22e56068-2a18-4525-aa5b-433514884409?rc=ku1A1yGuNy'},
+ {name:'羅赫',id:'35aa8134',url:'https://caveduck.io/zh-hant/share/characters/35aa8134-382a-47e6-a725-6c0ad540927d?rc=ku1A1yGuNy'},
+ {name:'諾斯托斯',id:'0b382a3c',url:'https://caveduck.io/zh-hant/share/characters/0b382a3c-9711-4448-be4a-d7e0d0ca0ea5?rc=ku1A1yGuNy'},
+ {name:'卡斯托',id:'02009435',url:'https://caveduck.io/zh-hant/share/characters/02009435-8465-4689-85ae-e9216bf845c3?rc=ku1A1yGuNy'},
+ {name:'SHB-0',id:'8f6bdf97',url:'https://caveduck.io/zh-hant/share/characters/8f6bdf97-c59d-4787-a2d5-bf67534754c5?rc=ku1A1yGuNy'},
+ {name:'禁男島的粉紅三夜：Melongeno',id:'94b9872e',url:'https://caveduck.io/zh-hant/share/characters/94b9872e-feb7-4987-bdb3-1fb585105f2c?rc=ku1A1yGuNy'},
+ {name:'荒神朝歌',id:'791b44c6',url:'https://caveduck.io/zh-hant/share/characters/791b44c6-1809-43d0-b0a1-9114adb7d272?rc=ku1A1yGuNy'},
+ {name:'席多瑪',id:'4a769d54',url:'https://caveduck.io/zh-hant/share/characters/4a769d54-6b86-482f-8b85-692a6160f455?rc=ku1A1yGuNy'},
+ {name:'巴克・羅塞特',id:'95056203',url:'https://caveduck.io/zh-hant/share/characters/95056203-3bbb-4371-831a-6b9e4aa30b0b?rc=ku1A1yGuNy'}
 ];
+const blurbOf=c=>(t('cards')[c.id]||'');
 /* 巴克的推銷開場，{card} 會換成卡名、{blurb} 換成一句介紹 */
-const PITCH=[
- '哎呀親愛的，你走運了。今天本店特價：{card}。{blurb}要不要來一顆？',
- '扭蛋機轉了三圈，掉出來的是——{card}。{blurb}我跟你保證，不黏人。大概。',
- '噓，別讓其他客人聽到。{card}，{blurb}只推薦給你一個人。',
- '先生女士各位朋友，{card}！{blurb}不試試看，你會後悔到頭髮指甲都掉光。',
- '我這裡沒有不好的貨，只有還沒遇到對的人的貨。像這顆：{card}。{blurb}'
-];
+const PITCH=()=>t('pitch');
 /* 巴克：扭蛋機頭推銷員，會在房間裡亂晃 */
-const BUCK={id:'buck',x:7,y:4,dir:1,timer:60,mx:0,my:0,moving:false,name:'巴克・羅塞特'};
+const BUCK={id:'buck',x:7,y:4,dir:1,timer:60,mx:0,my:0,moving:false};
 
 /* 貓：id、格子座標、畫法 */
 const CATS=[
@@ -215,7 +211,7 @@ function drawSoma(x,y,t){
   ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(px0,py0,pw,6);
   ctx.restore();
   ctx.fillStyle='#3a2a20';ctx.fillRect(px0,y+15,pw,1);
-  if(SOMA.timer>20&&((t>>5)&1)){ctx.fillStyle='#0a0809';ctx.fillRect(x+4,y-14,30,12);ctx.fillStyle='#e8e0d0';ctx.font='10px DotGothic16,monospace';ctx.fillText('叩叩',x+10,y-4);}
+  if(SOMA.timer>20&&((t>>5)&1)){ctx.fillStyle='#0a0809';ctx.fillRect(x+4,y-14,30,12);ctx.fillStyle='#e8e0d0';ctx.font='10px DotGothic16,monospace';ctx.fillText(window.t('ui.knock'),x+10,y-4);}
 }
 /* 玩家 */
 const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
@@ -343,12 +339,17 @@ function render(){tick++;
 const DIRS={ArrowUp:[0,-1,'up'],ArrowDown:[0,1,'down'],ArrowLeft:[-1,0,'left'],ArrowRight:[1,0,'right']};
 const held=new Set();let tapQueue=null; // 手機點一下至少走一格
 function tryMove(){if(P.moving||dlgOpen){return;}
+  if(held.size===0&&!tapQueue&&path.length){const [nx,ny]=path[0];
+    if(!walkable(nx,ny)){path=[];autoKey=null;return;}  // 路被貓或巴克擋住就停
+    path.shift();const dx=nx-P.x,dy=ny-P.y;P.dir=dx===1?'right':dx===-1?'left':dy===1?'down':'up';
+    P.moving=true;P.tx=nx;P.ty=ny;P.mx=0;P.my=0;P.ddx=dx;P.ddy=dy;return;}
+  if(held.size||tapQueue){path=[];autoKey=null;}
   const order=tapQueue?[tapQueue,'ArrowUp','ArrowDown','ArrowLeft','ArrowRight']:['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
   for(const k of order){if(k!==tapQueue&&!held.has(k))continue;if(k===tapQueue)tapQueue=null;const [dx,dy,d]=DIRS[k];P.dir=d;
     if(!solid(P.x+dx,P.y+dy)){P.moving=true;P.tx=P.x+dx;P.ty=P.y+dy;P.mx=0;P.my=0;P.ddx=dx;P.ddy=dy;}return;}}
 function stepMove(){if(!P.moving)return;P.step++;P.mx+=P.ddx*4;P.my+=P.ddy*4;
-  if(Math.abs(P.mx)>=T||Math.abs(P.my)>=T){P.x=P.tx;P.y=P.ty;P.mx=0;P.my=0;P.moving=false;}}
-function buckWander(){if(dlgOpen)return;
+  if(Math.abs(P.mx)>=T||Math.abs(P.my)>=T){P.x=P.tx;P.y=P.ty;P.mx=0;P.my=0;P.moving=false;if(path.length===0&&autoKey)finishAuto();}}
+function buckWander(){if(dlgOpen)return;if(BUCK.hold>0){BUCK.hold--;return;}
   if(BUCK.moving){BUCK.mx+=BUCK.ddx*2;BUCK.my+=BUCK.ddy*2;if(Math.abs(BUCK.mx)>=T||Math.abs(BUCK.my)>=T){BUCK.x=BUCK.tx;BUCK.y=BUCK.ty;BUCK.mx=0;BUCK.my=0;BUCK.moving=false;BUCK.timer=40+Math.random()*80;}return;}
   if(--BUCK.timer>0)return;BUCK.timer=30;
   const d=[[0,-1],[0,1],[-1,0],[1,0]][Math.floor(Math.random()*4)];const nx=BUCK.x+d[0],ny=BUCK.y+d[1];
@@ -363,22 +364,48 @@ const dlg=document.getElementById('dlg'),dname=document.getElementById('dname'),
 let dlgOpen=false,dlgGo=null,typing=null;
 function openDlg(key){let d=TALK[key];
   if(key==='W'&&SOMA.at){{
-    d={name:'相馬大輔',text:'玻璃外面站著一個穿制服的男人，正帽，手還貼在窗上。「夜間巡邏。這間屋子……有迷信之嫌。開門，我要取締。」他耳尖比臉先紅。要去 1930 年的大稻埕嗎？',go:SOMA.url};}}
+    d={name:t('soma.name'),text:t('soma'),go:SOMA.url};}}
   if(key==='b'){const now=new Date(),h=now.getHours()+now.getMinutes()/60;const asleep=(h>=22.5||h<6);
-    d={name:'床',text:asleep?'被子裡有人。安谷十點半就睡了，別吵，有事明天再說。':'黑絲絨床罩鋪得很整齊，枕頭底下壓著沒寫完的卡。安谷十點半準時睡，現在還沒到。'};TALK.b=d;}
-  if(key==='M'){setBgm(!bgmOn);d={name:'唱機',text:bgmOn?'唱針放下去了。柯賴里《佛利亞變奏曲》，米爾斯坦演奏。':'唱針抬起來了。房間安靜下來。'};TALK.M=d;}
-  if(key==='buck'){const c=CARDS[Math.floor(Math.random()*CARDS.length)];const p=PITCH[Math.floor(Math.random()*PITCH.length)];
-    let text=p.replace('{card}','「'+c.name+'」').replace('{blurb}',c.blurb?c.blurb:'');
-    if(c.name==='巴克・羅塞特')text='……這顆是我自己。老闆說連我也要上架，那就上架。要帶走嗎？先說好，我不退貨。';
-    d={name:BUCK.name,text,go:c.url};TALK.buck=d;}
+    d={name:t('talk.b.name'),text:asleep?t('talk.b.asleep'):t('talk.b.awake')};TALK.b=d;}
+  if(key==='M'){setBgm(!bgmOn);d={name:t('talk.M.name'),text:bgmOn?t('talk.M.on'):t('talk.M.off')};TALK.M=d;}
+  if(key==='buck'){const c=CARDS[Math.floor(Math.random()*CARDS.length)];const PL=PITCH();const p=PL[Math.floor(Math.random()*PL.length)];
+    const bl=blurbOf(c);let text=p.replace('{card}','「'+c.name+'」').replace('{blurb}',bl?bl+(/[。.!?]$/.test(bl)?'':'')+' ':'');
+    if(c.id==='95056203')text=t('buck.self');
+    d={name:t('buck.name'),text,go:c.url};TALK.buck=d;}
   if(!d)return;dlgOpen=true;dlgGo=d.go||null;dname.textContent=d.name;dtext.textContent='';dlg.classList.add('on');
-  dhint.innerHTML=d.go?'<b>空白鍵</b> 前往　<b>Esc</b> 取消':'<b>空白鍵</b> 關閉';
+  dhint.innerHTML=d.go?t('ui.hint.go'):t('ui.hint.close');
   let i=0;clearInterval(typing);typing=setInterval(()=>{dtext.textContent=d.text.slice(0,++i);if(i>=d.text.length)clearInterval(typing);},28);}
 function closeDlg(){dlgOpen=false;dlg.classList.remove('on');clearInterval(typing);}
 function action(){if(dlgOpen){if(dtext.textContent.length<(TALK[curKey]||{text:''}).text.length){clearInterval(typing);dtext.textContent=TALK[curKey].text;return;}
-    if(dlgGo)location.href=dlgGo;else closeDlg();return;}
+    if(dlgGo)location.href=LOC(dlgGo);else closeDlg();return;}
   const f=front();if(f.key){curKey=f.key;openDlg(f.key);}}
 let curKey=null;
+
+/* ---------- 點哪走哪 ---------- */
+let path=[];let autoKey=null;
+function walkable(cx,cy){return cx>=0&&cy>=0&&cx<W&&cy<H&&!solid(cx,cy);}
+function bfs(sx,sy,tx,ty){const prev=new Map();const q=[[sx,sy]];prev.set(sx+','+sy,null);
+  while(q.length){const [x,y]=q.shift();if(x===tx&&y===ty){const out=[];let k=x+','+y;while(prev.get(k)){out.unshift(k.split(',').map(Number));k=prev.get(k);}return out;}
+    for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){const nx=x+dx,ny=y+dy,kk=nx+','+ny;if(prev.has(kk)||!walkable(nx,ny))continue;prev.set(kk,x+','+y);q.push([nx,ny]);}}
+  return null;}
+function goTo(tx,ty){if(dlgOpen)return;autoKey=null;
+  if(BUCK.x===tx&&BUCK.y===ty&&!BUCK.moving)BUCK.hold=240; // 點到巴克：他先站住等你走過去
+  const isCat=CATS.some(c=>c.x===tx&&c.y===ty)||(BUCK.x===tx&&BUCK.y===ty);
+  const tt=tile(tx,ty);const target=isCat||TALK[tt]||tt==='W'||tt==='b'||tt==='d'||tt==='M';
+  if(walkable(tx,ty)){path=bfs(P.x,P.y,tx,ty)||[];return;}
+  if(!target)return;
+  // 目標是物件：把整個物件（相連的同類格）都當目標，找最近的相鄰格，再面向它
+  const same=c=>{const g={b:'bd',d:'bd'};return (g[tt]||tt).includes(c);};
+  const cells=[];if(isCat)cells.push([tx,ty]);else{const seen=new Set();const q=[[tx,ty]];seen.add(tx+','+ty);
+    while(q.length){const [x,y]=q.shift();cells.push([x,y]);for(const [dx,dy] of [[0,1],[0,-1],[1,0],[-1,0]]){const nx=x+dx,ny=y+dy,k=nx+','+ny;if(seen.has(k)||!same(tile(nx,ny)))continue;seen.add(k);q.push([nx,ny]);}}}
+  let best=null;
+  for(const [ox,oy] of cells){if(!isCat&&CATS.some(c=>c.x===ox&&c.y===oy))continue;for(const [dx,dy] of [[0,1],[0,-1],[-1,0],[1,0]]){const ax=ox+dx,ay=oy+dy;const here=(ax===P.x&&ay===P.y);if(!here&&!walkable(ax,ay))continue;
+    const p=here?[]:bfs(P.x,P.y,ax,ay);if(p&&(!best||p.length<best.p.length))best={p,dx,dy};}}
+  if(!best)return;path=best.p;autoKey={dir:best.dx===0?(best.dy===1?'up':'down'):(best.dx===1?'left':'right')};
+  if(path.length===0)finishAuto();}
+function finishAuto(){if(autoKey){P.dir=autoKey.dir;autoKey=null;action();}}
+cv.addEventListener('pointerdown',e=>{if(dlgOpen){action();return;}const r=cv.getBoundingClientRect();
+  const tx=Math.floor((e.clientX-r.left)/r.width*W),ty=Math.floor((e.clientY-r.top)/r.height*H);goTo(tx,ty);});
 
 /* ---------- 輸入 ---------- */
 addEventListener('keydown',e=>{if(DIRS[e.key]){held.add(e.key);e.preventDefault();}
@@ -388,7 +415,7 @@ addEventListener('keyup',e=>held.delete(e.key));
 document.querySelectorAll('.pad button').forEach(b=>{const k=b.dataset.k;
   const down=e=>{e.preventDefault();if(k===' ')action();else{held.add(k);tapQueue=k;}};const up=e=>{e.preventDefault();held.delete(k);};
   b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointerleave',up);b.addEventListener('pointercancel',up);});
-cv.addEventListener('click',()=>{if(dlgOpen)action();});
+
 
 /* ---------- 音樂 ----------
    BGM_YT 填 YouTube 影片 ID 就用嵌入播放器（必須可見，這是 YouTube 的規定）；
@@ -400,7 +427,7 @@ audio.volume=0.35;if(!BGM_YT)audio.src=BGM_MP3;
 let bgmOn=false;try{bgmOn=localStorage.getItem('angu_bgm')==='1';}catch(e){}
 let yt=null,ytReady=false;
 function ytPlay(on){if(!ytReady)return;on?yt.playVideo():yt.pauseVideo();}
-function setBgm(on){bgmOn=on;document.body.classList.toggle('playing',on&&!!BGM_YT);bgmBtn.textContent=on?'♪ 音樂：開':'♪ 音樂：關';bgmBtn.classList.toggle('on',on);
+function setBgm(on){bgmOn=on;document.body.classList.toggle('playing',on&&!!BGM_YT);bgmBtn.textContent=on?t('ui.bgm.on'):t('ui.bgm.off');bgmBtn.classList.toggle('on',on);
   try{localStorage.setItem('angu_bgm',on?'1':'0');}catch(e){}
   if(BGM_YT){ytPlay(on);}else{if(on)audio.play().catch(()=>{});else audio.pause();}}
 bgmBtn.addEventListener('click',e=>{e.stopPropagation();setBgm(!bgmOn);});
@@ -411,10 +438,14 @@ if(BGM_YT){
   window.onYouTubeIframeAPIReady=function(){yt=new YT.Player('yt',{videoId:BGM_YT,
     playerVars:{loop:1,playlist:BGM_YT,controls:1,rel:0,modestbranding:1,playsinline:1},
     events:{onReady:()=>{ytReady=true;yt.setVolume(40);if(bgmOn&&armed)yt.playVideo();},
-            onStateChange:e=>{if(e.data===YT.PlayerState.PLAYING&&!bgmOn){bgmOn=true;document.body.classList.add('playing');bgmBtn.textContent='♪ 音樂：開';bgmBtn.classList.add('on');}
-                              if(e.data===YT.PlayerState.PAUSED&&bgmOn){bgmOn=false;document.body.classList.remove('playing');bgmBtn.textContent='♪ 音樂：關';bgmBtn.classList.remove('on');}}}});};
+            onStateChange:e=>{if(e.data===YT.PlayerState.PLAYING&&!bgmOn){bgmOn=true;document.body.classList.add('playing');bgmBtn.textContent=t('ui.bgm.on');bgmBtn.classList.add('on');}
+                              if(e.data===YT.PlayerState.PAUSED&&bgmOn){bgmOn=false;document.body.classList.remove('playing');bgmBtn.textContent=t('ui.bgm.off');bgmBtn.classList.remove('on');}}}});};
 }else{document.querySelector('.radio').remove();}
 setBgm(bgmOn);
+
+/* ---------- 語言 ---------- */
+window.LANG=getLang();buildTalk();
+window.onLangChange=function(){buildTalk();if(dlgOpen)closeDlg();bgmBtn.textContent=bgmOn?t('ui.bgm.on'):t('ui.bgm.off');};
 
 /* ---------- 主迴圈 ---------- */
 function loop(){tryMove();stepMove();buckWander();somaUpdate();render();requestAnimationFrame(loop);}

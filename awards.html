@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="i18n.js"></script>
+<script src="bgm.js" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -15,31 +17,23 @@
     <div class="seal">谷</div>
     <div><h1>安谷屋</h1><small>ANGU'S CHAMBER</small></div>
   </div>
-  <div class="motto">歡迎來到製作人安谷的房間，<br>燭火自便，請勿驚動牆上的東西。</div>
+  <div class="motto" data-i18n="site.motto"></div>
 </header>
 <div class="page">
-<h2>得獎</h2>
-<p class="lead">CAVEDUCK 官方徵稿活動得獎紀錄。部分卡片已設為隱藏，連結需登入並開啟 NSFW 才看得到。</p>
-
-<div class="box">
-  <h3>主題徵稿活動</h3>
-  <ul>
-    <li>第 14 屆｜占卜｜首獎｜<a href="https://caveduck.io/zh-hant/share/characters/fccf60b6-32d2-437f-a6bc-ac7aa5985777" target="_blank">梅花江湖易數算命師——狛胡</a></li>
-    <li>第 16 屆｜學院｜遺珠獎｜<a href="https://caveduck.io/zh-hant/share/characters/b29efa1b-dec7-41f9-962c-1959cac62528" target="_blank">微觀叛亂：阿爾法菌株進化論</a></li>
-    <li>第 17 屆｜黑色幽默｜首獎｜<a href="https://caveduck.io/zh-hant/share/characters/33fddca0-c08d-40f2-8500-d7e74456d71e" target="_blank">哈瓦那</a></li>
-    <li>第 18 屆｜SFW 模擬器｜首獎｜<a href="https://caveduck.io/zh-hant/share/characters/4cc4cf20-9ad3-4511-a764-5e5df912fb48" target="_blank">南街殷賑：1930偽人</a></li>
-  </ul>
+<h2 data-i18n="awards.title"></h2>
+<p class="lead" data-i18n="awards.lead"></p>
+<div class="box"><h3 data-i18n="awards.h1"></h3><ul>
+    <li><span data-i18n="awards.r14"></span><a href="https://caveduck.io/zh-hant/share/characters/fccf60b6-32d2-437f-a6bc-ac7aa5985777" target="_blank">梅花江湖易數算命師——狛胡</a></li>
+    <li><span data-i18n="awards.r16"></span><a href="https://caveduck.io/zh-hant/share/characters/b29efa1b-dec7-41f9-962c-1959cac62528" target="_blank">微觀叛亂：阿爾法菌株進化論</a></li>
+    <li><span data-i18n="awards.r17"></span><a href="https://caveduck.io/zh-hant/share/characters/33fddca0-c08d-40f2-8500-d7e74456d71e" target="_blank">哈瓦那</a></li>
+    <li><span data-i18n="awards.r18"></span><a href="https://caveduck.io/zh-hant/share/characters/4cc4cf20-9ad3-4511-a764-5e5df912fb48" target="_blank">南街殷賑：1930偽人</a></li>
+</ul></div>
+<div class="box"><h3 data-i18n="awards.h2"></h3><ul>
+    <li><span data-i18n="awards.tw4"></span><a href="https://caveduck.io/zh-hant/share/characters/c9ec6c00-d4ad-46af-986d-1cc7b433e8d1" target="_blank">《師父!這兩個鬼驅不動!》</a></li>
+</ul></div>
 </div>
-
-<div class="box">
-  <h3>繁中徵稿活動</h3>
-  <ul>
-    <li>繁中第 4 屆｜小獎｜<a href="https://caveduck.io/zh-hant/share/characters/c9ec6c00-d4ad-46af-986d-1cc7b433e8d1" target="_blank">《師父!這兩個鬼驅不動!》</a></li>
-  </ul>
-</div>
-</div>
-<nav class="main"><a href="index.html">房間</a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">角色卡</a><a href="worlds.html">世界觀</a><a href="about.html">關於我</a><a href="awards.html" class=on>得獎</a><a href="links.html">書籤</a></nav>
-<footer>© 2026 安谷 ｜ 超絕黑化作者 ｜ CAVEDUCK @angu_</footer>
+<nav class="main"><a href="index.html" data-i18n="nav.room"></a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank" data-i18n="nav.cards">角色卡</a><a href="worlds.html" data-i18n="nav.worlds"></a><a href="about.html" data-i18n="nav.about"></a><a href="awards.html" class=on data-i18n="nav.awards"></a><a href="links.html" data-i18n="nav.links"></a></nav>
+<footer><span data-i18n="footer"></span><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">CAVEDUCK @angu_</a> ｜ <a href="https://www.threads.com/@1104angu_" target="_blank" data-i18n="footer.threads"></a></footer>
 </div>
 </body>
 </html>

@@ -100,3 +100,10 @@ footer::before{content:"❦";display:block;color:var(--gold2);font-size:20px;mar
   .motto{text-align:left}
   .hot{font-size:12px;padding:3px 10px}
 }
+
+/* 語言切換 */
+.langbar{position:fixed;top:10px;right:10px;z-index:40;display:flex;gap:4px}
+.langbar button{background:rgba(10,8,9,.9);border:1px solid var(--gold2);color:var(--muted);font-family:inherit;font-size:12px;padding:3px 7px;cursor:pointer;letter-spacing:.05em}
+.langbar button.on{color:#fff;background:var(--wine);border-color:var(--gold)}
+.langbar button:hover{color:var(--gold)}
+@media (max-width:640px){.langbar{top:6px;right:6px}.langbar button{font-size:11px;padding:2px 5px}}

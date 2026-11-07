@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="i18n.js"></script>
+<script src="bgm.js" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -15,40 +17,20 @@
     <div class="seal">谷</div>
     <div><h1>安谷屋</h1><small>ANGU'S CHAMBER</small></div>
   </div>
-  <div class="motto">歡迎來到製作人安谷的房間，<br>燭火自便，請勿驚動牆上的東西。</div>
+  <div class="motto" data-i18n="site.motto"></div>
 </header>
 <div class="page">
-<h2>關於我</h2>
-<p class="lead">安谷，製作人，超絕黑化作者。</p>
-<div class="box">
-  <h3>做什麼</h3>
-  <ul>
-    <li>在 CAVEDUCK 寫角色卡，耽美為核心，玩家性別不設限。</li>
-    <li>寫卡是因為找不到想玩的耽美強強，乾脆自己做，順便做大世界觀。</li>
-    <li>從狛胡開始，每張卡都在諷刺官僚與體制，這是共同的味道。</li>
-  </ul>
-</div>
-<div class="box">
-  <h3>口味</h3>
-  <ul>
-    <li>黑色幽默、夢核恐怖、魔幻寫實。</li>
-    <li>人外身體性。</li>
-    <li>反烏托邦是賽博龐克的精髓。</li>
-  </ul>
-</div>
-<div class="box">
-  <h3>也做這些</h3>
-  <ul>
-    <li>SUNO 配樂，會放進卡裡當 BGM：<a href="https://suno.com/@angu_1104" target="_blank">@angu_1104</a></li>
-  </ul>
-</div>
-<div class="box">
-  <h3>找我</h3>
-  <p>CAVEDUCK：<a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">@angu_</a>　｜　SUNO：<a href="https://suno.com/@angu_1104" target="_blank">@angu_1104</a>　｜　脆：<a href="https://www.threads.com/@1104angu_" target="_blank">@1104angu_</a>　｜　GitHub：<a href="https://github.com/1104angu" target="_blank">1104angu</a></p>
+<h2 data-i18n="about.title"></h2>
+<p class="lead" data-i18n="about.lead"></p>
+<div class="box"><h3 data-i18n="about.h1"></h3><ul><li data-i18n="about.1a"></li><li data-i18n="about.1b"></li><li data-i18n="about.1c"></li></ul></div>
+<div class="box"><h3 data-i18n="about.h2"></h3><ul><li data-i18n="about.2a"></li><li data-i18n="about.2b"></li><li data-i18n="about.2c"></li></ul></div>
+<div class="box"><h3 data-i18n="about.h3"></h3><ul><li><span data-i18n="about.3a"></span> <a href="https://suno.com/@angu_1104" target="_blank">@angu_1104</a></li></ul></div>
+<div class="box"><h3 data-i18n="about.h4"></h3>
+  <p>CAVEDUCK：<a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">@angu_</a>　｜　SUNO：<a href="https://suno.com/@angu_1104" target="_blank">@angu_1104</a>　｜　Threads：<a href="https://www.threads.com/@1104angu_" target="_blank">@1104angu_</a>　｜　GitHub：<a href="https://github.com/1104angu" target="_blank">1104angu</a></p>
 </div>
 </div>
-<nav class="main"><a href="index.html">房間</a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">角色卡</a><a href="worlds.html">世界觀</a><a href="about.html" class=on>關於我</a><a href="awards.html">得獎</a><a href="links.html">書籤</a></nav>
-<footer>© 2026 安谷 ｜ 超絕黑化作者 ｜ CAVEDUCK @angu_</footer>
+<nav class="main"><a href="index.html" data-i18n="nav.room"></a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank" data-i18n="nav.cards">角色卡</a><a href="worlds.html" data-i18n="nav.worlds"></a><a href="about.html" class=on data-i18n="nav.about"></a><a href="awards.html" data-i18n="nav.awards"></a><a href="links.html" data-i18n="nav.links"></a></nav>
+<footer><span data-i18n="footer"></span><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">CAVEDUCK @angu_</a> ｜ <a href="https://www.threads.com/@1104angu_" target="_blank" data-i18n="footer.threads"></a></footer>
 </div>
 </body>
 </html>

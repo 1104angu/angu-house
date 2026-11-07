@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400" viewBox="0 0 300 400">
+<rect width="300" height="400" fill="#141015"/>
+<rect x="12" y="12" width="276" height="376" fill="none" stroke="#8a6d1c" stroke-width="2"/>
+<text x="150" y="200" font-size="18" fill="#9a8f85" text-anchor="middle" font-family="serif" letter-spacing="4">卡片封面</text>
+<text x="150" y="230" font-size="12" fill="#6a605a" text-anchor="middle" font-family="serif">img/ 放圖後改路徑</text>
+</svg>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>安谷屋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0809;--gold:#c9a227;--gold2:#8a6d1c;--wine:#6b0f1a;--ink:#e8e0d0;--muted:#9a8f85}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DotGothic16",monospace;
+  background-image:linear-gradient(rgba(201,162,39,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,162,39,.05) 1px,transparent 1px);
+  background-size:32px 32px}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 16px 50px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:14px}
+h1{margin:0;font-size:22px;letter-spacing:.3em}
+h1 small{display:block;font-family:"Press Start 2P",monospace;font-size:9px;color:var(--gold);letter-spacing:.1em;margin-top:6px}
+.motto{font-size:14px;color:var(--muted);text-align:right}
+.stage{position:relative;width:100%;max-width:1024px;margin:0 auto;aspect-ratio:16/11;
+  border:4px solid var(--gold2);outline:2px solid var(--gold);outline-offset:4px;background:#000;
+  box-shadow:0 0 40px #000, 0 0 70px rgba(107,15,26,.3)}
+canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+/* 對話框 */
+.dlg{position:absolute;left:3%;right:3%;bottom:3%;background:rgba(8,6,10,.94);border:3px solid var(--gold);
+  box-shadow:inset 0 0 0 2px #000, inset 0 0 0 3px var(--gold2);padding:14px 18px;font-size:clamp(13px,1.8vw,18px);line-height:1.7;display:none}
+.dlg.on{display:block}
+.dlg .name{color:var(--gold);font-size:.85em;margin-bottom:4px;letter-spacing:.2em}
+.dlg .hint{color:var(--muted);font-size:.75em;text-align:right;margin-top:6px}
+.dlg .hint b{color:var(--gold)}
+/* 手機虛擬鍵 */
+.pad{display:none;justify-content:space-between;align-items:center;max-width:1024px;margin:14px auto 0;padding:0 6px}
+.dpad{display:grid;grid-template-columns:repeat(3,54px);grid-template-rows:repeat(3,54px);gap:4px}
+.dpad button,.act button{background:#141015;border:2px solid var(--gold2);color:var(--gold);font-size:20px;font-family:inherit;
+  touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.dpad button:active,.act button:active{background:var(--wine);color:#fff}
+.dpad .u{grid-column:2;grid-row:1}.dpad .l{grid-column:1;grid-row:2}.dpad .r{grid-column:3;grid-row:2}.dpad .d{grid-column:2;grid-row:3}
+.act button{width:84px;height:84px;border-radius:50%;font-size:16px}
+@media (hover:none) and (pointer:coarse){.pad{display:flex}}
+.tvrow{display:flex;justify-content:center;align-items:center;gap:18px;flex-wrap:wrap;margin-top:14px}
+.tv{width:320px;max-width:100%;aspect-ratio:16/9;border:3px solid var(--gold2);outline:1px solid var(--gold);outline-offset:3px;background:#000;box-shadow:4px 4px 0 #000}
+.tv iframe,.tv>div{width:100%;height:100%;display:block}
+.tvcap{font-size:12px;color:var(--muted);letter-spacing:.1em;max-width:320px;line-height:1.7}
+.keys{text-align:center;color:var(--muted);font-size:13px;margin-top:12px;letter-spacing:.1em}
+.keys b{color:var(--gold);border:1px solid var(--gold2);padding:1px 7px;margin:0 2px}
+nav.main{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:24px}
+nav.main a{border:2px solid var(--gold2);padding:7px 18px;letter-spacing:.2em;font-size:14px;color:var(--ink);text-decoration:none;background:#141015;box-shadow:3px 3px 0 #000}
+nav.main a:hover,nav.main a.on{background:var(--wine);border-color:var(--gold);color:#fff}
+.bgm{position:absolute;top:8px;right:8px;z-index:5;background:rgba(8,6,10,.9);border:2px solid var(--gold2);color:var(--gold);font-family:inherit;font-size:13px;padding:4px 10px;cursor:pointer;letter-spacing:.1em}
+.bgm.on{border-color:var(--gold);color:#fff;background:var(--wine)}
+footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>安谷屋<small>ANGU'S CHAMBER</small></h1>
+  <div class="motto">歡迎來到製作人安谷的房間。<br>燭火自便，請勿驚動牆上的東西。</div>
+</header>
+
+<div class="stage">
+  <button class="bgm" id="bgm">♪ 音樂：關</button>
+  <audio id="audio" src="bgm/room.mp3" loop preload="none"></audio>
+  <canvas id="c" width="512" height="352"></canvas>
+  <div class="dlg" id="dlg"><div class="name" id="dname"></div><div id="dtext"></div><div class="hint" id="dhint"></div></div>
+</div>
+
+<div class="pad">
+  <div class="dpad">
+    <button class="u" data-k="ArrowUp">▲</button><button class="l" data-k="ArrowLeft">◀</button>
+    <button class="r" data-k="ArrowRight">▶</button><button class="d" data-k="ArrowDown">▼</button>
+  </div>
+  <div class="act"><button data-k=" ">確定</button></div>
+</div>
+<div class="tvrow">
+  <div class="tv"><div id="yt"></div></div>
+  <div class="tvcap">房裡的電視在放柯賴里《佛利亞變奏曲》，米爾斯坦演奏。<br>右上角「♪ 音樂」開關。<br>影片經 YouTube 嵌入播放，版權屬原上傳者與唱片公司。</div>
+</div>
+<div class="keys"><b>↑↓←→</b> 移動　<b>空白鍵</b> 互動／確定　<b>Esc</b> 關閉</div>
+
+<nav class="main">
+  <a href="index.html" class="on">房間</a><a href="cards.html">角色卡</a><a href="worlds.html">世界觀</a>
+  <a href="about.html">關於我</a><a href="awards.html">得獎</a><a href="links.html">書籤</a>
+</nav>
+<footer>© 2026 安谷 ｜ 超絕黑化作者 ｜ CAVEDUCK @angu_</footer>
+</div>
+
+<script>
+/* =========================================================
+   安谷屋 RPG 房間
+   T = 一格 32px；地圖 16 x 11 格
+   想換自己畫的圖：把 img/sprites/ 放進同名 PNG（見 ASSETS 清單），
+   有檔案就用檔案，沒有就用程式畫的佔位圖。
+   ========================================================= */
+const T=32, W=16, H=11;
+const cv=document.getElementById('c'), ctx=cv.getContext('2d'); ctx.imageSmoothingEnabled=false;
+
+/* 地圖：每個字元一格
+   # 牆  . 地板  r 地毯  W 窗  B 書架  D 書桌(含電腦)  b 床頭 d 床尾  S 獎盃架  C 燭台  P 畫框  G 門墊
+   物件格都不能走 */
+const MAP=[
+"################",
+"#PPWW##SS##PP###",
+"#BB..........C.#",
+"#BB..DD......b.#",
+"#....DD......d.#",
+"#....rrrr......#",
+"#....rrrr......#",
+"#..............#",
+"#....C.........#",
+"#......GG......#",
+"################"];
+
+/* 互動：key 對應地圖字元或貓的 id */
+const TALK={
+ D:{name:'書桌',text:'螢幕還亮著，上面開著一堆卡片的後台。要看安谷做的角色卡嗎？',go:'cards.html'},
+ B:{name:'書架',text:'書脊上寫著格雷斯通、賽博埃及、1930 大稻埕……全是世界設定集。要翻嗎？',go:'worlds.html'},
+ S:{name:'獎盃架',text:'幾座獎盃擦得很亮，旁邊有一張遺珠獎的小卡。要看得獎紀錄嗎？',go:'awards.html'},
+ P:{name:'畫框',text:'一張自畫像：白髮、鹿角、黑金哥德蘿莉。角落簽著「製作人安谷」。要看關於我嗎？',go:'about.html'},
+ W:{name:'窗',text:'窗外是夜色和別人的房子。窗台貼了一排便條，寫著常去的地方。要看書籤嗎？',go:'links.html'},
+ b:{name:'床',text:'黑絲絨床罩，枕頭底下壓著沒寫完的卡。今天先不睡。'},
+ d:{name:'床',text:'床尾疊著幾本法典。別亂翻，苛麗特會生氣。'},
+ C:{name:'燭台',text:'蠟燭自己在燒。你沒看到有人點過它。'},
+ r:{name:'地毯',text:'酒紅色的地毯，有貓毛。'},
+ G:{name:'門墊',text:'門墊上寫著：歡迎來到安谷屋。門不給開，你在裡面就好。'},
+ cat_poe:{go:'https://github.com/1104angu',name:'艾倫波',text:'黑貓穿著西裝縮成一團，異色的眼睛睜開看你一眼。「……這份腳本的 D 軸有問題。」然後又睡了。'},
+ cat_bau:{go:'https://github.com/1104angu',name:'波特萊爾',text:'紅捲髮垂到眼睛的暹羅貓，趴在書架頂端。「動機網絡只描述自己，不侵犯玩家的領地。」他沒有看你。'},
+ cat_col:{go:'https://github.com/1104angu',name:'苛麗特',text:'薑黃虎斑貓坐在床頭，爪子下壓著一本法典。「聲音指紋還沒蒸餾乾淨，拿回去。」'},
+ cat_gal:{go:'https://github.com/1104angu',name:'蓋珞普',text:'三花貓在地毯上翻肚。「溫度可以，餘韻再等等。」她指的是你的卡，不是地毯。'},
+ cat_gar:{go:'https://github.com/1104angu',name:'史蒂芬珈涅',text:'銀虎斑貓戴著小禮帽站在獎盃架旁。「傳播力不錯，留存……我們實測三輪再說。」'}
+};
+
+/* 巴克要推銷的卡：name、blurb、url。想加就往下加一行 */
+const CARDS=[
+ {name:'梅花江湖易數算命師——狛胡',blurb:'算命的狐狸，算不準自己。',url:'https://caveduck.io/zh-hant/share/characters/fccf60b6-32d2-437f-a6bc-ac7aa5985777'},
+ {name:'絲絨囚籠',blurb:'阿列克謝在裡面，門沒鎖。',url:'https://caveduck.io/zh-hant/share/characters/a97cd8bd-bf7d-486e-8cde-1de4c6175e18'},
+ {name:'微觀叛亂：阿爾法菌株進化論',blurb:'學院裡最小的叛軍。',url:'https://caveduck.io/zh-hant/share/characters/b29efa1b-dec7-41f9-962c-1959cac62528'},
+ {name:'哈瓦那',blurb:'一間不該存在的旅館，退房要看運氣。',url:'https://caveduck.io/zh-hant/share/characters/33fddca0-c08d-40f2-8500-d7e74456d71e'},
+ {name:'南街殷賑：1930偽人',blurb:'大稻埕的茶行，店裡沒有一個是人。',url:'https://caveduck.io/zh-hant/share/characters/4cc4cf20-9ad3-4511-a764-5e5df912fb48'},
+ {name:'《師父!這兩個鬼驅不動!》',blurb:'驅不動就不要驅了，坐下來喝茶。',url:'https://caveduck.io/zh-hant/share/characters/c9ec6c00-d4ad-46af-986d-1cc7b433e8d1'}
+];
+/* 巴克的推銷開場，{card} 會換成卡名、{blurb} 換成一句介紹 */
+const PITCH=[
+ '哎呀親愛的，你走運了。今天本店特價：{card}。{blurb}要不要來一顆？',
+ '扭蛋機轉了三圈，掉出來的是——{card}。{blurb}我跟你保證，不黏人。大概。',
+ '噓，別讓其他客人聽到。{card}，{blurb}只推薦給你一個人。',
+ '先生女士各位朋友，{card}！{blurb}不試試看，你會後悔到頭髮指甲都掉光。',
+ '我這裡沒有不好的貨，只有還沒遇到對的人的貨。像這顆：{card}。{blurb}'
+];
+/* 巴克：扭蛋機頭推銷員，會在房間裡亂晃 */
+const BUCK={id:'buck',x:9,y:5,dir:1,timer:60,mx:0,my:0,moving:false,name:'巴克・羅塞特'};
+
+/* 貓：id、格子座標、畫法 */
+const CATS=[
+ {id:'cat_poe',x:7,y:6,c:['#111','#d4a017','#2a9df4']},   // 黑貓 西裝 異瞳
+ {id:'cat_bau',x:2,y:1,c:['#e8dcc8','#5a3a2a','#b03030']}, // 暹羅 紅捲髮
+ {id:'cat_col',x:13,y:2,c:['#e08a2e','#f6c27a','#6b0f1a']},// 薑黃
+ {id:'cat_gal',x:5,y:7,c:['#f4ecdc','#e08a2e','#222']},    // 三花
+ {id:'cat_gar',x:10,y:1,c:['#8a8a8a','#4a4a4a','#111']}    // 銀虎斑 禮帽
+];
+
+/* 玩家 */
+const P={x:7,y:8,dir:'down',step:0,moving:false,mx:0,my:0};
+
+/* ---------- 可替換素材 ---------- */
+const ASSETS={}; // name -> Image
+const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_bau','cat_col','cat_gal','cat_gar','buck'];
+let loaded=0;
+ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src='img/sprites/'+n+'.png';});
+
+/* ---------- 程式畫的佔位像素圖 ---------- */
+const px=(x,y,w,h,col)=>{ctx.fillStyle=col;ctx.fillRect(x,y,w,h)};
+function drawFloor(x,y){px(x,y,T,T,'#2a1d22');for(let i=0;i<4;i++){px(x,y+i*8,T,1,'#1a1115');}px(x+((y/T)%2)*16,y,1,T,'#1a1115');}
+function drawWall(x,y){px(x,y,T,T,'#15101a');px(x,y+T-6,T,6,'#0a0809');px(x,y+T-6,T,1,'#8a6d1c');
+  // 錦緞花紋
+  px(x+14,y+6,4,4,'#1f1726');px(x+12,y+10,8,2,'#1f1726');px(x+14,y+12,4,6,'#1f1726');px(x+15,y+8,2,2,'#8a6d1c');}
+function drawRug(x,y){px(x,y,T,T,'#3a0b12');px(x+2,y+2,T-4,T-4,'#4b0f18');px(x+6,y+6,T-12,T-12,'#3a0b12');px(x+14,y+14,4,4,'#c9a227');}
+function drawWindow(x,y){drawWall(x,y);px(x+2,y+2,T-4,T-8,'#0c0a1a');px(x+2,y+2,T-4,1,'#c9a227');px(x+2,y+T-6,T-4,1,'#c9a227');px(x+2,y+2,1,T-8,'#c9a227');px(x+T-3,y+2,1,T-8,'#c9a227');
+  px(x+15,y+2,2,T-8,'#8a6d1c');px(x+5,y+6,4,4,'#e8e0d0');px(x+8,y+4,1,1,'#fff');px(x+20,y+14,1,1,'#fff');px(x+24,y+8,1,1,'#fff');}
+function drawBookshelf(x,y){px(x,y,T,T,'#1d1418');px(x,y,T,2,'#8a6d1c');px(x,y+T-2,T,2,'#8a6d1c');px(x,y+15,T,2,'#8a6d1c');
+  const cols=['#6b0f1a','#c9a227','#2b3a5a','#4a6b3a','#e8e0d0','#6b0f1a'];
+  for(let i=0;i<6;i++){px(x+2+i*5,y+4,4,10,cols[i]);px(x+2+i*5,y+18,4,11,cols[(i+3)%6]);}}
+function drawDesk(x,y,top){px(x,y,T,T,'#241a1f');if(top){px(x,y+4,T,2,'#8a6d1c');px(x+4,y+8,24,16,'#000');px(x+6,y+10,20,12,'#1a2a3a');px(x+8,y+12,16,2,'#4fc3f7');px(x+8,y+16,10,1,'#4fc3f7');px(x+8,y+18,14,1,'#4fc3f7');}
+  else{px(x,y+2,T,2,'#8a6d1c');px(x+4,y+8,24,6,'#1a1215');px(x+6,y+10,20,2,'#c9a227');px(x+4,y+20,8,8,'#c9a227');px(x+6,y+22,4,4,'#f0d27a');}}
+function drawBed(x,y,head){px(x,y,T,T,'#3a0b12');px(x,y,2,T,'#8a6d1c');px(x+T-2,y,2,T,'#8a6d1c');
+  if(head){px(x,y,T,6,'#8a6d1c');px(x+6,y+8,20,10,'#e8e0d0');px(x+6,y+18,20,2,'#6b0f1a');}else{px(x+2,y,T-4,T-6,'#6b0f1a');px(x,y+T-6,T,6,'#8a6d1c');}}
+function drawTrophy(x,y){drawWall(x,y);px(x+2,y+20,T-4,2,'#8a6d1c');px(x+6,y+8,8,8,'#f0d27a');px(x+8,y+16,4,4,'#c9a227');px(x+18,y+10,8,6,'#f0d27a');px(x+20,y+16,4,4,'#c9a227');px(x+4,y+6,2,2,'#f0d27a');px(x+14,y+6,2,2,'#f0d27a');}
+function drawCandle(x,y,t){drawFloor(x,y);px(x+13,y+14,6,14,'#c9a227');px(x+11,y+26,10,2,'#8a6d1c');px(x+14,y+6,4,8,'#e8e0d0');const f=(t>>3)&1;px(x+15,y+2+f,2,4,'#f0d27a');px(x+15,y+1+f,2,1,'#ff8c42');}
+function drawFrame(x,y){drawWall(x,y);px(x+6,y+4,20,20,'#c9a227');px(x+8,y+6,16,16,'#1a1115');px(x+13,y+8,6,6,'#e8e0d0');px(x+12,y+6,2,3,'#c9a227');px(x+18,y+6,2,3,'#c9a227');px(x+11,y+14,10,6,'#000');px(x+13,y+15,6,1,'#c9a227');}
+function drawMat(x,y){drawFloor(x,y);px(x+2,y+6,T-4,20,'#4b0f18');px(x+4,y+8,T-8,16,'#6b0f1a');}
+function drawCat(x,y,c,t){const [body,acc,eye]=c;const bob=(t>>4)&1;
+  px(x+8,y+16-bob,16,10,body);px(x+6,y+12-bob,12,10,body);px(x+6,y+8-bob,3,4,body);px(x+15,y+8-bob,3,4,body);
+  px(x+9,y+15-bob,2,2,eye);px(x+13,y+15-bob,2,2,eye);px(x+22,y+10-bob,4,10,body);px(x+24,y+8-bob,3,4,body);
+  px(x+9,y+22-bob,8,3,acc);px(x+6,y+5-bob,12,3,acc);}
+function drawBuck(x,y,t){const bob=((t>>3)&1);const sway=Math.round(Math.sin(t/9)*2);
+  // 身體：白西裝 + 領結
+  px(x+9,y+18,14,10,'#f4f0e6');px(x+9,y+18,14,1,'#c9a227');px(x+15,y+18,2,6,'#6b0f1a');px(x+7,y+28,6,4,'#3a2a20');px(x+19,y+28,6,4,'#3a2a20');
+  px(x+5,y+20,4,6,'#f4f0e6');px(x+23,y+20,4,6,'#f4f0e6');
+  // 頭：扭蛋機
+  const hx=x+6+sway, hy=y+2-bob;
+  px(hx,hy+8,20,10,'#b8202a');px(hx,hy+17,20,1,'#7a1018');          // 機身
+  px(hx+2,hy,16,9,'#dfe9f3');px(hx+4,hy-1,12,1,'#dfe9f3');          // 透明圓頂
+  px(hx+4,hy+2,3,3,'#f0d27a');px(hx+9,hy+1,3,3,'#4fc3f7');px(hx+13,hy+3,3,3,'#f06292');px(hx+7,hy+5,3,3,'#81c784');px(hx+12,hy+6,3,2,'#f0d27a'); // 扭蛋
+  px(hx+8,hy+10,4,4,'#f4f0e6');px(hx+9,hy+11,2,2,'#111');          // 轉盤
+  px(hx+14,hy+12,4,2,'#111');                                       // 出口
+  px(hx+21,hy+9,3,2,'#c9a227');px(hx+22,hy+7,1,3,'#c9a227');       // 搖桿
+}
+function drawPlayer(x,y){const f=P.moving?((P.step>>2)&1):0;const leg=f?2:0;
+  px(x+10,y+2,12,10,'#f4f4f4');px(x+8,y+0,3,4,'#c9a227');px(x+21,y+0,3,4,'#c9a227');px(x+9,y+0,1,2,'#c9a227');px(x+22,y+0,1,2,'#c9a227');
+  px(x+11,y+12,10,6,'#f1dcc8');
+  if(P.dir!=='up'){const ox=P.dir==='left'?-2:P.dir==='right'?2:0;px(x+13+ox,y+14,2,2,'#2a4fd6');px(x+17+ox,y+14,2,2,'#2a4fd6');}
+  px(x+10,y+18,12,10,'#111');px(x+10,y+18,12,1,'#c9a227');px(x+8,y+24,16,4,'#111');px(x+8,y+27,16,1,'#c9a227');px(x+14,y+20,4,2,'#c9a227');
+  px(x+11+leg,y+28,3,4,'#111');px(x+18-leg,y+28,3,4,'#111');}
+
+/* 格子型別 */
+function tile(cx,cy){return (MAP[cy]||'')[cx]||'#';}
+function solid(cx,cy){const t=tile(cx,cy);return t==='#'||'WBDSbdCP'.includes(t)||CATS.some(c=>c.x===cx&&c.y===cy)||(BUCK.x===cx&&BUCK.y===cy)||(BUCK.moving&&BUCK.tx===cx&&BUCK.ty===cy);}
+
+/* ---------- 渲染 ---------- */
+let tick=0;
+function render(){tick++;
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const t=MAP[y][x],X=x*T,Y=y*T;
+    const useImg=n=>{if(ASSETS[n]){ctx.drawImage(ASSETS[n],X,Y,T,T);return true}return false};
+    switch(t){
+      case '#':useImg('wall')||drawWall(X,Y);break;
+      case '.':useImg('floor')||drawFloor(X,Y);break;
+      case 'r':useImg('rug')||drawRug(X,Y);break;
+      case 'W':useImg('window')||drawWindow(X,Y);break;
+      case 'B':useImg('bookshelf')||drawBookshelf(X,Y);break;
+      case 'D':useImg('desk')||drawDesk(X,Y,MAP[y-1][x]!=='D');break;
+      case 'b':useImg('bed_head')||drawBed(X,Y,true);break;
+      case 'd':useImg('bed_foot')||drawBed(X,Y,false);break;
+      case 'S':useImg('trophy')||drawTrophy(X,Y);break;
+      case 'C':useImg('candle')||drawCandle(X,Y,tick);break;
+      case 'P':useImg('frame')||drawFrame(X,Y);break;
+      case 'G':useImg('mat')||drawMat(X,Y);break;
+    }}
+  CATS.forEach(c=>{if(ASSETS[c.id])ctx.drawImage(ASSETS[c.id],c.x*T,c.y*T,T,T);else drawCat(c.x*T,c.y*T,c.c,tick+c.x*7);});
+  if(ASSETS.buck)ctx.drawImage(ASSETS.buck,BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,T,T);else drawBuck(BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,tick);
+  // 玩家（走路插值）
+  const px_=P.x*T+P.mx, py_=P.y*T+P.my;
+  if(ASSETS.player)ctx.drawImage(ASSETS.player,px_,py_,T,T);else drawPlayer(px_,py_);
+  // 面前有東西時的提示
+  if(!dlgOpen){const f=front();if(f.key){px(px_+12,py_-10,8,8,'#c9a227');px(px_+14,py_-8,4,4,'#0a0809');px(px_+15,py_-7,2,1,'#c9a227');}}
+  // 暗角
+  const g=ctx.createRadialGradient(256,176,120,256,176,330);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.55)');ctx.fillStyle=g;ctx.fillRect(0,0,512,352);
+}
+
+/* ---------- 移動 ---------- */
+const DIRS={ArrowUp:[0,-1,'up'],ArrowDown:[0,1,'down'],ArrowLeft:[-1,0,'left'],ArrowRight:[1,0,'right']};
+const held=new Set();
+function tryMove(){if(P.moving||dlgOpen)return;
+  for(const k of ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight']){if(!held.has(k))continue;const [dx,dy,d]=DIRS[k];P.dir=d;
+    if(!solid(P.x+dx,P.y+dy)){P.moving=true;P.tx=P.x+dx;P.ty=P.y+dy;P.mx=0;P.my=0;P.ddx=dx;P.ddy=dy;}return;}}
+function stepMove(){if(!P.moving)return;P.step++;P.mx+=P.ddx*4;P.my+=P.ddy*4;
+  if(Math.abs(P.mx)>=T||Math.abs(P.my)>=T){P.x=P.tx;P.y=P.ty;P.mx=0;P.my=0;P.moving=false;}}
+function buckWander(){if(dlgOpen)return;
+  if(BUCK.moving){BUCK.mx+=BUCK.ddx*2;BUCK.my+=BUCK.ddy*2;if(Math.abs(BUCK.mx)>=T||Math.abs(BUCK.my)>=T){BUCK.x=BUCK.tx;BUCK.y=BUCK.ty;BUCK.mx=0;BUCK.my=0;BUCK.moving=false;BUCK.timer=40+Math.random()*80;}return;}
+  if(--BUCK.timer>0)return;BUCK.timer=30;
+  const d=[[0,-1],[0,1],[-1,0],[1,0]][Math.floor(Math.random()*4)];const nx=BUCK.x+d[0],ny=BUCK.y+d[1];
+  const t=tile(nx,ny);if(t!=='.'&&t!=='r')return;
+  if(CATS.some(c=>c.x===nx&&c.y===ny))return;if(nx===P.x&&ny===P.y)return;if(P.moving&&P.tx===nx&&P.ty===ny)return;
+  BUCK.moving=true;BUCK.tx=nx;BUCK.ty=ny;BUCK.ddx=d[0];BUCK.ddy=d[1];}
+function front(){const [dx,dy]=P.dir==='up'?[0,-1]:P.dir==='down'?[0,1]:P.dir==='left'?[-1,0]:[1,0];const cx=P.x+dx,cy=P.y+dy;
+  if(BUCK.x===cx&&BUCK.y===cy&&!BUCK.moving)return{key:'buck'};const cat=CATS.find(c=>c.x===cx&&c.y===cy);if(cat)return{key:cat.id};const t=tile(cx,cy);return{key:TALK[t]?t:null};}
+
+/* ---------- 對話框 ---------- */
+const dlg=document.getElementById('dlg'),dname=document.getElementById('dname'),dtext=document.getElementById('dtext'),dhint=document.getElementById('dhint');
+let dlgOpen=false,dlgGo=null,typing=null;
+function openDlg(key){let d=TALK[key];
+  if(key==='buck'){const c=CARDS[Math.floor(Math.random()*CARDS.length)];const p=PITCH[Math.floor(Math.random()*PITCH.length)];
+    d={name:BUCK.name,text:p.replace('{card}','「'+c.name+'」').replace('{blurb}',c.blurb),go:c.url};TALK.buck=d;}
+  if(!d)return;dlgOpen=true;dlgGo=d.go||null;dname.textContent=d.name;dtext.textContent='';dlg.classList.add('on');
+  dhint.innerHTML=d.go?'<b>空白鍵</b> 前往　<b>Esc</b> 取消':'<b>空白鍵</b> 關閉';
+  let i=0;clearInterval(typing);typing=setInterval(()=>{dtext.textContent=d.text.slice(0,++i);if(i>=d.text.length)clearInterval(typing);},28);}
+function closeDlg(){dlgOpen=false;dlg.classList.remove('on');clearInterval(typing);}
+function action(){if(dlgOpen){if(dtext.textContent.length<(TALK[curKey]||{text:''}).text.length){clearInterval(typing);dtext.textContent=TALK[curKey].text;return;}
+    if(dlgGo)location.href=dlgGo;else closeDlg();return;}
+  const f=front();if(f.key){curKey=f.key;openDlg(f.key);}}
+let curKey=null;
+
+/* ---------- 輸入 ---------- */
+addEventListener('keydown',e=>{if(DIRS[e.key]){held.add(e.key);e.preventDefault();}
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();action();}
+  if(e.key==='Escape'&&dlgOpen)closeDlg();});
+addEventListener('keyup',e=>held.delete(e.key));
+document.querySelectorAll('.pad button').forEach(b=>{const k=b.dataset.k;
+  const down=e=>{e.preventDefault();if(k===' ')action();else held.add(k);};const up=e=>{e.preventDefault();held.delete(k);};
+  b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointerleave',up);b.addEventListener('pointercancel',up);});
+cv.addEventListener('click',()=>{if(dlgOpen)action();});
+
+/* ---------- 音樂 ----------
+   BGM_YT 填 YouTube 影片 ID 就用嵌入播放器（必須可見，這是 YouTube 的規定）；
+   留空字串就改用 bgm/room.mp3。瀏覽器規定要先有點擊或按鍵才准出聲。 */
+const BGM_YT='pGET78mPMCA';
+const audio=document.getElementById('audio'),bgmBtn=document.getElementById('bgm');
+audio.volume=0.35;
+let bgmOn=false;try{bgmOn=localStorage.getItem('angu_bgm')==='1';}catch(e){}
+let yt=null,ytReady=false;
+function ytPlay(on){if(!ytReady)return;on?yt.playVideo():yt.pauseVideo();}
+function setBgm(on){bgmOn=on;bgmBtn.textContent=on?'♪ 音樂：開':'♪ 音樂：關';bgmBtn.classList.toggle('on',on);
+  try{localStorage.setItem('angu_bgm',on?'1':'0');}catch(e){}
+  if(BGM_YT){ytPlay(on);}else{if(on)audio.play().catch(()=>{});else audio.pause();}}
+bgmBtn.addEventListener('click',e=>{e.stopPropagation();setBgm(!bgmOn);});
+let armed=false;function arm(){if(armed)return;armed=true;if(bgmOn)setBgm(true);}
+addEventListener('keydown',arm);addEventListener('pointerdown',arm);
+if(BGM_YT){
+  const tag=document.createElement('script');tag.src='https://www.youtube.com/iframe_api';document.head.appendChild(tag);
+  window.onYouTubeIframeAPIReady=function(){yt=new YT.Player('yt',{videoId:BGM_YT,
+    playerVars:{loop:1,playlist:BGM_YT,controls:1,rel:0,modestbranding:1,playsinline:1},
+    events:{onReady:()=>{ytReady=true;yt.setVolume(40);if(bgmOn&&armed)yt.playVideo();},
+            onStateChange:e=>{if(e.data===YT.PlayerState.PLAYING&&!bgmOn){bgmOn=true;bgmBtn.textContent='♪ 音樂：開';bgmBtn.classList.add('on');}
+                              if(e.data===YT.PlayerState.PAUSED&&bgmOn){bgmOn=false;bgmBtn.textContent='♪ 音樂：關';bgmBtn.classList.remove('on');}}}});};
+}else{document.querySelector('.tvrow').style.display='none';}
+setBgm(bgmOn);
+
+/* ---------- 主迴圈 ---------- */
+function loop(){tryMove();stepMove();buckWander();render();requestAnimationFrame(loop);}
+loop();
+</script>
+</body>
+</html>

@@ -46,6 +46,7 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rend
   body .pad{display:flex}
   body .keys{display:none}
   body .bgm{font-size:12px;padding:3px 8px;opacity:.55;top:auto;bottom:8px;left:8px;right:auto}
+  body .bgm.meow{bottom:34px}
   body .dbtns{display:flex}
   body .dlg .hint{display:none}
   body .wrap{padding-top:40px}
@@ -68,6 +69,7 @@ nav.main a{border:2px solid var(--gold2);padding:7px 18px;letter-spacing:.2em;fo
 nav.main a:hover,nav.main a.on{background:var(--wine);border-color:var(--gold);color:#fff}
 .bgm{position:absolute;top:8px;right:8px;z-index:5;background:rgba(8,6,10,.9);border:2px solid var(--gold2);color:var(--gold);font-family:inherit;font-size:13px;padding:4px 10px;cursor:pointer;letter-spacing:.1em}
 .bgm.on{border-color:var(--gold);color:#fff;background:var(--wine)}
+.bgm.meow{top:38px}
 footer a{color:var(--gold);text-decoration:none}
 .langbar{position:fixed;top:10px;right:10px;z-index:40;display:flex;gap:4px}
 .langbar button{background:rgba(10,8,9,.9);border:1px solid var(--gold2);color:var(--muted);font-family:inherit;font-size:12px;padding:3px 7px;cursor:pointer}
@@ -85,6 +87,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
 
 <div class="stage">
   <button class="bgm" id="bgm">♪ 音樂：關</button>
+  <button class="bgm meow" id="meowbtn"></button>
   <audio id="audio" loop preload="none"></audio>
   <canvas id="c" width="512" height="288"></canvas>
   <div class="dlg" id="dlg"><div class="name" id="dname"></div><div id="dtext"></div><div class="hint" id="dhint"></div><div class="dbtns"><button id="dgo" data-i18n="ui.go"></button><button id="dclose" data-i18n="ui.close"></button></div></div>
@@ -315,6 +318,7 @@ function render(){tick++;
   if(SOMA.at){ASSETS.soma?ctx.drawImage(ASSETS.soma,SOMA.at[0]*T,SOMA.at[1]*T,T,T):drawSoma(SOMA.at[0]*T,SOMA.at[1]*T,tick);}
   CATS.forEach(c=>{if(ASSETS[c.id])ctx.drawImage(ASSETS[c.id],c.x*T,c.y*T,T,T);else drawCat(c.x*T,c.y*T,c.c,tick+c.x*7);});
   if(ASSETS.buck)ctx.drawImage(ASSETS.buck,BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,T,T);else drawBuck(BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,tick);
+  if(meowBubble&&tick<meowBubble.until){const c=CATS.find(k=>k.id===meowBubble.id);if(c){const bx=c.x*T+6,by=c.y*T-12;ctx.fillStyle='#0a0809';ctx.fillRect(bx,by,22,11);ctx.fillStyle='#e8e0d0';ctx.font='9px DotGothic16,monospace';ctx.fillText(window.t('ui.meow'),bx+3,by+9);}}
   // 玩家（走路插值）
   const px_=P.x*T+P.mx, py_=P.y*T+P.my;
   if(ASSETS.player)ctx.drawImage(ASSETS.player,px_,py_,T,T);else drawPlayer(px_,py_);
@@ -386,7 +390,7 @@ function openDlg(key){let d=TALK[key];
 function closeDlg(){dlgOpen=false;dlg.classList.remove('on');clearInterval(typing);}
 function action(){if(dlgOpen){if(dtext.textContent.length<(TALK[curKey]||{text:''}).text.length){clearInterval(typing);dtext.textContent=TALK[curKey].text;return;}
     if(dlgGo)location.href=LOC(dlgGo);else closeDlg();return;}
-  const f=front();if(f.key){curKey=f.key;openDlg(f.key);}}
+  const f=front();if(f.key){curKey=f.key;if(MEOW_VOICE[f.key])meow(f.key);openDlg(f.key);}}
 let curKey=null;
 document.getElementById('dgo').addEventListener('click',e=>{e.stopPropagation();action();});
 document.getElementById('dclose').addEventListener('click',e=>{e.stopPropagation();closeDlg();});
@@ -453,12 +457,35 @@ if(BGM_YT){
 }else{document.querySelector('.radio').remove();}
 setBgm(bgmOn);
 
+/* ---------- 貓叫白噪音（Web Audio 合成，沒有外部音檔） ----------
+   每隻貓有自己的音高與長度，隨機隔 8～25 秒叫一聲，叫的時候頭上冒「喵」。 */
+let AC=null;let meowOn=true;try{meowOn=localStorage.getItem('angu_meow')!=='0';}catch(e){}
+const MEOW_VOICE={cat_poe:{f:330,len:.55,drop:.6},cat_ono:{f:720,len:.45,drop:.85},cat_bau:{f:420,len:.7,drop:.7},cat_col:{f:560,len:.4,drop:.8},cat_gal:{f:480,len:.5,drop:.75},cat_gar:{f:390,len:.35,drop:.65}};
+let meowBubble=null;
+function meow(id){if(!meowOn||!armed)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){return;}
+  const v=MEOW_VOICE[id],t0=AC.currentTime,len=v.len*(0.85+Math.random()*0.3),f=v.f*(0.92+Math.random()*0.16);
+  const g=AC.createGain();g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(0.09,t0+0.04);g.gain.setValueAtTime(0.09,t0+len*0.55);g.gain.exponentialRampToValueAtTime(0.001,t0+len);
+  const lp=AC.createBiquadFilter();lp.type='bandpass';lp.frequency.value=f*2.2;lp.Q.value=1.2;
+  g.connect(lp);lp.connect(AC.destination);
+  // 兩個泛音：基音＋八度，音高先上滑再往下掉，加一點顫音
+  [[1,1],[2,.35]].forEach(([mul,amp])=>{const o=AC.createOscillator();o.type='triangle';
+    o.frequency.setValueAtTime(f*mul*0.8,t0);o.frequency.exponentialRampToValueAtTime(f*mul*1.15,t0+len*0.3);o.frequency.exponentialRampToValueAtTime(f*mul*v.drop,t0+len);
+    const vib=AC.createOscillator();vib.frequency.value=6+Math.random()*3;const vg=AC.createGain();vg.gain.value=f*mul*0.02;vib.connect(vg);vg.connect(o.frequency);
+    const og=AC.createGain();og.gain.value=amp;o.connect(og);og.connect(g);o.start(t0);vib.start(t0);o.stop(t0+len+0.05);vib.stop(t0+len+0.05);});
+  meowBubble={id,until:tick+40};}
+let meowTimer=180+Math.random()*300;
+function meowTick(){if(--meowTimer>0)return;meowTimer=(8+Math.random()*17)*60;const c=CATS[Math.floor(Math.random()*CATS.length)];meow(c.id);}
+const meowBtn=document.getElementById('meowbtn');
+function setMeow(on){meowOn=on;meowBtn.textContent=on?t('ui.meow.on'):t('ui.meow.off');meowBtn.classList.toggle('on',on);try{localStorage.setItem('angu_meow',on?'1':'0');}catch(e){}}
+meowBtn.addEventListener('click',e=>{e.stopPropagation();setMeow(!meowOn);if(meowOn){armed=true;meow(CATS[Math.floor(Math.random()*CATS.length)].id);}});
+setMeow(meowOn);
+
 /* ---------- 語言 ---------- */
 window.LANG=getLang();buildTalk();
-window.onLangChange=function(){buildTalk();if(dlgOpen)closeDlg();bgmBtn.textContent=bgmOn?t('ui.bgm.on'):t('ui.bgm.off');};
+window.onLangChange=function(){buildTalk();if(dlgOpen)closeDlg();bgmBtn.textContent=bgmOn?t('ui.bgm.on'):t('ui.bgm.off');setMeow(meowOn);};
 
 /* ---------- 主迴圈 ---------- */
-function loop(){tryMove();stepMove();buckWander();somaUpdate();render();requestAnimationFrame(loop);}
+function loop(){tryMove();stepMove();buckWander();somaUpdate();meowTick();render();requestAnimationFrame(loop);}
 loop();
 </script>
 </body>

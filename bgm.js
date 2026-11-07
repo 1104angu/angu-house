@@ -12,7 +12,8 @@ window.TRACKS=[
   .jukebox button:hover{background:#6b0f1a;color:#fff}
   .jukebox .ttl{letter-spacing:.1em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
   .jukebox .ttl small{display:block;color:#9a8f85;font-size:11px}
-  .jukebox .disc{width:14px;height:14px;border-radius:50%;border:2px solid #c9a227;border-top-color:transparent;flex:none}
+  .jukebox .disc{width:18px;height:18px;border-radius:50%;flex:none;background:radial-gradient(circle,#c9a227 0 2px,#1a1115 2.5px 4px,#2a2126 4.5px 5px,#1a1115 5.5px 7px,#2a2126 7.5px 8px,#1a1115 8.5px);box-shadow:0 0 0 1px #8a6d1c;position:relative}
+  .jukebox .disc::after{content:'';position:absolute;left:8px;top:1px;width:2px;height:5px;background:#e8e0d0;border-radius:1px;opacity:.7}
   .jukebox.playing .disc{animation:spin 2s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   @media (max-width:640px){.jukebox{left:8px;right:8px;bottom:8px;font-size:12px}.jukebox .ttl{max-width:none;flex:1}}`;

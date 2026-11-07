@@ -108,12 +108,13 @@ footer::before{content:"❦";display:block;color:var(--gold2);font-size:20px;mar
 .langbar button:hover{color:var(--gold)}
 @media (max-width:640px){.langbar{top:6px;right:6px}.langbar button{font-size:11px;padding:2px 5px}}
 
-/* 關於我首圖 */
-.hero{display:flex;gap:26px;align-items:flex-start;margin-bottom:26px}
-.portrait{margin:0;flex:0 0 260px;padding:8px;background:#141015;border:2px solid var(--gold2);outline:1px solid var(--gold);outline-offset:4px;box-shadow:4px 4px 0 #000,0 0 30px rgba(107,15,26,.3)}
+/* 關於我首圖：左欄肖像（捲動時跟著），右欄全部文字，左邊緣對齊 */
+.hero{display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start}
+.portrait{margin:0;position:sticky;top:24px;padding:8px;box-sizing:border-box;background:#141015;border:2px solid var(--gold2);outline:1px solid var(--gold);outline-offset:4px;box-shadow:4px 4px 0 #000,0 0 30px rgba(107,15,26,.3)}
 .portrait img{display:block;width:100%;height:auto;border:1px solid #2a2126}
-.hero-text{flex:1;padding-top:4px;min-width:0}
-.hero-text .box{margin-bottom:16px}
-.hero-text .lead{font-size:16px;margin-bottom:12px}
-.hero-quote{color:var(--gold);letter-spacing:.15em;font-size:15px}
-@media (max-width:640px){.hero{flex-direction:column;align-items:center}.portrait{flex:none;width:min(260px,80%)}.hero-text{text-align:center;padding-top:0}}
+.hero-text{min-width:0}
+.hero-text .lead{font-size:16px;margin:0 0 10px}
+.hero-quote{color:var(--gold);letter-spacing:.15em;font-size:15px;margin:0 0 22px}
+.hero-text .box{margin-bottom:18px}
+.hero-text .box:last-child{margin-bottom:0}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.portrait{position:static;width:min(260px,80%);margin:0 auto 6px}.hero-text{text-align:left}}

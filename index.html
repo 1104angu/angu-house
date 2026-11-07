@@ -126,9 +126,10 @@ const TALK={
  G:{name:'門墊',text:'門墊上寫著：歡迎來到安谷屋。門不給開，你在裡面就好。'},
  cat_poe:{go:'https://caveduck.io/zh-hant/share/characters/2c0f1bf4-9581-46d4-aade-e126f5d2b942?rc=ku1A1yGuNy',name:'艾倫波',text:'黑貓穿著西裝縮成一團，異色的眼睛睜開看你一眼。「……這份腳本的 D 軸有問題。」然後又睡了。'},
  cat_ono:{go:'https://caveduck.io/zh-hant/share/characters/cc642f68-afe1-46ed-82a6-b6c076ad88b0?rc=ku1A1yGuNy',name:'奧諾依',text:'純白的貓貴婦趴在書架頂端，珍珠項鍊垂在爪子邊。「喵安～我是奧諾依。您這個狀態欄……Ohnyo！放心，我會溫柔地幫您重造。」她瞄了一眼地毯上那團黑西裝，又把視線收回來。'},
+ cat_bau:{go:'https://caveduck.io/zh-hant/share/characters/dadc87a6-48f4-4e18-bcbf-39e30fc5b5ee?rc=ku1A1yGuNy',name:'波特萊爾',text:'紅捲髮垂到眼睛的暹羅貓趴在寫字桌上，壓著你的卡稿。惡之華沙龍的主人，貓街養花的嚮導。他冷漠看透、不奉承，只看著你怎麼照顧那朵花，從不告訴你那代表什麼。尾巴掃了一下墨水瓶。'},
  cat_col:{go:'https://caveduck.io/zh-hant/share/characters/5d6838ed-47d8-42b5-813d-c9154908adbb?rc=ku1A1yGuNy',name:'苛麗特',text:'薑黃虎斑貓坐在床頭，爪子下壓著一本法典。「聲音指紋還沒蒸餾乾淨，拿回去。」'},
  cat_gal:{go:'https://caveduck.io/zh-hant/share/characters/5af2f97a-8d98-45c5-ab0f-16f890369c4d?rc=ku1A1yGuNy',name:'蓋珞普',text:'三花貓在地毯上翻肚。「溫度可以，餘韻再等等。」她指的是你的卡，不是地毯。'},
- cat_gar:{go:'https://caveduck.io/zh-hant/share/characters/31080d3a-99e2-4318-b2e4-a14046f3a10d?rc=ku1A1yGuNy',name:'史蒂芬珈涅',text:'銀虎斑貓戴著小禮帽站在獎盃架旁。「傳播力不錯，留存……我們實測三輪再說。」'}
+ cat_gar:{go:'https://caveduck.io/zh-hant/share/characters/31080d3a-99e2-4318-b2e4-a14046f3a10d?rc=ku1A1yGuNy',name:'史蒂芬珈涅',text:'咖啡色虎斑貓戴著小禮帽站在獎盃架旁。「傳播力不錯，留存……我們實測三輪再說。」'}
 };
 
 /* 巴克要推銷的卡：name、blurb、url。想加就往下加一行 */
@@ -146,7 +147,7 @@ const CARDS=[
  {name:'卡齊米日',blurb:'塔特拉山麓的龍裔大叔。',url:'https://caveduck.io/zh-hant/share/characters/a3080cad-867c-4e66-af1c-3c824306a345?rc=ku1A1yGuNy'},
  {name:'黑白之吻：白兵與黑王的玫瑰戰爭',blurb:'你是第二橫列的一枚兵，對面只坐著一個人。兵不會後退。',url:'https://caveduck.io/zh-hant/share/characters/bcfd0e87-1f6d-4049-90cc-609b461ec062?rc=ku1A1yGuNy'},
  {name:'UN/VEIL：白鎮 41 號',blurb:'純白世界裡唯一的異色。',url:'https://caveduck.io/zh-hant/share/characters/cbf12788-8ee4-43ec-bb77-cae8caae9987?rc=ku1A1yGuNy'},
- {name:'養一朵花',blurb:'五隻貓都在這裡面。',url:'https://caveduck.io/zh-hant/share/characters/dadc87a6-48f4-4e18-bcbf-39e30fc5b5ee?rc=ku1A1yGuNy'},
+ {name:'養一朵花',blurb:'一條四季如春的貓街，六隻下班的貓陪你養一朵花。它長成什麼樣，看你怎麼待它。',url:'https://caveduck.io/zh-hant/share/characters/dadc87a6-48f4-4e18-bcbf-39e30fc5b5ee?rc=ku1A1yGuNy'},
  {name:'{{USER}} persona 產生器',blurb:'幫你搓一個配這張卡的玩家人設。',url:'https://caveduck.io/zh-hant/share/characters/bb2f3f08-90ec-4277-9656-49e3d70e1132?rc=ku1A1yGuNy'},
  {name:'潘',blurb:'翁布里亞的畫家，牧神的末裔。他的溫暖是真的，想留住你也是真的。',url:'https://caveduck.io/zh-hant/share/characters/679d53b2-b726-446b-afae-b118a07e808c?rc=ku1A1yGuNy'},
  {name:'薇拉',blurb:'莫提默家的吸血鬼鑑定師，什麼都鑑得出來，就是鑑不了自己。她忘了那座下水道，你沒忘。',url:'https://caveduck.io/zh-hant/share/characters/22e56068-2a18-4525-aa5b-433514884409?rc=ku1A1yGuNy'},
@@ -172,11 +173,12 @@ const BUCK={id:'buck',x:7,y:4,dir:1,timer:60,mx:0,my:0,moving:false,name:'巴克
 
 /* 貓：id、格子座標、畫法 */
 const CATS=[
- {id:'cat_poe',x:10,y:5,c:['#111','#d4a017','#2a9df4']},   // 黑貓 西裝 異瞳
+ {id:'cat_poe',x:10,y:5,c:['#111','#d4a017',['#2a9df4','#d4a017']]},   // 黑貓 西裝 藍黃異瞳
  {id:'cat_ono',x:13,y:2,c:['#f6f6f6','#e9dfd0','#7fd8e8']}, // 奧諾依 白貓 珍珠項鍊 水藍眼
  {id:'cat_col',x:1,y:3,c:['#e08a2e','#f6c27a','#6b0f1a']},// 薑黃
  {id:'cat_gal',x:5,y:6,c:['#f4ecdc','#e08a2e','#222']},    // 三花
- {id:'cat_gar',x:2,y:2,c:['#8a8a8a','#4a4a4a','#111']}    // 銀虎斑 禮帽
+ {id:'cat_gar',x:2,y:2,c:['#9a6a3c','#5a3a1e',['#2e8b3a','#d4a017']]},   // 咖啡色虎斑 禮帽 綠黃異瞳
+ {id:'cat_bau',x:2,y:5,c:['#e8dcc8','#b03030','#4a6fd6']}    // 波特萊爾 暹羅 紅捲髮 趴在寫字桌上
 ];
 
 /* 玩家 */
@@ -184,7 +186,7 @@ const P={x:7,y:6,dir:'up',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
 const ASSETS={}; // name -> Image
-const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_col','cat_gal','cat_gar','buck','gramophone','room'];
+const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room'];
 let loaded=0;
 ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/':'img/sprites/')+n+'.png';});
 
@@ -215,9 +217,9 @@ function drawGramophone(x,y,t){if(!ASSETS.room)drawFloor(x,y);
   px(x+9,y+20,2,6,'#c9a227');px(x+13,y+20,2,6,'#c9a227');px(x+17,y+20,2,6,'#c9a227');px(x+21,y+20,2,6,'#c9a227');
   if(bgmOn){const n=(t>>4)&1;px(x+26,y+4-n*3,2,2,'#f0d27a');px(x+29,y+9-n*2,2,2,'#f0d27a');}}
 function drawMat(x,y){drawFloor(x,y);px(x+2,y+6,T-4,20,'#4b0f18');px(x+4,y+8,T-8,16,'#6b0f1a');}
-function drawCat(x,y,c,t){const [body,acc,eye]=c;const bob=(t>>4)&1;
+function drawCat(x,y,c,t){const [body,acc,eye]=c;const e1=Array.isArray(eye)?eye[0]:eye,e2=Array.isArray(eye)?eye[1]:eye;const bob=(t>>4)&1;
   px(x+8,y+16-bob,16,10,body);px(x+6,y+12-bob,12,10,body);px(x+6,y+8-bob,3,4,body);px(x+15,y+8-bob,3,4,body);
-  px(x+9,y+15-bob,2,2,eye);px(x+13,y+15-bob,2,2,eye);px(x+22,y+10-bob,4,10,body);px(x+24,y+8-bob,3,4,body);
+  px(x+9,y+15-bob,2,2,e1);px(x+13,y+15-bob,2,2,e2);px(x+22,y+10-bob,4,10,body);px(x+24,y+8-bob,3,4,body);
   px(x+9,y+22-bob,8,3,acc);px(x+6,y+5-bob,12,3,acc);}
 function drawBuck(x,y,t){const bob=((t>>3)&1);const sway=Math.round(Math.sin(t/9)*2);
   // 身體：白西裝 + 領結
@@ -245,7 +247,7 @@ function solid(cx,cy){const t=tile(cx,cy);return t==='#'||'WBDSbdCPM'.includes(t
 
 /* ---------- 渲染 ---------- */
 let tick=0;
-function drawFlame(x,y,t){const f=(t>>3)&1;px(x+15,y+2+f,2,4,'#f0d27a');px(x+15,y+1+f,2,1,'#ff8c42');}
+function drawFlame(x,y,t){const f=(t>>4)&1;px(x+15,y+2+f,2,4,'#f0d27a');px(x+15,y+1+f,2,1,'#ff8c42');}
 function render(){tick++;
   if(ASSETS.room){ // 有畫好的底圖：整張貼上，只補會動的東西
     ctx.drawImage(ASSETS.room,0,0);
@@ -291,7 +293,7 @@ function render(){tick++;
   }
   // 燭光：單層實邊圓，會抖
   for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(MAP[y][x]==='C'){
-    const j=Math.round((Math.sin(tick/4+x*3)+Math.sin(tick/1.5+x))*1.5)*4;const R=72+j;
+    const j=Math.round((Math.sin(tick/22+x*3)+Math.sin(tick/9+x))*1.2)*4;const R=72+j;
     ring(x*T+16,y*T+6,R,'rgba(255,170,70,.22)');}
   ctx.restore();
   // 暗角

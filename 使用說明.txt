@@ -12,7 +12,7 @@ style.css    內頁樣式（首頁樣式寫在 index.html 裡面）
 換成自己畫的像素圖：
   每張 32x32 PNG，透明背景，放進 img/sprites/，檔名要一模一樣：
   floor wall rug window bookshelf desk bed_head bed_foot trophy candle frame mat gramophone
-  player cat_poe cat_ono cat_col cat_gal cat_gar
+  player cat_poe cat_ono cat_bau cat_col cat_gal cat_gar
   有檔案就自動用檔案，沒有就用程式畫的佔位圖。
 
 改房間格局：index.html 裡的 MAP 陣列，一個字元一格（圖例寫在旁邊）。

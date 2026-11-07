@@ -45,8 +45,8 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rend
 @media (hover:none) and (pointer:coarse){
   body .pad{display:flex}
   body .keys{display:none}
-  body .bgm{font-size:12px;padding:3px 8px;opacity:.55;top:auto;bottom:8px;left:8px;right:auto}
-  body .bgm.meow{bottom:34px}
+  body .toggles{display:flex;justify-content:center;gap:10px;margin-top:12px}
+  body .toggles .bgm{position:static;font-size:13px;padding:5px 12px;opacity:1}
   body .dbtns{display:flex}
   body .dlg .hint{display:none}
   body .wrap{padding-top:40px}
@@ -101,6 +101,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
   <div class="act"><button data-k=" " data-i18n="ui.ok"></button></div>
 </div>
 <div class="radio" title="柯賴里《佛利亞變奏曲》，米爾斯坦演奏"><div class="screen"><div id="yt"></div></div><div class="knobs"><i></i><b>ANGU RADIO</b><i></i></div></div>
+<div class="toggles" id="toggles"></div>
 <div class="keys" data-i18n="ui.keys"></div>
 
 <nav class="main"><a href="index.html" class="on" data-i18n="nav.room"></a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank" data-i18n="nav.cards"></a><a href="worlds.html" data-i18n="nav.worlds"></a><a href="about.html" data-i18n="nav.about"></a><a href="awards.html" data-i18n="nav.awards"></a><a href="links.html" data-i18n="nav.links"></a></nav>
@@ -479,6 +480,8 @@ const meowBtn=document.getElementById('meowbtn');
 function setMeow(on){meowOn=on;meowBtn.textContent=on?t('ui.meow.on'):t('ui.meow.off');meowBtn.classList.toggle('on',on);try{localStorage.setItem('angu_meow',on?'1':'0');}catch(e){}}
 meowBtn.addEventListener('click',e=>{e.stopPropagation();setMeow(!meowOn);if(meowOn){armed=true;meow(CATS[Math.floor(Math.random()*CATS.length)].id);}});
 setMeow(meowOn);
+// 觸控裝置：把音樂、貓叫兩顆鈕搬出畫面
+if(matchMedia('(hover:none) and (pointer:coarse)').matches){const tg=document.getElementById('toggles');tg.appendChild(bgmBtn);tg.appendChild(meowBtn);}
 
 /* ---------- 語言 ---------- */
 window.LANG=getLang();buildTalk();

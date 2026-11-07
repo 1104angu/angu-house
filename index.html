@@ -89,7 +89,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
   <button class="bgm" id="bgm">♪ 音樂：關</button>
   <button class="bgm meow" id="meowbtn"></button>
   <audio id="audio" loop preload="none"></audio>
-  <canvas id="c" width="512" height="288"></canvas>
+  <canvas id="c" width="1024" height="576"></canvas>
   <div class="dlg" id="dlg"><div class="name" id="dname"></div><div id="dtext"></div><div class="hint" id="dhint"></div><div class="dbtns"><button id="dgo" data-i18n="ui.go"></button><button id="dclose" data-i18n="ui.close"></button></div></div>
 </div>
 
@@ -116,7 +116,9 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
    有檔案就用檔案，沒有就用程式畫的佔位圖。
    ========================================================= */
 const T=32, W=16, H=9;
-const cv=document.getElementById('c'), ctx=cv.getContext('2d'); ctx.imageSmoothingEnabled=false;
+const cv=document.getElementById('c'), ctx=cv.getContext('2d'); ctx.scale(2,2); ctx.imageSmoothingEnabled=false;
+const ROOM_HAS_FLAMES=true; // 底圖已經畫了燭火，就不再疊程式畫的火苗
+const ROOM_HAS_LIGHT=true;  // 底圖已經畫了窗光，程式只留很淡的燭光閃爍
 
 /* 地圖：每個字元一格
    # 牆  . 地板  r 地毯  W 窗  B 書架  D 書桌(含電腦)  b 床頭 d 床尾  S 獎盃架  C 燭台  P 畫框  G 門墊
@@ -294,9 +296,9 @@ let tick=0;
 function drawFlame(x,y,t){const f=(t>>4)&1;px(x+15,y+2+f,2,4,'#f0d27a');px(x+15,y+1+f,2,1,'#ff8c42');}
 function render(){tick++;
   if(ASSETS.room){ // 有畫好的底圖：整張貼上，只補會動的東西
-    ctx.drawImage(ASSETS.room,0,0);
+    ctx.imageSmoothingEnabled=true;ctx.drawImage(ASSETS.room,0,0,512,288);ctx.imageSmoothingEnabled=false;
     for(let y=0;y<H;y++)for(let x=0;x<W;x++){const t=MAP[y][x];
-      if(t==='C')drawFlame(x*T,y*T,tick);
+      if(t==='C'&&!ROOM_HAS_FLAMES)drawFlame(x*T,y*T,tick);
       if(t==='M'){ASSETS.gramophone?ctx.drawImage(ASSETS.gramophone,x*T,y*T,T,T):drawGramophone(x*T,y*T,tick);}}
   }else
   for(let y=0;y<H;y++)for(let x=0;x<W;x++){const t=MAP[y][x],X=x*T,Y=y*T;
@@ -328,12 +330,12 @@ function render(){tick++;
     px(ex-1,ey-1,5,9,'#0a0809');px(ex-1,ey+9,5,3,'#0a0809');   // 黑底描邊
     px(ex,ey,3,7,'#f0d27a');px(ex,ey+9,3,2,'#f0d27a');px(ex+1,ey,1,7,'#fff');}}   // 驚嘆號
   // 光：先整體壓暗，再加回「窗光投影」（斜四邊形）與燭光
-  ctx.fillStyle='rgba(6,3,10,.30)';ctx.fillRect(0,0,512,288);
+  ctx.fillStyle=ROOM_HAS_LIGHT?'rgba(6,3,10,.12)':'rgba(6,3,10,.30)';ctx.fillRect(0,0,512,288);
   ctx.save();ctx.globalCompositeOperation='lighter';
   const ring=(cx,cy,r,col)=>{ctx.fillStyle=col;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();};
   const quad=(pts,col)=>{ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<4;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath();ctx.fill();};
   // 窗光：窗戶正下方一灘光，往下微微張開，愈遠愈淡
-  for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(MAP[y][x]==='W'){
+  if(!ROOM_HAS_LIGHT)for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(MAP[y][x]==='W'){
     const x0=x*T+2,x1=x*T+T-2,top=(y+1)*T;
     quad([[x0,top],[x1,top],[x1+10,top+88],[x0-10,top+88]],'rgba(255,232,170,.10)');
     quad([[x0+2,top],[x1-2,top],[x1+4,top+60],[x0-4,top+60]],'rgba(255,240,190,.12)');
@@ -342,7 +344,7 @@ function render(){tick++;
   // 燭光：單層實邊圓，會抖
   for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(MAP[y][x]==='C'){
     const j=Math.round((Math.sin(tick/22+x*3)+Math.sin(tick/9+x))*1.2)*4;const R=72+j;
-    ring(x*T+16,y*T+6,R,'rgba(255,170,70,.22)');}
+    ring(x*T+16,y*T+6,R,ROOM_HAS_LIGHT?'rgba(255,170,70,.10)':'rgba(255,170,70,.22)');}
   ctx.restore();
   // 暗角
   const g=ctx.createRadialGradient(256,144,110,256,144,290);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.38)');ctx.fillStyle=g;ctx.fillRect(0,0,512,288);

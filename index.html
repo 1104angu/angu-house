@@ -103,12 +103,12 @@ const cv=document.getElementById('c'), ctx=cv.getContext('2d'); ctx.imageSmoothi
 const MAP=[
 "#######PP#######",
 "#SS#WW#PP#WW####",
-"#b..C........BB#",
-"#d...........BB#",
-"#........rrrr..#",
-"#DD......rrrr..#",
-"#DD.........M..#",
-"#......GG......#",
+"#.....C.....bb.#",
+"#BB.........dd.#",
+"#BB......rrrr..#",
+"#........rrrr.M#",
+"#DD............#",
+"#DD....GG.....C#",
 "################"];
 
 /* 互動：key 對應地圖字元或貓的 id */
@@ -119,7 +119,7 @@ const TALK={
  P:{name:'肖像',text:'牆上一幅大肖像：白髮、鹿角、黑金哥德蘿莉，眼睛是青金石的藍。角落簽著「製作人安谷」。要看關於我嗎？',go:'about.html'},
  W:{name:'窗',text:'窗外是夜色和別人的房子。窗台貼了一排便條，寫著常去的地方。要看書籤嗎？',go:'links.html'},
  b:{name:'床',text:''},
- d:{name:'床',text:'床尾疊著幾本法典。別亂翻，苛麗特會生氣。'},
+ d:{name:'床',text:'豪華雙人床，床尾疊著幾本法典。別亂翻，苛麗特會生氣。'},
  C:{name:'燭台',text:'蠟燭自己在燒。你沒看到有人點過它。'},
  r:{name:'地毯',text:'酒紅色的地毯，有貓毛。'},
  M:{name:'唱機',text:''},
@@ -174,15 +174,15 @@ const BUCK={id:'buck',x:7,y:4,dir:1,timer:60,mx:0,my:0,moving:false,name:'巴克
 /* 貓：id、格子座標、畫法 */
 const CATS=[
  {id:'cat_poe',x:10,y:5,c:['#111','#d4a017',['#2a9df4','#d4a017']]},   // 黑貓 西裝 藍黃異瞳
- {id:'cat_ono',x:13,y:2,c:['#f6f6f6','#e9dfd0','#7fd8e8']}, // 奧諾依 白貓 珍珠項鍊 水藍眼
- {id:'cat_col',x:1,y:3,c:['#e08a2e','#f6c27a','#6b0f1a']},// 薑黃
- {id:'cat_gal',x:5,y:6,c:['#f4ecdc','#e08a2e','#222']},    // 三花
- {id:'cat_gar',x:2,y:2,c:['#9a6a3c','#5a3a1e',['#2e8b3a','#d4a017']]},   // 咖啡色虎斑 禮帽 綠黃異瞳
- {id:'cat_bau',x:2,y:5,c:['#e8dcc8','#b03030','#4a6fd6']}    // 波特萊爾 暹羅 紅捲髮 趴在寫字桌上
+ {id:'cat_ono',x:2,y:3,c:['#f6f6f6','#e9dfd0','#7fd8e8']}, // 奧諾依 白貓 珍珠項鍊 水藍眼
+ {id:'cat_col',x:14,y:3,c:['#e08a2e','#f6c27a','#6b0f1a']},// 薑黃
+ {id:'cat_gal',x:4,y:6,c:['#f4ecdc','#e08a2e','#222']},    // 三花
+ {id:'cat_gar',x:3,y:2,c:['#9a6a3c','#5a3a1e',['#2e8b3a','#d4a017']]},   // 咖啡色虎斑 禮帽 綠黃異瞳
+ {id:'cat_bau',x:2,y:6,c:['#e8dcc8','#b03030','#4a6fd6']}    // 波特萊爾 暹羅 紅捲髮 趴在寫字桌上
 ];
 
 /* 玩家 */
-const P={x:7,y:6,dir:'up',step:0,moving:false,mx:0,my:0};
+const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
 const ASSETS={}; // name -> Image

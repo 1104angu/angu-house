@@ -123,19 +123,26 @@ def desk(x,y,top,right=False):
         for k in range(2):
             R(x+3,y+3+k*12,T-6,10,WOOD3); R(x+3,y+3+k*12,T-6,1,WOOD4); R(x+13,y+7+k*12,6,2,GOLD)
         R(x,y+T-4,T,4,WOOD3); R(x+2,y+T-4,4,4,INK); R(x+T-6,y+T-4,4,4,INK); shadow_below(x,y,3)
-def bed(x,y,head):
+def bed(x,y,head,left):
+    # 豪華雙人床：2 格寬，head 為床頭列，left 為左半
     if head:
         R(x,y,T,T,WINE3)
-        R(x,y,T,8,WOOD2); R(x,y,T,2,WOOD4); R(x+1,y+2,T-2,1,GOLD2); # 床頭板
-        R(x+2,y+8,T-4,T-8,WINE); R(x+2,y+8,T-4,2,WINE2)
-        R(x+6,y+11,20,9,CREAM); R(x+6,y+11,20,2,(245,240,228)); R(x+6,y+19,20,1,CREAM2) # 枕頭
-        R(x+2,y+22,T-4,10,WINE2); R(x+2,y+22,T-4,1,GOLD2)
+        R(x,y,T,9,WOOD2); R(x,y,T,2,WOOD4); R(x+1,y+2,T-2,1,GOLD2)   # 床頭板
+        for k in range(0,T,8): R(x+k+2,y+4,4,3,WOOD3)               # 床頭板雕花
+        R(x,y+9,T,T-9,WINE); R(x,y+9,T,2,WINE2)
+        px_=x+4 if left else x+2
+        R(px_,y+12,T-6,9,CREAM); R(px_,y+12,T-6,2,(245,240,228)); R(px_,y+20,T-6,1,CREAM2)   # 枕頭
+        R(x,y+23,T,9,WINE2); R(x,y+23,T,1,GOLD); R(x,y+24,T,1,GOLD2)                       # 被子上緣金邊
     else:
-        R(x,y,T,T,WINE2); R(x+2,y,T-4,T-8,WINE2)
-        for i in range(4): R(x+2,y+2+i*6,T-4,1,WINE3)  # 被子皺摺
-        for i in range(3): R(x+4+i*9,y+9,6,1,WINE)
+        R(x,y,T,T,WINE2)
+        for i in range(4): R(x,y+1+i*6,T,1,WINE3)
+        for i in range(2): R(x+6+i*14,y+9,8,1,WINE)
+        # 被面上的菱形金紋
+        cx=x+16; 
+        for k in range(-4,5): P(cx+k,y+14+abs(k)-4,GOLD2); P(cx+k,y+14-abs(k)+4,GOLD2)
         R(x,y+T-8,T,8,WOOD2); R(x,y+T-8,T,1,GOLD2); R(x,y+T-2,T,2,WOOD3); shadow_below(x,y,2)
-    R(x,y,1,T,WOOD3); R(x+T-1,y,1,T,WOOD3)
+    if left: R(x,y,2,T,WOOD3)
+    else: R(x+T-2,y,2,T,WOOD3)
 def trophy(x,y):
     wall(x,y)
     R(x+1,y+22,T-2,3,WOOD2); R(x+1,y+22,T-2,1,WOOD4); R(x+1,y+25,T-2,1,INK)
@@ -202,8 +209,8 @@ for yy,row in enumerate(MAP):
         elif t=='W': window(x,y,left=row[xx-1]!='W')
         elif t=='B': bookshelf(x,y,top=MAP[yy-1][xx]!='B',bottom=MAP[yy+1][xx]!='B')
         elif t=='D': desk(x,y,top=MAP[yy-1][xx]!='D',right=row[xx-1]=='D')
-        elif t=='b': bed(x,y,True)
-        elif t=='d': bed(x,y,False)
+        elif t=='b': bed(x,y,True,row[xx-1]!='b')
+        elif t=='d': bed(x,y,False,row[xx-1]!='d')
         elif t=='S': trophy(x,y)
         elif t=='C': candle(x,y)
         elif t=='P': wall(x,y,top=(yy==0))

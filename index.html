@@ -132,7 +132,7 @@ const TALK={
  M:{name:'唱機',text:''},
  G:{name:'門墊',text:'門墊上寫著：歡迎來到安谷屋。門不給開，你在裡面就好。'},
  cat_poe:{go:'https://caveduck.io/zh-hant/share/characters/2c0f1bf4-9581-46d4-aade-e126f5d2b942?rc=ku1A1yGuNy',name:'艾倫波',text:'黑貓穿著西裝縮成一團，異色的眼睛睜開看你一眼。「……這份腳本的 D 軸有問題。」然後又睡了。'},
- cat_ono:{go:'https://caveduck.io/zh-hant/share/characters/cc642f68-afe1-46ed-82a6-b6c076ad88b0?rc=ku1A1yGuNy',name:'奧諾依',text:'純白的貓貴婦趴在書架頂端，珍珠項鍊垂在爪子邊。「喵安～我是奧諾依。您這個狀態欄……Ohnyo！放心，我會溫柔地幫您重造。」她瞄了一眼地毯上那團黑西裝，又把視線收回來。'},
+ cat_ono:{go:'https://caveduck.io/zh-hant/share/characters/cc642f68-afe1-46ed-82a6-b6c076ad88b0?rc=ku1A1yGuNy',name:'奧諾依',text:'純白的貓貴婦坐在獎盃架下，珍珠項鍊垂在爪子邊。「喵安～我是奧諾依。您這個狀態欄……Ohnyo！放心，我會溫柔地幫您重造。」她瞄了一眼地毯上那團黑西裝，又把視線收回來。'},
  cat_bau:{go:'https://caveduck.io/zh-hant/share/characters/dadc87a6-48f4-4e18-bcbf-39e30fc5b5ee?rc=ku1A1yGuNy',name:'波特萊爾',text:'紅捲髮垂到眼睛的暹羅貓趴在寫字桌上，壓著你的卡稿。惡之華沙龍的主人，貓街養花的嚮導。他冷漠看透、不奉承，只看著你怎麼照顧那朵花，從不告訴你那代表什麼。尾巴掃了一下墨水瓶。'},
  cat_col:{go:'https://caveduck.io/zh-hant/share/characters/5d6838ed-47d8-42b5-813d-c9154908adbb?rc=ku1A1yGuNy',name:'苛麗特',text:'薑黃虎斑貓坐在床頭，爪子下壓著一本法典。「聲音指紋還沒蒸餾乾淨，拿回去。」'},
  cat_gal:{go:'https://caveduck.io/zh-hant/share/characters/5af2f97a-8d98-45c5-ab0f-16f890369c4d?rc=ku1A1yGuNy',name:'蓋珞普',text:'三花貓在地毯上翻肚。「溫度可以，餘韻再等等。」她指的是你的卡，不是地毯。'},
@@ -181,19 +181,48 @@ const BUCK={id:'buck',x:7,y:4,dir:1,timer:60,mx:0,my:0,moving:false,name:'巴克
 /* 貓：id、格子座標、畫法 */
 const CATS=[
  {id:'cat_poe',x:10,y:5,c:['#111','#d4a017',['#2a9df4','#d4a017']]},   // 黑貓 西裝 藍黃異瞳
- {id:'cat_ono',x:2,y:3,c:['#f6f6f6','#e9dfd0','#7fd8e8']}, // 奧諾依 白貓 珍珠項鍊 水藍眼
+ {id:'cat_ono',x:1,y:2,c:['#f6f6f6','#e9dfd0','#7fd8e8']}, // 奧諾依 白貓 珍珠項鍊 水藍眼
  {id:'cat_col',x:14,y:3,c:['#e08a2e','#f6c27a','#6b0f1a']},// 薑黃
  {id:'cat_gal',x:4,y:6,c:['#f4ecdc','#e08a2e','#222']},    // 三花
  {id:'cat_gar',x:3,y:3,c:['#9a6a3c','#5a3a1e',['#2e8b3a','#d4a017']]},   // 咖啡色虎斑 禮帽 綠黃異瞳
  {id:'cat_bau',x:2,y:6,c:['#e8dcc8','#b03030','#4a6fd6']}    // 波特萊爾 暹羅 紅捲髮 趴在寫字桌上
 ];
 
+/* 窗外的巡查相馬：玩家站到窗戶正下方那排、左右一格內就會出現 */
+const SOMA={url:'https://caveduck.io/zh-hant/share/characters/97199d6f-cfc1-4548-80a2-9d747ba12ebb?rc=ku1A1yGuNy',at:null,timer:0};
+/* 只用最右邊那扇窗（靠床那側）；相馬從右側窗格斜斜探進來 */
+let SOMA_WIN=null;for(let y=0;y<H;y++)for(let x=W-1;x>=0&&!SOMA_WIN;x--)if(MAP[y][x]==='W')SOMA_WIN=[x,y];
+function somaUpdate(){SOMA.at=null;
+  if(SOMA_WIN){const [wx,wy]=SOMA_WIN;if(P.y===wy+1&&P.x>=wx-2&&P.x<=wx+1)SOMA.at=SOMA_WIN;}
+  SOMA.timer=SOMA.at?SOMA.timer+1:0;}
+const somaCv=document.createElement('canvas');somaCv.width=32;somaCv.height=40;const sctx=somaCv.getContext('2d');
+function drawSoma(x,y,t){
+  const k=(t>>4)&1;const c=sctx;c.clearRect(0,0,32,40);const q=(a,b,w,h,col)=>{c.fillStyle=col;c.fillRect(a,b,w,h)};
+  // 在離屏畫一個正的相馬（上半身），之後再斜
+  q(9,6,14,5,'#1c1a24');q(8,10,16,2,'#2a2734');q(14,7,4,2,'#c9a227');          // 制帽
+  q(10,12,12,9,'#cfae90');q(12,15,2,2,'#1c1a24');q(18,15,2,2,'#1c1a24');q(13,18,6,1,'#8a5a4a'); // 臉（背光偏暗）
+  q(12,13,1,1,'#b04a4a');q(19,13,1,1,'#b04a4a');                                   // 耳尖紅
+  q(6,21,20,12,'#1c1a24');q(15,21,2,12,'#c9a227');q(8,22,16,1,'#c9a227');          // 制服
+  const hx=2,hy=14-k*2;q(hx,hy,5,6,'#cfae90');q(hx+1,hy-2,3,2,'#cfae90');          // 左手貼玻璃（在他的左側＝畫面左）
+  if(k){q(hx-1,hy-3,1,1,'#fff');q(hx-2,hy+1,1,1,'#fff');q(hx-1,hy+5,1,1,'#fff');}
+  // 窗格範圍：這格是右扇窗（左緣無窗簾、右緣 8px 是窗簾）
+  const px0=x,py0=y+4,pw=24,ph=24;
+  ctx.save();ctx.beginPath();ctx.rect(px0,py0,pw,ph);ctx.clip();
+  // 逐列位移：頭往左上探、身體在右下，形成斜角；整體往右下偏，像從窗角探進來
+  for(let r=0;r<40;r++){const lean=Math.round((r-6)*0.3);ctx.drawImage(somaCv,0,r,32,1,px0-2+lean,py0-5+r,32,1);}
+  // 玻璃：反光斜線＋窗櫺壓在他前面
+  ctx.fillStyle='rgba(255,255,255,.18)';for(let i=0;i<3;i++)ctx.fillRect(px0+4+i*8,py0,2,ph);
+  ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(px0,py0,pw,6);
+  ctx.restore();
+  ctx.fillStyle='#3a2a20';ctx.fillRect(px0,y+15,pw,1);
+  if(SOMA.timer>20&&((t>>5)&1)){ctx.fillStyle='#0a0809';ctx.fillRect(x+4,y-14,30,12);ctx.fillStyle='#e8e0d0';ctx.font='10px DotGothic16,monospace';ctx.fillText('叩叩',x+10,y-4);}
+}
 /* 玩家 */
 const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
 const ASSETS={}; // name -> Image
-const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room'];
+const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room','soma'];
 let loaded=0;
 ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/':'img/sprites/')+n+'.png';});
 
@@ -279,6 +308,7 @@ function render(){tick++;
       case 'G':useImg('mat')||drawMat(X,Y);break;
       case 'M':useImg('gramophone')||drawGramophone(X,Y,tick);break;
     }}
+  if(SOMA.at){ASSETS.soma?ctx.drawImage(ASSETS.soma,SOMA.at[0]*T,SOMA.at[1]*T,T,T):drawSoma(SOMA.at[0]*T,SOMA.at[1]*T,tick);}
   CATS.forEach(c=>{if(ASSETS[c.id])ctx.drawImage(ASSETS[c.id],c.x*T,c.y*T,T,T);else drawCat(c.x*T,c.y*T,c.c,tick+c.x*7);});
   if(ASSETS.buck)ctx.drawImage(ASSETS.buck,BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,T,T);else drawBuck(BUCK.x*T+BUCK.mx,BUCK.y*T+BUCK.my,tick);
   // 玩家（走路插值）
@@ -330,6 +360,8 @@ function front(){const [dx,dy]=P.dir==='up'?[0,-1]:P.dir==='down'?[0,1]:P.dir===
 const dlg=document.getElementById('dlg'),dname=document.getElementById('dname'),dtext=document.getElementById('dtext'),dhint=document.getElementById('dhint');
 let dlgOpen=false,dlgGo=null,typing=null;
 function openDlg(key){let d=TALK[key];
+  if(key==='W'&&SOMA.at){{
+    d={name:'相馬大輔',text:'玻璃外面站著一個穿制服的男人，正帽，手還貼在窗上。「夜間巡邏。這間屋子……有迷信之嫌。開門，我要取締。」他耳尖比臉先紅。要去 1930 年的大稻埕嗎？',go:SOMA.url};}}
   if(key==='b'){const now=new Date(),h=now.getHours()+now.getMinutes()/60;const asleep=(h>=22.5||h<6);
     d={name:'床',text:asleep?'被子裡有人。安谷十點半就睡了，別吵，有事明天再說。':'黑絲絨床罩鋪得很整齊，枕頭底下壓著沒寫完的卡。安谷十點半準時睡，現在還沒到。'};TALK.b=d;}
   if(key==='M'){setBgm(!bgmOn);d={name:'唱機',text:bgmOn?'唱針放下去了。柯賴里《佛利亞變奏曲》，米爾斯坦演奏。':'唱針抬起來了。房間安靜下來。'};TALK.M=d;}
@@ -383,7 +415,7 @@ if(BGM_YT){
 setBgm(bgmOn);
 
 /* ---------- 主迴圈 ---------- */
-function loop(){tryMove();stepMove();buckWander();render();requestAnimationFrame(loop);}
+function loop(){tryMove();stepMove();buckWander();somaUpdate();render();requestAnimationFrame(loop);}
 loop();
 </script>
 </body>

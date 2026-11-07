@@ -4,10 +4,15 @@ index.html   首頁：RPG 像素房間（方向鍵移動、空白鍵互動）
 cards.html   角色卡 / worlds.html 世界觀 / about.html 關於我 / awards.html 得獎 / links.html 書籤
 style.css    內頁樣式（首頁樣式寫在 index.html 裡面）
 
+房間底圖：img/room.png（512x352，一格 32px）。這張是用 paint_room.py 畫出來的靜態底圖，
+  要改房間直接用 Aseprite 之類的軟體在這張 PNG 上畫就好，不用動程式。
+  注意：底圖只負責外觀，哪些格子能走是看 index.html 的 MAP，兩邊要對得上。
+  燭火、唱機、貓、巴克、玩家是程式另外疊上去的，不在底圖裡。
+
 換成自己畫的像素圖：
   每張 32x32 PNG，透明背景，放進 img/sprites/，檔名要一模一樣：
-  floor wall rug window bookshelf desk bed_head bed_foot trophy candle frame mat
-  player cat_poe cat_bau cat_col cat_gal cat_gar
+  floor wall rug window bookshelf desk bed_head bed_foot trophy candle frame mat gramophone
+  player cat_poe cat_ono cat_col cat_gal cat_gar
   有檔案就自動用檔案，沒有就用程式畫的佔位圖。
 
 改房間格局：index.html 裡的 MAP 陣列，一個字元一格（圖例寫在旁邊）。

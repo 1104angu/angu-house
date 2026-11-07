@@ -315,7 +315,9 @@ function render(){tick++;
   const px_=P.x*T+P.mx, py_=P.y*T+P.my;
   if(ASSETS.player)ctx.drawImage(ASSETS.player,px_,py_,T,T);else drawPlayer(px_,py_);
   // 面前有東西時的提示
-  if(!dlgOpen){const f=front();if(f.key){px(px_+12,py_-10,8,8,'#c9a227');px(px_+14,py_-8,4,4,'#0a0809');px(px_+15,py_-7,2,1,'#c9a227');}}
+  if(!dlgOpen){const f=front();if(f.key){const bb=(tick>>4)&1,ex=px_+14,ey=py_-14-bb;
+    px(ex-1,ey-1,5,9,'#0a0809');px(ex-1,ey+9,5,3,'#0a0809');   // 黑底描邊
+    px(ex,ey,3,7,'#f0d27a');px(ex,ey+9,3,2,'#f0d27a');px(ex+1,ey,1,7,'#fff');}}   // 驚嘆號
   // 光：先整體壓暗，再加回「窗光投影」（斜四邊形）與燭光
   ctx.fillStyle='rgba(6,3,10,.30)';ctx.fillRect(0,0,512,288);
   ctx.save();ctx.globalCompositeOperation='lighter';

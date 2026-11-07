@@ -119,14 +119,16 @@ const T=32, W=16, H=9;
 const cv=document.getElementById('c'), ctx=cv.getContext('2d'); ctx.scale(2,2); ctx.imageSmoothingEnabled=false;
 const ROOM_HAS_FLAMES=true; // 底圖已經畫了燭火，就不再疊程式畫的火苗
 const ROOM_HAS_LIGHT=true;  // 底圖已經畫了窗光，程式只留很淡的燭光閃爍
+// 相馬出現的玻璃範圍（靠床那扇窗，邏輯座標 512x288）。換底圖時量一下窗玻璃的位置改這裡；設成 null 就用程式畫的窗。
+const SOMA_PANE={x:336,y:24,w:38,h:24,ox:3,oy:-3};
 
 /* 地圖：每個字元一格
    # 牆  . 地板  r 地毯  W 窗  B 書架  D 書桌(含電腦)  b 床頭 d 床尾  S 獎盃架  C 燭台  P 畫框  G 門墊
    物件格都不能走 */
 const MAP=[
 "#######PP#######",
-"#SS#WW#PP#WW####",
-"#.....C.....bb.#",
+"####WW#PP#WW####",
+"#SS...C.....bb.#",
 "#BB.........dd.#",
 "#BB......rrrr..#",
 "#........rrrr.M#",
@@ -191,10 +193,10 @@ const BUCK={id:'buck',x:7,y:4,dir:1,timer:60,mx:0,my:0,moving:false};
 /* 貓：id、格子座標、畫法 */
 const CATS=[
  {id:'cat_poe',x:10,y:5,c:['#111','#d4a017',['#2a9df4','#d4a017']]},   // 黑貓 西裝 藍黃異瞳
- {id:'cat_ono',x:1,y:2,c:['#f6f6f6','#e9dfd0','#7fd8e8']}, // 奧諾依 白貓 珍珠項鍊 水藍眼
- {id:'cat_col',x:14,y:3,c:['#e08a2e','#f6c27a','#6b0f1a']},// 薑黃
+ {id:'cat_ono',x:2,y:5,c:['#f6f6f6','#e9dfd0','#7fd8e8']}, // 奧諾依 白貓 珍珠項鍊 水藍眼
+ {id:'cat_col',x:14,y:4,c:['#e08a2e','#f6c27a','#6b0f1a']},// 薑黃
  {id:'cat_gal',x:4,y:6,c:['#f4ecdc','#e08a2e','#222']},    // 三花
- {id:'cat_gar',x:3,y:3,c:['#9a6a3c','#5a3a1e',['#2e8b3a','#d4a017']]},   // 咖啡色虎斑 禮帽 綠黃異瞳
+ {id:'cat_gar',x:4,y:3,c:['#9a6a3c','#5a3a1e',['#2e8b3a','#d4a017']]},   // 咖啡色虎斑 禮帽 綠黃異瞳
  {id:'cat_bau',x:2,y:6,c:['#e8dcc8','#b03030','#4a6fd6']}    // 波特萊爾 暹羅 紅捲髮 趴在寫字桌上
 ];
 
@@ -206,6 +208,7 @@ function somaUpdate(){SOMA.at=null;
   if(SOMA_WIN){const [wx,wy]=SOMA_WIN;if(P.y===wy+1&&P.x>=wx-2&&P.x<=wx+1)SOMA.at=SOMA_WIN;}
   SOMA.timer=SOMA.at?SOMA.timer+1:0;}
 const somaCv=document.createElement('canvas');somaCv.width=32;somaCv.height=40;const sctx=somaCv.getContext('2d');
+const shadowCv=document.createElement('canvas');shadowCv.width=32;shadowCv.height=40;const shctx=shadowCv.getContext('2d');
 function drawSoma(x,y,t){
   const k=(t>>4)&1;const c=sctx;c.clearRect(0,0,32,40);const q=(a,b,w,h,col)=>{c.fillStyle=col;c.fillRect(a,b,w,h)};
   // 在離屏畫一個正的相馬（上半身），之後再斜
@@ -216,15 +219,23 @@ function drawSoma(x,y,t){
   const hx=2,hy=14-k*2;q(hx,hy,5,6,'#cfae90');q(hx+1,hy-2,3,2,'#cfae90');          // 左手貼玻璃（在他的左側＝畫面左）
   if(k){q(hx-1,hy-3,1,1,'#fff');q(hx-2,hy+1,1,1,'#fff');q(hx-1,hy+5,1,1,'#fff');}
   // 窗格範圍：這格是右扇窗（左緣無窗簾、右緣 8px 是窗簾）
-  const px0=x,py0=y+4,pw=24,ph=24;
+  // 窗格範圍（邏輯座標）。用自己畫的底圖時，直接寫死成那扇窗玻璃的位置
+  const PANE=SOMA_PANE||{x:x,y:y+4,w:24,h:24};const px0=PANE.x,py0=PANE.y,pw=PANE.w,ph=PANE.h;
   ctx.save();ctx.beginPath();ctx.rect(px0,py0,pw,ph);ctx.clip();
   // 逐列位移：頭往左上探、身體在右下，形成斜角；整體往右下偏，像從窗角探進來
-  for(let r=0;r<40;r++){const lean=Math.round((r-6)*0.3);ctx.drawImage(somaCv,0,r,32,1,px0-2+lean,py0-5+r,32,1);}
-  // 玻璃：反光斜線＋窗櫺壓在他前面
-  ctx.fillStyle='rgba(255,255,255,.18)';for(let i=0;i<3;i++)ctx.fillRect(px0+4+i*8,py0,2,ph);
-  ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(px0,py0,pw,6);
+  if(SOMA_PANE)ctx.globalAlpha=1;
+  for(let r=0;r<40;r++){const lean=Math.round((r-6)*0.3);ctx.drawImage(somaCv,0,r,32,1,px0+(SOMA_PANE?SOMA_PANE.ox:-2)+lean,py0+(SOMA_PANE?SOMA_PANE.oy:-5)+r,32,1);}
+  ctx.globalAlpha=1;
+  // 玻璃：把底圖的那塊窗（含窗櫺、窗光）半透明蓋回他身上，他就在玻璃後面；再補一點反光
+  if(SOMA_PANE&&ASSETS.room){ctx.globalAlpha=0.38;ctx.imageSmoothingEnabled=true;const sx=px0*ASSETS.room.width/512,sy=py0*ASSETS.room.height/288,sw=pw*ASSETS.room.width/512,sh=ph*ASSETS.room.height/288;
+    ctx.drawImage(ASSETS.room,sx,sy,sw,sh,px0,py0,pw,ph);ctx.imageSmoothingEnabled=false;ctx.globalAlpha=1;}
+  else{ctx.fillStyle='rgba(255,255,255,.18)';for(let i=0;i<3;i++)ctx.fillRect(px0+4+i*8,py0,2,ph);ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(px0,py0,pw,6);}
   ctx.restore();
-  ctx.fillStyle='#3a2a20';ctx.fillRect(px0,y+15,pw,1);
+  // 影子：背光的人影投在窗下的地板光裡，拉長、往下倒、微微斜
+  if(SOMA_PANE){shctx.clearRect(0,0,32,40);shctx.drawImage(somaCv,0,0);shctx.globalCompositeOperation='source-in';shctx.fillStyle='#1a0c10';shctx.fillRect(0,0,32,40);shctx.globalCompositeOperation='source-over';
+    const sill=py0+ph+2,sk=0.18,st=1.7;ctx.save();ctx.globalAlpha=0.32;ctx.setTransform(2,0,0,2,0,0); // 畫布是 2 倍，先回到邏輯座標
+    ctx.transform(1,0,sk,-st,px0+SOMA_PANE.ox+4,sill+st*40);ctx.drawImage(shadowCv,0,0);ctx.restore();ctx.setTransform(2,0,0,2,0,0);}
+  if(!SOMA_PANE){ctx.fillStyle='#3a2a20';ctx.fillRect(px0,y+15,pw,1);}
   if(SOMA.timer>20&&((t>>5)&1)){ctx.fillStyle='#0a0809';ctx.fillRect(x+4,y-14,30,12);ctx.fillStyle='#e8e0d0';ctx.font='10px DotGothic16,monospace';ctx.fillText(window.t('ui.knock'),x+10,y-4);}
 }
 /* 玩家 */

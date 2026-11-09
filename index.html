@@ -111,7 +111,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
 <div class="toggles" id="toggles"></div>
 <div class="keys" data-i18n="ui.keys"></div>
 
-<nav class="main"><a href="index.html" class="on" data-i18n="nav.room"></a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank" data-i18n="nav.cards"></a><a href="worlds.html" data-i18n="nav.worlds"></a><a href="about.html" data-i18n="nav.about"></a><a href="awards.html" data-i18n="nav.awards"></a><a href="links.html" data-i18n="nav.links"></a></nav>
+<nav class="main"><a href="index.html" class="on" data-i18n="nav.room"></a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank" data-i18n="nav.cards"></a><a href="worlds.html" data-i18n="nav.worlds"></a><a href="games.html" data-i18n="nav.games"></a><a href="about.html" data-i18n="nav.about"></a><a href="awards.html" data-i18n="nav.awards"></a><a href="links.html" data-i18n="nav.links"></a></nav>
 <footer><span data-i18n="footer"></span><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">CAVEDUCK @angu_</a> ｜ <a href="https://www.threads.com/@1104angu_" target="_blank" data-i18n="footer.threads"></a></footer>
 </div>
 
@@ -140,7 +140,7 @@ const MAP=[
 "#BB......rrrr..#",
 "#........rrrr.M#",
 "#DD............#",
-"#DD....GG.....C#",
+"#DD....GG.X...C#",
 "################"];
 
 /* 互動：key 對應地圖字元或貓的 id */
@@ -159,7 +159,8 @@ function buildTalk(){TALK={
  C:{name:t('talk.C.name'),text:t('talk.C')},
  r:{name:t('talk.r.name'),text:t('talk.r')},
  M:{name:t('talk.M.name'),text:''},
- G:{name:t('talk.G.name'),text:t('talk.G')}};
+ G:{name:t('talk.G.name'),text:t('talk.G')},
+ X:{name:t('talk.X.name'),text:t('talk.X'),go:'games.html'}};
  for(const id in CAT_URL)TALK[id]={go:'https://caveduck.io/zh-hant/share/characters/'+CAT_URL[id]+'?rc=ku1A1yGuNy',name:t('cat.'+id.slice(4)+'.name'),text:t('cat.'+id.slice(4))};
 }
 
@@ -248,9 +249,9 @@ function drawSoma(x,y,t){
 const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
-const ROOM_VER=8; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
+const ROOM_VER=10; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
 const ASSETS={}; // name -> Image
-const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','room','soma','player_down','player_down2','player_left','player_upleft','player_up','buck_down','buck_down2','buck_left','buck_upleft','buck_up'];
+const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','statue','room','soma','player_down','player_down2','player_left','player_upleft','player_up','buck_down','buck_down2','buck_left','buck_upleft','buck_up'];
 let loaded=0;
 ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/room.png?v='+ROOM_VER:'img/sprites/'+n+'.png?v='+ROOM_VER);});
 
@@ -425,7 +426,7 @@ function drawPlayer(x,y){const f=P.moving?(1+((P.step>>3)&1)):0;
 
 /* 格子型別 */
 function tile(cx,cy){return (MAP[cy]||'')[cx]||'#';}
-function solid(cx,cy){const t=tile(cx,cy);return t==='#'||'WBDSbdCPM'.includes(t)||CATS.some(c=>c.x===cx&&c.y===cy)||(BUCK.x===cx&&BUCK.y===cy)||(BUCK.moving&&BUCK.tx===cx&&BUCK.ty===cy);}
+function solid(cx,cy){const t=tile(cx,cy);return t==='#'||'WBDSbdCPMX'.includes(t)||CATS.some(c=>c.x===cx&&c.y===cy)||(BUCK.x===cx&&BUCK.y===cy)||(BUCK.moving&&BUCK.tx===cx&&BUCK.ty===cy);}
 
 /* ---------- 渲染 ---------- */
 let tick=0;
@@ -435,6 +436,8 @@ function render(){tick++;
     ctx.imageSmoothingEnabled=true;ctx.drawImage(ASSETS.room,0,0,512,288);ctx.imageSmoothingEnabled=false;
     for(let y=0;y<H;y++)for(let x=0;x<W;x++){const t=MAP[y][x];
       if(t==='C'&&!ROOM_HAS_FLAMES)drawFlame(x*T,y*T,tick);
+      if(t==='X'){const im=ASSETS.statue;if(im){const h=36,w=im.width*h/im.height;ctx.drawImage(im,x*T+16-w/2,y*T+32-h,w,h);}
+        else{const X=x*T,Y=y*T;px(X+8,Y+26,16,5,'#cfc8bd');px(X+8,Y+26,16,1,'#e8e2d8');px(X+11,Y+18,10,8,'#e8e2d8');px(X+12,Y+8,8,10,'#f2eee8');px(X+11,Y+6,10,4,'#e8e2d8');px(X+13,Y+12,2,1,'#b9b1a6');px(X+17,Y+12,2,1,'#b9b1a6');px(X+15,Y+15,2,1,'#b9b1a6');}}
       if(t==='M'){const im=ASSETS.gramophone;if(im){const h=34,w=im.width*h/im.height,bob=bgmOn?((tick>>4)&1):0;ctx.drawImage(im,x*T+16-w/2,y*T+32-h-bob,w,h);
           if(bgmOn){const n=(tick>>4)&1;px(x*T+24,y*T-2-n*3,2,2,'#f0d27a');px(x*T+28,y*T+3-n*2,2,2,'#f0d27a');}}
         else drawGramophone(x*T,y*T,tick);}}

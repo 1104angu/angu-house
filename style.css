@@ -120,3 +120,9 @@ footer::before{content:"❦";display:block;color:var(--gold2);font-size:20px;mar
 .below{margin-top:18px}
 .below .box{margin-bottom:18px}
 @media (max-width:720px){.hero{grid-template-columns:1fr}.portrait{position:static;width:min(260px,80%);margin:0 auto 6px}.hero-text{text-align:left}}
+
+/* 小遊戲 */
+.game-state{margin:10px 0 0;letter-spacing:.15em}
+.game-state.locked{color:var(--muted)}
+.btn{display:inline-block;padding:8px 20px;background:var(--wine);color:#fff;border:2px solid var(--gold);text-decoration:none;letter-spacing:.2em}
+.btn:hover{background:#8a1424;color:#fff}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小遊戲｜安谷屋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="i18n.js"></script>
+<script src="bgm.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">
+    <div class="seal">谷</div>
+    <div><h1>安谷屋</h1><small>ANGU'S CHAMBER</small></div>
+  </div>
+  <div class="motto" data-i18n="site.motto"></div>
+</header>
+<div class="page">
+<h2 data-i18n="games.title"></h2>
+<p class="lead" data-i18n="games.lead"></p>
+<div class="box game" data-open="2026-11-17" data-url="">
+  <h3 data-i18n="games.pan.title"></h3>
+  <p data-i18n="games.pan.desc"></p>
+  <p class="game-state locked"><span data-i18n="games.locked"></span></p>
+  <p class="game-state open" style="display:none"><a class="btn" href="#" target="_blank" data-i18n="games.play"></a></p>
+</div>
+</div>
+<script>
+// 到了開放日而且填了網址，鎖頭就換成按鈕；網址填在上面 data-url
+document.querySelectorAll('.game').forEach(g=>{const open=new Date(g.dataset.open+'T00:00:00');const url=g.dataset.url;
+  if(url&&new Date()>=open){g.querySelector('.locked').style.display='none';const o=g.querySelector('.open');o.style.display='';o.querySelector('a').href=url;}});
+</script>
+<nav class="main"><a href="index.html" data-i18n="nav.room"></a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank" data-i18n="nav.cards">角色卡</a><a href="worlds.html" data-i18n="nav.worlds"></a><a href="games.html" class=on data-i18n="nav.games"></a><a href="about.html" data-i18n="nav.about"></a><a href="awards.html" data-i18n="nav.awards"></a><a href="links.html" data-i18n="nav.links"></a></nav>
+<footer><span data-i18n="footer"></span><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">CAVEDUCK @angu_</a> ｜ <a href="https://www.threads.com/@1104angu_" target="_blank" data-i18n="footer.threads"></a></footer>
+</div>
+</body>
+</html>

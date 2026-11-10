@@ -132,7 +132,7 @@ const cv=document.getElementById('c'), ctx=cv.getContext('2d'); ctx.scale(2,2); 
 const ROOM_HAS_FLAMES=true; // 底圖已經畫了燭火，就不再疊程式畫的火苗
 const ROOM_HAS_LIGHT=true;  // 底圖已經畫了窗光，程式只留很淡的燭光閃爍
 // 相馬出現的玻璃範圍（靠床那扇窗，邏輯座標 512x288）。換底圖時量一下窗玻璃的位置改這裡；設成 null 就用程式畫的窗。
-const SOMA_PANE={x:334,y:23,w:38,h:25,ox:3,oy:-3};
+const SOMA_PANE={x:144,y:23,w:37,h:25,ox:3,oy:-3}; // 左邊那扇窗（右窗下面被沙發和妮鴿擋住，走不到）
 
 /* 地圖：每個字元一格
    # 牆  . 地板  r 地毯  W 窗  B 書架  D 書桌(含電腦)  b 床頭 d 床尾  S 獎盃架  C 燭台  P 畫框  G 門墊  F 沙發  T 茶几  V 電視背面
@@ -237,7 +237,7 @@ const CATS=[
 /* 窗外的巡查相馬：玩家站到窗戶正下方那排、左右一格內就會出現 */
 const SOMA={url:'https://caveduck.io/zh-hant/share/characters/97199d6f-cfc1-4548-80a2-9d747ba12ebb?rc=ku1A1yGuNy',at:null,timer:0};
 /* 只用最右邊那扇窗（靠床那側）；相馬從右側窗格斜斜探進來 */
-let SOMA_WIN=null;for(let y=0;y<H;y++)for(let x=W-1;x>=0&&!SOMA_WIN;x--)if(MAP[y][x]==='W')SOMA_WIN=[x,y];
+let SOMA_WIN=null;for(let y=0;y<H;y++)for(let x=0;x<W&&!SOMA_WIN;x++)if(MAP[y][x]==='W')SOMA_WIN=[x,y]; // 從左邊找第一扇窗
 function somaUpdate(){SOMA.at=null;
   if(SOMA_WIN){const [wx,wy]=SOMA_WIN;if(P.y===wy+1&&P.x>=wx-2&&P.x<=wx+1)SOMA.at=SOMA_WIN;}
   SOMA.timer=SOMA.at?SOMA.timer+1:0;}

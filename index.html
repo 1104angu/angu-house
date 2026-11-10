@@ -3,10 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="安谷 @angu_">
+<meta name="copyright" content="© 2026 安谷 @angu_. 安谷屋 since 2026-11-07. All rights reserved.">
+<!-- 安谷屋 Angu's Chamber｜原創：安谷 @angu_（CAVEDUCK）｜2026-11-07 建站｜未經同意請勿轉載或仿製 -->
+
 <title>安谷屋</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
 <script src="i18n.js"></script>
+<script src="friends.js"></script>
 <style>
 :root{--bg:#0a0809;--gold:#c9a227;--gold2:#8a6d1c;--wine:#6b0f1a;--ink:#e8e0d0;--muted:#9a8f85}
 *{box-sizing:border-box}
@@ -112,7 +117,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.2em;m
 <div class="keys" data-i18n="ui.keys"></div>
 
 <nav class="main"><a href="index.html" class="on" data-i18n="nav.room"></a><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank" data-i18n="nav.cards"></a><a href="worlds.html" data-i18n="nav.worlds"></a><a href="games.html" data-i18n="nav.games"></a><a href="about.html" data-i18n="nav.about"></a><a href="awards.html" data-i18n="nav.awards"></a><a href="links.html" data-i18n="nav.links"></a></nav>
-<footer><span data-i18n="footer"></span><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">CAVEDUCK @angu_</a> ｜ <a href="https://www.threads.com/@1104angu_" target="_blank" data-i18n="footer.threads"></a></footer>
+<footer><span data-i18n="footer"></span><a href="https://caveduck.io/zh-hant/user/angu_" target="_blank">CAVEDUCK @angu_</a> ｜ <a href="https://www.threads.com/@1104angu_" target="_blank" data-i18n="footer.threads"></a><div class="ver"></div></footer>
 </div>
 
 <script>
@@ -130,16 +135,16 @@ const ROOM_HAS_LIGHT=true;  // 底圖已經畫了窗光，程式只留很淡的�
 const SOMA_PANE={x:334,y:23,w:38,h:25,ox:3,oy:-3};
 
 /* 地圖：每個字元一格
-   # 牆  . 地板  r 地毯  W 窗  B 書架  D 書桌(含電腦)  b 床頭 d 床尾  S 獎盃架  C 燭台  P 畫框  G 門墊
+   # 牆  . 地板  r 地毯  W 窗  B 書架  D 書桌(含電腦)  b 床頭 d 床尾  S 獎盃架  C 燭台  P 畫框  G 門墊  F 沙發  T 茶几  V 電視背面
    物件格都不能走 */
 const MAP=[
 "#######PP#######",
 "####WW#PP#WW####",
-"#SS...C.....bb.#",
-"#BB.........dd.#",
-"#BB......rrrr..#",
-"#........rrrr.M#",
-"#DD............#",
+"#SS...CFFFF.bb.#",
+"#BB.....TT..dd.#",
+"#BB.....VV.....#",
+"#.......rrrrr.M#",
+"#DD.....rrrrr..#",
 "#DD....GG.X...C#",
 "################"];
 
@@ -153,6 +158,10 @@ function buildTalk(){TALK={
  B:{name:t('talk.B.name'),text:t('talk.B'),go:'worlds.html'},
  S:{name:t('talk.S.name'),text:t('talk.S'),go:'awards.html'},
  P:{name:t('talk.P.name'),text:t('talk.P'),go:'about.html'},
+ F:{name:t('talk.P.name'),text:t('talk.P'),go:'about.html'}, // 沙發擋住畫像：面對沙發就看畫像（之後朋友坐上去再改成選單）
+ T:{name:t('talk.T.name'),text:t('talk.T')},
+ ...Object.fromEntries(FRIENDS.map(f=>{const d=(window.DELULU||{})[f.id]||{};return [f.id,{name:d.name||t('friend.anon'),text:d.line||t('friend.default'),go:d.site||'links.html#delulu'}];})),
+ V:{name:t('talk.V.name'),text:t('talk.V')}, // 之後有 YouTube 連結就加 go:'網址'
  W:{name:t('talk.W.name'),text:t('talk.W'),go:'links.html'},
  b:{name:t('talk.b.name'),text:''},
  d:{name:t('talk.b.name'),text:t('talk.d')},
@@ -199,6 +208,23 @@ const PITCH=()=>t('pitch');
 const BUCK={id:'buck',x:7,y:4,dir:1,timer:60,mx:0,my:0,moving:false};
 
 /* 貓：id、格子座標、畫法 */
+
+/* Delulu 企劃群的朋友坐哪裡。名字、網站、台詞在 friends.js。
+   sofa:true 的坐沙發，cx 是畫面上的中心點（邏輯座標）；其他的坐地上，x/y 是格子。
+   */
+const SOFA_FEET=101;
+const FRIENDS=[
+ {id:'dl_banana',  sofa:true,cx:243},
+ {id:'dl_pinkberet',sofa:true,cx:258},
+ {id:'dl_blueears',sofa:true,cx:272},
+ {id:'dl_orange',  sofa:true,cx:286},
+ {id:'dl_eggplant',sofa:true,cx:300},
+ {id:'dl_cherry',  sofa:true,cx:315},
+ {id:'dl_carrot',  x:3,y:6,ox:4,}, // 蓋珞普旁邊看書（ox 往右推一點，避開書桌）
+ {id:'dl_fish',    x:9,y:5,}, // 地毯上逗艾倫坡
+ {id:'dl_cow',     x:11,y:2}, // 沒位子，坐沙發旁地上
+];
+const floorFriend=(cx,cy)=>FRIENDS.find(f=>!f.sofa&&f.x===cx&&f.y===cy);
 const CATS=[
  {id:'cat_poe',x:10,y:5,c:['#111','#d4a017',['#2a9df4','#d4a017']]},   // 黑貓 西裝 藍黃異瞳
  {id:'cat_ono',x:2,y:5,c:['#f6f6f6','#e9dfd0','#7fd8e8']}, // 奧諾依 白貓 珍珠項鍊 水藍眼
@@ -249,9 +275,9 @@ function drawSoma(x,y,t){
 const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
-const ROOM_VER=10; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
+const ROOM_VER=16; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
 const ASSETS={}; // name -> Image
-const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','statue','room','soma','player_down','player_down2','player_left','player_upleft','player_up','buck_down','buck_down2','buck_left','buck_upleft','buck_up'];
+const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','statue','room','soma','player_down','player_down2','player_left','player_upleft','player_up','buck_down','buck_down2','buck_left','buck_upleft','buck_up','dl_banana','dl_pinkberet','dl_blueears','dl_orange','dl_eggplant','dl_cherry','dl_carrot','dl_fish','dl_cow'];
 let loaded=0;
 ASSET_NAMES.forEach(n=>{const im=new Image();im.onload=()=>{ASSETS[n]=im;};im.src=(n==='room'?'img/room.png?v='+ROOM_VER:'img/sprites/'+n+'.png?v='+ROOM_VER);});
 
@@ -426,7 +452,7 @@ function drawPlayer(x,y){const f=P.moving?(1+((P.step>>3)&1)):0;
 
 /* 格子型別 */
 function tile(cx,cy){return (MAP[cy]||'')[cx]||'#';}
-function solid(cx,cy){const t=tile(cx,cy);return t==='#'||'WBDSbdCPMX'.includes(t)||CATS.some(c=>c.x===cx&&c.y===cy)||(BUCK.x===cx&&BUCK.y===cy)||(BUCK.moving&&BUCK.tx===cx&&BUCK.ty===cy);}
+function solid(cx,cy){const t=tile(cx,cy);return t==='#'||'WBDSbdCPMXFTV'.includes(t)||CATS.some(c=>c.x===cx&&c.y===cy)||!!floorFriend(cx,cy)||(BUCK.x===cx&&BUCK.y===cy)||(BUCK.moving&&BUCK.tx===cx&&BUCK.ty===cy);}
 
 /* ---------- 渲染 ---------- */
 let tick=0;
@@ -460,6 +486,9 @@ function render(){tick++;
       case 'M':useImg('gramophone')||drawGramophone(X,Y,tick);break;
     }}
   if(SOMA.at)drawSoma(SOMA.at[0]*T,SOMA.at[1]*T,tick);
+  FRIENDS.forEach((f,i)=>{const im=ASSETS[f.id];if(!im)return;const w=im.width/2,h=im.height/2,bob=((tick+i*23)>>5)&1;
+    if(f.sofa)ctx.drawImage(im,Math.round(f.cx-w/2),SOFA_FEET-h-bob+(i%2),w,h);
+    else ctx.drawImage(im,Math.round(f.x*T+16-w/2+(f.ox||0)),f.y*T+31-h-bob,w,h);});
   CATS.forEach(c=>{const im=ASSETS[c.id];if(im){const h=24,w=im.width*h/im.height,bob=((tick+c.x*7)>>5)&1;ctx.drawImage(im,c.x*T+16-w/2,c.y*T+32-h-bob,w,h);}else drawCat(c.x*T,c.y*T,c.c,tick+c.x*7);});
   { // 巴克：四方向圖，頭（扭蛋機）跟身體分開晃
     const dirKey=BUCK.moving?(BUCK.ddy===-1?'up':BUCK.ddy===1?'down':BUCK.ddx===-1?'left':'right'):(BUCK.face||'down');if(BUCK.moving)BUCK.face=dirKey;
@@ -504,7 +533,35 @@ function render(){tick++;
   ctx.restore();
   // 暗角
   const g=ctx.createRadialGradient(256,144,110,256,144,290);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.38)');ctx.fillStyle=g;ctx.fillRect(0,0,512,288);
+  drawBubbles();
 }
+
+
+/* ---------- 沙發上的對話泡泡 ----------
+   台詞在 i18n.js 的 sofa.bubbles。同時最多兩個，不會冒在隔壁的人頭上。 */
+const BUBBLES=[];let bubbleNext=90;
+function bubbleTick(){for(let k=BUBBLES.length-1;k>=0;k--)if(tick-BUBBLES[k].born>BUBBLES[k].life)BUBBLES.splice(k,1);
+  if(dlgOpen||--bubbleNext>0)return;bubbleNext=140+Math.random()*160;if(BUBBLES.length>=2)return;
+  const lines=t('sofa.bubbles');if(!Array.isArray(lines)||!lines.length)return;
+  const cand=FRIENDS.map((f,i)=>i).filter(i=>FRIENDS[i].sofa&&!BUBBLES.some(b=>Math.abs(b.i-i)<=1));if(!cand.length)return;
+  const i=cand[Math.floor(Math.random()*cand.length)];let text,n=0;do{text=lines[Math.floor(Math.random()*lines.length)];}while(BUBBLES.some(b=>b.text===text)&&++n<8);
+  BUBBLES.push({i,text,born:tick,life:170+Math.random()*60});}
+function drawBubbles(){bubbleTick();const placed=[];
+  ctx.save();ctx.font='bold 7px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';ctx.textBaseline='middle';
+  BUBBLES.forEach(b=>{const f=FRIENDS[b.i],im=ASSETS[f.id];const h=im?im.height/2:28;
+    const age=tick-b.born;if(age<0)return;
+    const tw=Math.ceil(ctx.measureText(b.text).width),bw=tw+8,bh=12;
+    let bx=Math.round(Math.min(Math.max(f.cx-bw/2,2),510-bw)),by=Math.round(SOFA_FEET-h-bh-5-(age<6?6-age:0));
+    if(placed.some(r=>bx<r[0]+r[2]+2&&bx+bw+2>r[0]&&by<r[1]+r[3]+2&&by+bh+2>r[1]))by-=bh+4;
+    placed.push([bx,by,bw,bh]);
+    const ink='#4a2440',fill='#fff2fa',cx=Math.round(f.cx);
+    px(bx+1,by-1,bw-2,1,ink);px(bx+1,by+bh,bw-2,1,ink);px(bx-1,by+1,1,bh-2,ink);px(bx+bw,by+1,1,bh-2,ink);
+    px(bx,by,1,1,ink);px(bx+bw-1,by,1,1,ink);px(bx,by+bh-1,1,1,ink);px(bx+bw-1,by+bh-1,1,1,ink);
+    px(bx+1,by,bw-2,bh,fill);px(bx,by+1,bw,bh-2,fill);
+    const tx=Math.min(Math.max(cx,bx+4),bx+bw-5);px(tx-1,by+bh,3,1,fill);px(tx,by+bh+1,1,1,fill);
+    px(tx-2,by+bh,1,1,ink);px(tx+2,by+bh,1,1,ink);px(tx-1,by+bh+1,1,1,ink);px(tx+1,by+bh+1,1,1,ink);px(tx,by+bh+2,1,1,ink);
+    ctx.fillStyle=ink;ctx.fillText(b.text,bx+4,by+bh/2+.5);});
+  ctx.restore();}
 
 /* ---------- 移動 ---------- */
 const DIRS={ArrowUp:[0,-1,'up'],ArrowDown:[0,1,'down'],ArrowLeft:[-1,0,'left'],ArrowRight:[1,0,'right']};
@@ -526,10 +583,11 @@ function buckWander(){if(dlgOpen)return;if(BUCK.hold>0){BUCK.hold--;return;}
   if(!(BUCK.steps>0)){BUCK.steps=1+Math.floor(Math.random()*3);BUCK.dirPick=[[0,-1],[0,1],[-1,0],[1,0]][Math.floor(Math.random()*4)];}
   const d=BUCK.dirPick;const nx=BUCK.x+d[0],ny=BUCK.y+d[1];
   const t=tile(nx,ny);if(t!=='.'&&t!=='r')return;
-  if(CATS.some(c=>c.x===nx&&c.y===ny))return;if(nx===P.x&&ny===P.y)return;if(P.moving&&P.tx===nx&&P.ty===ny)return;
+  if(CATS.some(c=>c.x===nx&&c.y===ny)||floorFriend(nx,ny))return;if(ny<=3&&nx>=6&&nx<=11)return; // 不擋沙發上的人
+  if(nx===P.x&&ny===P.y)return;if(P.moving&&P.tx===nx&&P.ty===ny)return;
   BUCK.moving=true;BUCK.tx=nx;BUCK.ty=ny;BUCK.ddx=d[0];BUCK.ddy=d[1];}
 function front(){const [dx,dy]=P.dir==='up'?[0,-1]:P.dir==='down'?[0,1]:P.dir==='left'?[-1,0]:[1,0];const cx=P.x+dx,cy=P.y+dy;
-  if(BUCK.x===cx&&BUCK.y===cy&&!BUCK.moving)return{key:'buck'};const cat=CATS.find(c=>c.x===cx&&c.y===cy);if(cat)return{key:cat.id};const t=tile(cx,cy);return{key:TALK[t]?t:null};}
+  if(BUCK.x===cx&&BUCK.y===cy&&!BUCK.moving)return{key:'buck'};const cat=CATS.find(c=>c.x===cx&&c.y===cy);if(cat)return{key:cat.id};const fr=floorFriend(cx,cy);if(fr)return{key:TALK[fr.id]?fr.id:null};const t=tile(cx,cy);return{key:TALK[t]?t:null};}
 
 /* ---------- 對話框 ---------- */
 const dlg=document.getElementById('dlg'),dname=document.getElementById('dname'),dtext=document.getElementById('dtext'),dhint=document.getElementById('dhint');
@@ -563,8 +621,9 @@ function bfs(sx,sy,tx,ty){const prev=new Map();const q=[[sx,sy]];prev.set(sx+','
     for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){const nx=x+dx,ny=y+dy,kk=nx+','+ny;if(prev.has(kk)||!walkable(nx,ny))continue;prev.set(kk,x+','+y);q.push([nx,ny]);}}
   return null;}
 function goTo(tx,ty){if(dlgOpen)return;autoKey=null;
+  if(tile(tx,ty)==='P'){tx=8;ty=2;} // 點畫像：走到沙發前面看
   if(BUCK.x===tx&&BUCK.y===ty&&!BUCK.moving)BUCK.hold=240; // 點到巴克：他先站住等你走過去
-  const isCat=CATS.some(c=>c.x===tx&&c.y===ty)||(BUCK.x===tx&&BUCK.y===ty);
+  const isCat=CATS.some(c=>c.x===tx&&c.y===ty)||!!floorFriend(tx,ty)||(BUCK.x===tx&&BUCK.y===ty);
   const tt=tile(tx,ty);const target=isCat||TALK[tt]||tt==='W'||tt==='b'||tt==='d'||tt==='M';
   if(walkable(tx,ty)){path=bfs(P.x,P.y,tx,ty)||[];return;}
   if(!target)return;
@@ -579,6 +638,9 @@ function goTo(tx,ty){if(dlgOpen)return;autoKey=null;
   if(path.length===0)finishAuto();}
 function finishAuto(){if(autoKey){P.dir=autoKey.dir;autoKey=null;action();}}
 cv.addEventListener('pointerdown',e=>{if(dlgOpen){const full=(TALK[curKey]||{text:''}).text;if(dtext.textContent.length<full.length){clearInterval(typing);dtext.textContent=full;}else closeDlg();return;}const r=cv.getBoundingClientRect();
+  const lx=(e.clientX-r.left)/r.width*512,ly=(e.clientY-r.top)/r.height*288;
+  for(let i=FRIENDS.length-1;i>=0;i--){const f=FRIENDS[i],im=ASSETS[f.id];if(!f.sofa||!TALK[f.id]||!im)continue;const w=im.width/2,h=im.height/2;
+    if(lx>=f.cx-w/2&&lx<=f.cx+w/2&&ly>=SOFA_FEET-h&&ly<=SOFA_FEET){curKey=f.id;openDlg(f.id);return;}}
   const tx=Math.floor((e.clientX-r.left)/r.width*W),ty=Math.floor((e.clientY-r.top)/r.height*H);goTo(tx,ty);});
 
 /* ---------- 輸入 ---------- */

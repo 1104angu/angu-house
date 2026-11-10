@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<linearGradient id="w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1319"/><stop offset="1" stop-color="#0a0809"/></linearGradient>
+<linearGradient id="f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a1d22"/><stop offset="1" stop-color="#120d10"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="url(#w)"/>
+<!-- 地板 -->
+<polygon points="200,620 800,900 1400,620 800,340" fill="url(#f)" stroke="#8a6d1c" stroke-width="2"/>
+<!-- 左牆 / 右牆 -->
+<polygon points="200,620 200,180 800,-100 800,340" fill="#15101a" stroke="#8a6d1c" stroke-width="2" opacity=".9"/>
+<polygon points="1400,620 1400,180 800,-100 800,340" fill="#1a1117" stroke="#8a6d1c" stroke-width="2" opacity=".9"/>
+<!-- 窗 -->
+<polygon points="1000,120 1280,-20 1280,300 1000,440" fill="#0c0a12" stroke="#c9a227" stroke-width="3"/>
+<path d="M1000 120 Q1140 20 1280 -20" fill="none" stroke="#c9a227" stroke-width="3"/>
+<line x1="1140" y1="50" x2="1140" y2="370" stroke="#c9a227" stroke-width="2"/>
+<!-- 月亮 -->
+<circle cx="1180" cy="150" r="40" fill="#e8e0d0" opacity=".85"/>
+<circle cx="1195" cy="140" r="36" fill="#0c0a12"/>
+<!-- 書架 -->
+<polygon points="300,560 300,240 520,130 520,450" fill="#1d1418" stroke="#c9a227" stroke-width="2"/>
+<g stroke="#8a6d1c" stroke-width="1.5"><line x1="300" y1="340" x2="520" y2="230"/><line x1="300" y1="440" x2="520" y2="330"/></g>
+<!-- 書桌 -->
+<polygon points="560,560 560,500 900,330 900,390" fill="#241a1f" stroke="#c9a227" stroke-width="2"/>
+<polygon points="620,520 620,430 780,350 780,440" fill="#000" stroke="#c9a227" stroke-width="2"/>
+<!-- 床 -->
+<polygon points="950,740 950,660 1300,490 1300,570" fill="#3a0b12" stroke="#c9a227" stroke-width="2"/>
+<polygon points="950,660 1300,490 1300,440 950,610" fill="#6b0f1a" stroke="#c9a227" stroke-width="2"/>
+<!-- 燭台 -->
+<g stroke="#c9a227" stroke-width="2" fill="#c9a227"><line x1="470" y1="150" x2="470" y2="90"/><circle cx="470" cy="80" r="6" fill="#f0d27a"/></g>
+<!-- 地毯 -->
+<ellipse cx="800" cy="720" rx="190" ry="80" fill="#2b0d14" stroke="#8a6d1c" stroke-width="2"/>
+<text x="800" y="960" font-size="26" fill="#9a8f85" text-anchor="middle" font-family="serif" letter-spacing="6">（佔位圖：換成你自己畫的 room.jpg）</text>
+</svg>

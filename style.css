@@ -134,3 +134,4 @@ footer .ver{margin-top:8px;font-size:11px;letter-spacing:.15em;opacity:.7}
 .pal:hover{border-color:var(--gold);transform:translateY(-3px)}
 .pal img{height:72px;width:auto;image-rendering:pixelated}
 .pal span{font-size:13px;letter-spacing:.08em;color:var(--ink);text-align:center}
+.pal.nolink:hover{border-color:#3a2a33;transform:none}

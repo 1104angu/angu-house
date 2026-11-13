@@ -4,7 +4,7 @@ window.I18N = {
 "zh": {
   "lang.name":"中文",
   "site.motto":"歡迎來到製作人安谷的房間。<br>燭火自便，請勿驚動牆上的東西。",
-  "nav.room":"房間","nav.cards":"角色卡","nav.worlds":"世界觀","nav.about":"關於我","nav.awards":"得獎","nav.links":"書籤",
+  "nav.room":"房間","nav.cards":"角色卡","cards.title":"角色卡","cards.lead":"挑出來的幾張。全部的卡在","cards.author":"CAVEDUCK 作者頁 ▸","cards.all":"全部","cards.go":"去看這張卡","cards.loading":"翻找卡片中……","cards.empty":"卡片還在整理中，先去作者頁逛逛吧。","cards.error":"卡片清單讀不到，先去作者頁逛逛吧。","nav.worlds":"世界觀","nav.about":"關於我","nav.awards":"得獎","nav.links":"書籤",
   "nav.games":"小遊戲",
   "games.title":"小遊戲",
   "games.lead":"房間裡的小玩意。有些還鎖著。",
@@ -26,7 +26,7 @@ window.I18N = {
   "talk.D.name":"寫字桌","talk.D":"綠皮桌墊上攤著寫到一半的卡稿，墨水還沒乾。要看安谷做的角色卡嗎？",
   "talk.B.name":"書架","talk.B":"書脊上寫著格雷斯通、賽博埃及、1930 大稻埕……全是世界設定集。要翻嗎？",
   "talk.S.name":"獎盃架","talk.S":"幾座獎盃擦得很亮，旁邊有一張遺珠獎的小卡。要看得獎紀錄嗎？",
-  "sofa.bubbles":["好擠唷...","哇...","暈暈的...","這就是Delulu嗎..."],"friend.default":"嗨，我是 Delulu 來串門子的。要看書籤嗎？","talk.T.name":"茶几","talk.T":"粉紅蠟燭和一只愛心茶杯，茶還是溫的。","talk.V.name":"電視","talk.V":"一台粉紫色的舊電視，背對著你。螢幕那頭在發光，可是訊號還沒接上。","talk.P.name":"肖像","talk.P":"牆上一幅大肖像：白髮、鹿角、黑金哥德蘿莉，眼睛是青金石的藍。角落簽著「製作人安谷」。要看關於我嗎？",
+  "sofa.bubbles":["好擠唷...","哇...","暈暈的...","這就是Delulu嗎..."],"friend.default":"嗨，我是 Delulu 來串門子的。","talk.T.name":"茶几","talk.T":"粉紅蠟燭和一只愛心茶杯，茶還是溫的。","talk.V.name":"電視","talk.V":"一台粉紫色的舊電視，背對著你。螢幕那頭在發光，可是訊號還沒接上。","talk.P.name":"肖像","talk.P":"牆上一幅大肖像：白髮、鹿角、黑金哥德蘿莉，眼睛是青金石的藍。角落簽著「製作人安谷」。要看關於我嗎？",
   "talk.W.name":"窗","talk.W":"窗外是夜色和別人的房子。窗台貼了一排便條，寫著常去的地方。要看書籤嗎？",
   "talk.b.name":"床","talk.b.asleep":"被子裡有人。安谷十點半就睡了，別吵，有事明天再說。","talk.b.awake":"黑絲絨床罩鋪得很整齊，枕頭底下壓著沒寫完的卡。安谷十點半準時睡，現在還沒到。",
   "talk.d":"豪華雙人床，床尾疊著幾本法典。別亂翻，苛麗特會生氣。",
@@ -92,7 +92,7 @@ window.I18N = {
   "worlds.3h":"南街殷賑（1930 大稻埕）","worlds.3p":"偽人喜劇的茶行與廟後。",
   "awards.title":"得獎","awards.lead":"CAVEDUCK 官方徵稿活動得獎紀錄。部分卡片已設為隱藏，連結需登入並開啟 NSFW 才看得到。",
   "awards.h1":"主題徵稿活動","awards.h2":"繁中徵稿活動",
-  "awards.r14":"第 14 屆｜占卜｜首獎｜","awards.r16":"第 16 屆｜學院｜遺珠獎｜","awards.r17":"第 17 屆｜黑色幽默｜首獎｜","awards.r18":"第 18 屆｜SFW 模擬器｜首獎｜","awards.r21":"第 21 屆｜陌生世界的你｜首獎｜","awards.tw4":"繁中第 4 屆｜小獎｜",
+  "awards.r14":"第 14 屆｜占卜｜首獎｜","awards.r16":"第 16 屆｜學院｜遺珠獎｜","awards.r17":"第 17 屆｜黑色幽默｜首獎｜","awards.r18":"第 18 屆｜SFW 模擬器｜首獎｜","awards.r21":"第 21 屆｜陌生世界中的你｜首獎｜","awards.tw4":"繁中第 4 屆｜小獎｜",
   "links.title":"書籤","links.lead":"我的其他地方、常用工具、友站。",
   "links.h1":"我的","links.1a":"：角色卡都在這","links.1b":"：卡片用的配樂","links.1c":"：日常和進度","links.1d":"：角色卡審核工具",
   "links.h3":"Delulu 企劃群","links.3a":"（友站）","friend.anon":"Delulu 的朋友","links.h2":"友站","links.2a":"（房間式作品集的靈感來源）"
@@ -101,7 +101,7 @@ window.I18N = {
 "ja": {
   "lang.name":"日本語",
   "site.motto":"プロデューサー安谷の部屋へようこそ。<br>蝋燭はご自由に。壁のものは起こさないで。",
-  "nav.room":"部屋","nav.cards":"キャラカード","nav.worlds":"世界観","nav.about":"私について","nav.awards":"受賞","nav.links":"ブックマーク",
+  "nav.room":"部屋","nav.cards":"キャラカード","cards.title":"キャラカード","cards.lead":"選んだ数枚。全部のカードは","cards.author":"CAVEDUCK 作者ページへ ▸","cards.all":"すべて","cards.go":"このカードを見る","cards.loading":"カードを探しています……","cards.empty":"カードは整理中。先に作者ページをどうぞ。","cards.error":"カード一覧を読み込めませんでした。作者ページをどうぞ。","nav.worlds":"世界観","nav.about":"私について","nav.awards":"受賞","nav.links":"ブックマーク",
   "nav.games":"ミニゲーム",
   "games.title":"ミニゲーム",
   "games.lead":"部屋の小さなおもちゃ。まだ鍵のかかったものもある。",
@@ -121,7 +121,7 @@ window.I18N = {
   "talk.D.name":"書き物机","talk.D":"緑の革のデスクマットに書きかけのカード原稿。インクはまだ乾いていない。安谷のキャラカードを見る？",
   "talk.B.name":"本棚","talk.B":"背表紙にはグレイストーン、サイバーエジプト、1930年大稲埕……全部世界設定集だ。めくってみる？",
   "talk.S.name":"トロフィー棚","talk.S":"磨き上げられたトロフィーがいくつか。隣に落選佳作の小さなカード。受賞歴を見る？",
-  "sofa.bubbles":["せまいよ…","わぁ…","くらくらする…","これがDeluluなの…"],"friend.default":"やっほー、Delulu から遊びに来たよ。ブックマークを見る？","talk.T.name":"ローテーブル","talk.T":"ピンクのキャンドルとハートのティーカップ。お茶はまだ温かい。","talk.V.name":"テレビ","talk.V":"ピンクと紫の古いテレビが背を向けている。画面のほうは光っているけど、まだ電波が来ていない。","talk.P.name":"肖像画","talk.P":"壁に大きな肖像画。白髪、鹿の角、黒と金のゴスロリ、瞳はラピスラズリの青。隅に「プロデューサー安谷」の署名。自己紹介を見る？",
+  "sofa.bubbles":["せまいよ…","わぁ…","くらくらする…","これがDeluluなの…"],"friend.default":"やっほー、Delulu から遊びに来たよ。","talk.T.name":"ローテーブル","talk.T":"ピンクのキャンドルとハートのティーカップ。お茶はまだ温かい。","talk.V.name":"テレビ","talk.V":"ピンクと紫の古いテレビが背を向けている。画面のほうは光っているけど、まだ電波が来ていない。","talk.P.name":"肖像画","talk.P":"壁に大きな肖像画。白髪、鹿の角、黒と金のゴスロリ、瞳はラピスラズリの青。隅に「プロデューサー安谷」の署名。自己紹介を見る？",
   "talk.W.name":"窓","talk.W":"窓の外は夜と他人の家。窓台に行きつけの場所を書いたメモが並んでいる。ブックマークを見る？",
   "talk.b.name":"ベッド","talk.b.asleep":"布団の中に誰かいる。安谷は十時半に寝た。起こさないで、用事は明日。","talk.b.awake":"黒いベルベットのベッドカバーはきちんと整えられ、枕の下に書きかけのカード。安谷は十時半きっかりに寝る。まだその時間じゃない。",
   "talk.d":"豪華なダブルベッド。足元に法典が何冊か積んである。勝手にめくるな、コレットが怒る。",
@@ -184,7 +184,7 @@ window.I18N = {
   "worlds.3h":"南街殷賑（1930年大稲埕）","worlds.3p":"偽人コメディの茶行と廟の裏。",
   "awards.title":"受賞","awards.lead":"CAVEDUCK公式コンテストの受賞歴。一部のカードは非公開設定のため、リンク先はログインとNSFW表示が必要。",
   "awards.h1":"テーマコンテスト","awards.h2":"繁体字中国語コンテスト",
-  "awards.r14":"第14回｜占い｜最優秀賞｜","awards.r16":"第16回｜学園｜佳作｜","awards.r17":"第17回｜ブラックユーモア｜最優秀賞｜","awards.r18":"第18回｜SFWシミュレーター｜最優秀賞｜","awards.r21":"第21回｜見知らぬ世界のあなた｜最優秀賞｜","awards.tw4":"繁中第4回｜小賞｜",
+  "awards.r14":"第14回｜占い｜最優秀賞｜","awards.r16":"第16回｜学園｜佳作｜","awards.r17":"第17回｜ブラックユーモア｜最優秀賞｜","awards.r18":"第18回｜SFWシミュレーター｜最優秀賞｜","awards.r21":"第21回｜見知らぬ世界の中のあなた｜最優秀賞｜","awards.tw4":"繁中第4回｜小賞｜",
   "links.title":"ブックマーク","links.lead":"私の他の場所、よく使うツール、友人のサイト。",
   "links.h1":"私の","links.1a":"：キャラカードは全部ここ","links.1b":"：カード用の音楽","links.1c":"：日常と進捗","links.1d":"：キャラカード監査ツール",
   "links.h3":"Delulu 企画グループ","links.3a":"（友人のサイト）","friend.anon":"Delulu の友だち","links.h2":"友人のサイト","links.2a":"（部屋型ポートフォリオの発想元）"
@@ -193,7 +193,7 @@ window.I18N = {
 "ko": {
   "lang.name":"한국어",
   "site.motto":"프로듀서 안구의 방에 오신 것을 환영합니다.<br>촛불은 마음대로. 벽에 걸린 것들은 깨우지 마세요.",
-  "nav.room":"방","nav.cards":"캐릭터 카드","nav.worlds":"세계관","nav.about":"소개","nav.awards":"수상","nav.links":"북마크",
+  "nav.room":"방","nav.cards":"캐릭터 카드","cards.title":"캐릭터 카드","cards.lead":"골라 둔 몇 장. 전체 카드는","cards.author":"CAVEDUCK 작가 페이지 ▸","cards.all":"전체","cards.go":"이 카드 보기","cards.loading":"카드를 찾는 중……","cards.empty":"카드를 정리하는 중이에요. 먼저 작가 페이지를 둘러보세요.","cards.error":"카드 목록을 불러오지 못했어요. 작가 페이지를 둘러보세요.","nav.worlds":"세계관","nav.about":"소개","nav.awards":"수상","nav.links":"북마크",
   "nav.games":"미니게임",
   "games.title":"미니게임",
   "games.lead":"방 안의 작은 장난감들. 아직 잠긴 것도 있다.",
@@ -213,7 +213,7 @@ window.I18N = {
   "talk.D.name":"책상","talk.D":"초록 가죽 데스크 매트 위에 쓰다 만 카드 원고. 잉크가 아직 마르지 않았다. 안구의 캐릭터 카드를 볼까?",
   "talk.B.name":"책장","talk.B":"책등에 그레이스톤, 사이버 이집트, 1930 다다오청…… 전부 세계관 설정집이다. 펼쳐 볼까?",
   "talk.S.name":"트로피 선반","talk.S":"반짝반짝 닦인 트로피 몇 개. 옆에 아차상 작은 카드. 수상 기록을 볼까?",
-  "sofa.bubbles":["너무 좁아...","와...","어질어질해...","이게 Delulu야...?"],"friend.default":"안녕, Delulu에서 놀러 왔어. 북마크 볼래?","talk.T.name":"티 테이블","talk.T":"분홍 초와 하트 찻잔. 차가 아직 따뜻하다.","talk.V.name":"텔레비전","talk.V":"분홍빛 보라색 낡은 텔레비전이 등을 돌리고 있다. 화면 쪽은 빛나는데, 아직 신호가 잡히지 않는다.","talk.P.name":"초상화","talk.P":"벽에 큰 초상화. 흰 머리, 사슴뿔, 검정과 금의 고딕 로리타, 눈은 청금석의 파랑. 구석에 「프로듀서 안구」 서명. 소개를 볼까?",
+  "sofa.bubbles":["너무 좁아...","와...","어질어질해...","이게 Delulu야...?"],"friend.default":"안녕, Delulu에서 놀러 왔어.","talk.T.name":"티 테이블","talk.T":"분홍 초와 하트 찻잔. 차가 아직 따뜻하다.","talk.V.name":"텔레비전","talk.V":"분홍빛 보라색 낡은 텔레비전이 등을 돌리고 있다. 화면 쪽은 빛나는데, 아직 신호가 잡히지 않는다.","talk.P.name":"초상화","talk.P":"벽에 큰 초상화. 흰 머리, 사슴뿔, 검정과 금의 고딕 로리타, 눈은 청금석의 파랑. 구석에 「프로듀서 안구」 서명. 소개를 볼까?",
   "talk.W.name":"창문","talk.W":"창밖은 밤과 남의 집. 창틀에 자주 가는 곳을 적은 메모가 줄지어 있다. 북마크를 볼까?",
   "talk.b.name":"침대","talk.b.asleep":"이불 속에 누가 있다. 안구는 열 시 반에 잤다. 깨우지 마, 할 말은 내일.","talk.b.awake":"검은 벨벳 침대보가 가지런하고, 베개 밑에 쓰다 만 카드. 안구는 열 시 반 정각에 잔다. 아직 그 시간이 아니다.",
   "talk.d":"호화 더블 침대. 발치에 법전 몇 권. 함부로 뒤지지 마, 콜레트가 화낸다.",
@@ -285,7 +285,7 @@ window.I18N = {
 "en": {
   "lang.name":"English",
   "site.motto":"Welcome to producer Angu's room.<br>Help yourself to the candles. Don't wake the things on the wall.",
-  "nav.room":"Room","nav.cards":"Cards","nav.worlds":"Worlds","nav.about":"About","nav.awards":"Awards","nav.links":"Links",
+  "nav.room":"Room","nav.cards":"Cards","cards.title":"Cards","cards.lead":"A handful of picks. Every card lives on my","cards.author":"CAVEDUCK author page ▸","cards.all":"All","cards.go":"See this card","cards.loading":"Digging through the cards…","cards.empty":"Still sorting the cards. Visit the author page for now.","cards.error":"Couldn't load the card list. Visit the author page for now.","nav.worlds":"Worlds","nav.about":"About","nav.awards":"Awards","nav.links":"Links",
   "nav.games":"Games",
   "games.title":"Games",
   "games.lead":"Small toys around the room. Some are still locked.",
@@ -305,7 +305,7 @@ window.I18N = {
   "talk.D.name":"Writing Desk","talk.D":"A half-written card draft lies on the green leather mat. The ink is still wet. Want to see Angu's character cards?",
   "talk.B.name":"Bookshelf","talk.B":"The spines read Greystone, Cyber Egypt, Dadaocheng 1930… all world-setting books. Want to flip through?",
   "talk.S.name":"Trophy Shelf","talk.S":"A few trophies polished bright, and a small honorable-mention card beside them. Want to see the awards?",
-  "sofa.bubbles":["So cramped...","Whoa...","I feel dizzy...","So this is Delulu..."],"friend.default":"Hi, just visiting from Delulu. Want to see the links?","talk.T.name":"Coffee table","talk.T":"A pink candle and a heart-shaped teacup. The tea is still warm.","talk.V.name":"Television","talk.V":"An old pink-and-lavender TV, its back turned to you. The screen side is glowing, but there is no signal yet.","talk.P.name":"Portrait","talk.P":"A large portrait on the wall: white hair, deer antlers, black-and-gold gothic lolita, eyes of lapis blue. Signed in the corner: \"Producer Angu\". Want to read About?",
+  "sofa.bubbles":["So cramped...","Whoa...","I feel dizzy...","So this is Delulu..."],"friend.default":"Hi, just visiting from Delulu.","talk.T.name":"Coffee table","talk.T":"A pink candle and a heart-shaped teacup. The tea is still warm.","talk.V.name":"Television","talk.V":"An old pink-and-lavender TV, its back turned to you. The screen side is glowing, but there is no signal yet.","talk.P.name":"Portrait","talk.P":"A large portrait on the wall: white hair, deer antlers, black-and-gold gothic lolita, eyes of lapis blue. Signed in the corner: \"Producer Angu\". Want to read About?",
   "talk.W.name":"Window","talk.W":"Night and other people's houses outside. A row of sticky notes on the sill lists the usual haunts. Want to see the bookmarks?",
   "talk.b.name":"Bed","talk.b.asleep":"Someone's under the covers. Angu went to bed at 10:30. Don't wake her; whatever it is can wait till tomorrow.","talk.b.awake":"The black velvet bedspread is neatly made, an unfinished card tucked under the pillow. Angu sleeps at 10:30 sharp. Not yet.",
   "talk.d":"A grand double bed with a stack of codices at the foot. Don't rifle through them; Colette will be furious.",
@@ -368,7 +368,7 @@ window.I18N = {
   "worlds.3h":"Nanjie Yinzhen (Dadaocheng 1930)","worlds.3p":"The tea house and the temple's back alley from the impostor comedy.",
   "awards.title":"Awards","awards.lead":"Results from official CAVEDUCK contests. Some cards are hidden; links require login with NSFW enabled.",
   "awards.h1":"Themed Contests","awards.h2":"Traditional Chinese Contests",
-  "awards.r14":"Round 14｜Divination｜Grand Prize｜","awards.r16":"Round 16｜Academy｜Honorable Mention｜","awards.r17":"Round 17｜Black Humor｜Grand Prize｜","awards.r18":"Round 18｜SFW Simulator｜Grand Prize｜","awards.r21":"Round 21｜You in a Strange World｜Grand Prize｜","awards.tw4":"TC Round 4｜Minor Prize｜",
+  "awards.r14":"Round 14｜Divination｜Grand Prize｜","awards.r16":"Round 16｜Academy｜Honorable Mention｜","awards.r17":"Round 17｜Black Humor｜Grand Prize｜","awards.r18":"Round 18｜SFW Simulator｜Grand Prize｜","awards.r21":"Round 21｜You, Within a Strange World｜Grand Prize｜","awards.tw4":"TC Round 4｜Minor Prize｜",
   "links.title":"Links","links.lead":"My other places, tools I use, friends' sites.",
   "links.h1":"Mine","links.1a":": all the cards live here","links.1b":": music for the cards","links.1c":": daily life and progress","links.1d":": card auditing tool",
   "links.h3":"The Delulu crew","links.3a":"(Friends' sites)","friend.anon":"A friend from Delulu","links.h2":"Friends","links.2a":"(inspiration for the room-style portfolio)"
@@ -377,7 +377,7 @@ window.I18N = {
 "es": {
   "lang.name":"Español",
   "site.motto":"Bienvenido a la habitación de la productora Angu.<br>Sírvete velas. No despiertes lo que hay en la pared.",
-  "nav.room":"Habitación","nav.cards":"Tarjetas","nav.worlds":"Mundos","nav.about":"Sobre mí","nav.awards":"Premios","nav.links":"Enlaces",
+  "nav.room":"Habitación","nav.cards":"Tarjetas","cards.title":"Tarjetas","cards.lead":"Unas cuantas elegidas. Todas las tarjetas están en mi","cards.author":"página de autora en CAVEDUCK ▸","cards.all":"Todas","cards.go":"Ver esta tarjeta","cards.loading":"Buscando tarjetas…","cards.empty":"Aún ordenando las tarjetas. Visita la página de autora.","cards.error":"No se pudo cargar la lista. Visita la página de autora.","nav.worlds":"Mundos","nav.about":"Sobre mí","nav.awards":"Premios","nav.links":"Enlaces",
   "nav.games":"Minijuegos",
   "games.title":"Minijuegos",
   "games.lead":"Pequeños juguetes de la habitación. Algunos siguen cerrados.",
@@ -397,7 +397,7 @@ window.I18N = {
   "talk.D.name":"Escritorio","talk.D":"Sobre el tapete de cuero verde hay un borrador de tarjeta a medio escribir. La tinta aún no seca. ¿Quieres ver las tarjetas de Angu?",
   "talk.B.name":"Estantería","talk.B":"En los lomos se lee Greystone, Ciber Egipto, Dadaocheng 1930… todo libros de ambientación. ¿Los hojeamos?",
   "talk.S.name":"Vitrina de trofeos","talk.S":"Varios trofeos relucientes y, al lado, una tarjetita de mención de honor. ¿Quieres ver los premios?",
-  "sofa.bubbles":["Qué apretados...","Guau...","Me mareo...","¿Esto es Delulu...?"],"friend.default":"¡Hola! Vengo de visita desde Delulu. ¿Quieres ver los enlaces?","talk.T.name":"Mesita","talk.T":"Una vela rosa y una taza con forma de corazón. El té sigue caliente.","talk.V.name":"Televisor","talk.V":"Un televisor viejo, rosa y lavanda, de espaldas a ti. La pantalla brilla del otro lado, pero aún no hay señal.","talk.P.name":"Retrato","talk.P":"Un gran retrato en la pared: pelo blanco, cuernos de ciervo, lolita gótica en negro y oro, ojos azul lapislázuli. Firmado en la esquina: «Productora Angu». ¿Quieres leer Sobre mí?",
+  "sofa.bubbles":["Qué apretados...","Guau...","Me mareo...","¿Esto es Delulu...?"],"friend.default":"¡Hola! Vengo de visita desde Delulu.","talk.T.name":"Mesita","talk.T":"Una vela rosa y una taza con forma de corazón. El té sigue caliente.","talk.V.name":"Televisor","talk.V":"Un televisor viejo, rosa y lavanda, de espaldas a ti. La pantalla brilla del otro lado, pero aún no hay señal.","talk.P.name":"Retrato","talk.P":"Un gran retrato en la pared: pelo blanco, cuernos de ciervo, lolita gótica en negro y oro, ojos azul lapislázuli. Firmado en la esquina: «Productora Angu». ¿Quieres leer Sobre mí?",
   "talk.W.name":"Ventana","talk.W":"Fuera, la noche y las casas ajenas. En el alféizar, una fila de notas con los sitios de siempre. ¿Quieres ver los enlaces?",
   "talk.b.name":"Cama","talk.b.asleep":"Hay alguien bajo las mantas. Angu se acostó a las diez y media. No la despiertes; lo que sea puede esperar a mañana.","talk.b.awake":"La colcha de terciopelo negro está bien hecha; bajo la almohada, una tarjeta sin terminar. Angu duerme a las diez y media en punto. Todavía no.",
   "talk.d":"Una lujosa cama doble con varios códices apilados a los pies. No los revuelvas; Colette se enfadará.",
@@ -479,6 +479,7 @@ window.t=function(k){const d=I18N[window.LANG]||I18N.zh;return (k in d)?d[k]:(I1
 window.applyLang=function(l){window.LANG=l;try{localStorage.setItem('angu_lang',l);}catch(e){}
   document.documentElement.lang={zh:'zh-Hant',ja:'ja',ko:'ko',en:'en',es:'es'}[l];
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=t(el.dataset.i18n);});
+  document.dispatchEvent(new Event('langchange'));
   document.querySelectorAll('.ver').forEach(el=>{el.textContent=t('ver').replace('{v}',SITE_VER).replace('{d}',SITE_BORN);});
   document.querySelectorAll('a[href*="caveduck.io/"]').forEach(a=>{a.href=a.href.replace(/caveduck\.io\/(zh-hant|ja|ko|en|es)\//,'caveduck.io/'+CAVE_LOCALE[l]+'/');});
   document.querySelectorAll('.langbar button').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));

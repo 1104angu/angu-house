@@ -135,3 +135,9 @@ footer .ver{margin-top:8px;font-size:11px;letter-spacing:.15em;opacity:.7}
 .pal img{height:72px;width:auto;image-rendering:pixelated}
 .pal span{font-size:13px;letter-spacing:.08em;color:var(--ink);text-align:center}
 .pal.nolink:hover{border-color:#3a2a33;transform:none}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:-8px 0 20px}
+.chip{background:transparent;border:1px solid var(--line);color:var(--muted);padding:4px 12px;font:inherit;font-size:13px;letter-spacing:.08em;cursor:pointer}
+.chip.on,.chip:hover{border-color:var(--gold);color:var(--gold)}
+.card-state{color:var(--muted);grid-column:1/-1}
+a.card{text-decoration:none}

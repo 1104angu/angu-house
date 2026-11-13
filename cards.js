@@ -1,6 +1,6 @@
 /* 角色卡頁：從安谷的 Google 試算表讀卡片清單。
    ▼ 把試算表「發布到網路」拿到的 CSV 網址貼在下面引號裡（只要貼一次）。 */
-window.CARDS_SHEET = "";
+window.CARDS_SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTzhg8zmTb06tJ3RzMnSZ3a-fRKUF_ijFfGYWxs-95QBPNdYFtystnowLxLuuY-d6FC0Vec8pDiGp-T/pub?gid=0&single=true&output=csv";
 
 /* 試算表第一列是欄位名稱，順序隨意：
    上架｜卡名｜封面｜連結｜分類｜簡介

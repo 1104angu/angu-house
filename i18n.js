@@ -92,7 +92,7 @@ window.I18N = {
   "worlds.3h":"南街殷賑（1930 大稻埕）","worlds.3p":"偽人喜劇的茶行與廟後。",
   "awards.title":"得獎","awards.lead":"CAVEDUCK 官方徵稿活動得獎紀錄。部分卡片已設為隱藏，連結需登入並開啟 NSFW 才看得到。",
   "awards.h1":"主題徵稿活動","awards.h2":"繁中徵稿活動",
-  "awards.r14":"第 14 屆｜占卜｜首獎｜","awards.r16":"第 16 屆｜學院｜遺珠獎｜","awards.r17":"第 17 屆｜黑色幽默｜首獎｜","awards.r18":"第 18 屆｜SFW 模擬器｜首獎｜","awards.tw4":"繁中第 4 屆｜小獎｜",
+  "awards.r14":"第 14 屆｜占卜｜首獎｜","awards.r16":"第 16 屆｜學院｜遺珠獎｜","awards.r17":"第 17 屆｜黑色幽默｜首獎｜","awards.r18":"第 18 屆｜SFW 模擬器｜首獎｜","awards.r21":"第 21 屆｜陌生世界的你｜首獎｜","awards.tw4":"繁中第 4 屆｜小獎｜",
   "links.title":"書籤","links.lead":"我的其他地方、常用工具、友站。",
   "links.h1":"我的","links.1a":"：角色卡都在這","links.1b":"：卡片用的配樂","links.1c":"：日常和進度","links.1d":"：角色卡審核工具",
   "links.h3":"Delulu 企劃群","links.3a":"（友站）","friend.anon":"Delulu 的朋友","links.h2":"友站","links.2a":"（房間式作品集的靈感來源）"
@@ -184,7 +184,7 @@ window.I18N = {
   "worlds.3h":"南街殷賑（1930年大稲埕）","worlds.3p":"偽人コメディの茶行と廟の裏。",
   "awards.title":"受賞","awards.lead":"CAVEDUCK公式コンテストの受賞歴。一部のカードは非公開設定のため、リンク先はログインとNSFW表示が必要。",
   "awards.h1":"テーマコンテスト","awards.h2":"繁体字中国語コンテスト",
-  "awards.r14":"第14回｜占い｜最優秀賞｜","awards.r16":"第16回｜学園｜佳作｜","awards.r17":"第17回｜ブラックユーモア｜最優秀賞｜","awards.r18":"第18回｜SFWシミュレーター｜最優秀賞｜","awards.tw4":"繁中第4回｜小賞｜",
+  "awards.r14":"第14回｜占い｜最優秀賞｜","awards.r16":"第16回｜学園｜佳作｜","awards.r17":"第17回｜ブラックユーモア｜最優秀賞｜","awards.r18":"第18回｜SFWシミュレーター｜最優秀賞｜","awards.r21":"第21回｜見知らぬ世界のあなた｜最優秀賞｜","awards.tw4":"繁中第4回｜小賞｜",
   "links.title":"ブックマーク","links.lead":"私の他の場所、よく使うツール、友人のサイト。",
   "links.h1":"私の","links.1a":"：キャラカードは全部ここ","links.1b":"：カード用の音楽","links.1c":"：日常と進捗","links.1d":"：キャラカード監査ツール",
   "links.h3":"Delulu 企画グループ","links.3a":"（友人のサイト）","friend.anon":"Delulu の友だち","links.h2":"友人のサイト","links.2a":"（部屋型ポートフォリオの発想元）"
@@ -276,7 +276,7 @@ window.I18N = {
   "worlds.3h":"남가은진（1930 다다오청）","worlds.3p":"가짜 인간 코미디의 찻집과 사당 뒤.",
   "awards.title":"수상","awards.lead":"CAVEDUCK 공식 공모전 수상 기록. 일부 카드는 비공개라 링크는 로그인과 NSFW 설정이 필요하다.",
   "awards.h1":"테마 공모전","awards.h2":"번체 중국어 공모전",
-  "awards.r14":"제14회｜점술｜대상｜","awards.r16":"제16회｜학원｜가작｜","awards.r17":"제17회｜블랙 유머｜대상｜","awards.r18":"제18회｜SFW 시뮬레이터｜대상｜","awards.tw4":"번체 제4회｜소상｜",
+  "awards.r14":"제14회｜점술｜대상｜","awards.r16":"제16회｜학원｜가작｜","awards.r17":"제17회｜블랙 유머｜대상｜","awards.r18":"제18회｜SFW 시뮬레이터｜대상｜","awards.r21":"제21회｜낯선 세계의 너｜대상｜","awards.tw4":"번체 제4회｜소상｜",
   "links.title":"북마크","links.lead":"나의 다른 곳, 자주 쓰는 도구, 친구 사이트.",
   "links.h1":"나의","links.1a":": 캐릭터 카드는 전부 여기","links.1b":": 카드용 음악","links.1c":": 일상과 진행 상황","links.1d":": 캐릭터 카드 감사 도구",
   "links.h3":"Delulu 기획 그룹","links.3a":"(친구 사이트)","friend.anon":"Delulu 친구","links.h2":"친구 사이트","links.2a":"(방 형식 포트폴리오의 영감 출처)"
@@ -368,7 +368,7 @@ window.I18N = {
   "worlds.3h":"Nanjie Yinzhen (Dadaocheng 1930)","worlds.3p":"The tea house and the temple's back alley from the impostor comedy.",
   "awards.title":"Awards","awards.lead":"Results from official CAVEDUCK contests. Some cards are hidden; links require login with NSFW enabled.",
   "awards.h1":"Themed Contests","awards.h2":"Traditional Chinese Contests",
-  "awards.r14":"Round 14｜Divination｜Grand Prize｜","awards.r16":"Round 16｜Academy｜Honorable Mention｜","awards.r17":"Round 17｜Black Humor｜Grand Prize｜","awards.r18":"Round 18｜SFW Simulator｜Grand Prize｜","awards.tw4":"TC Round 4｜Minor Prize｜",
+  "awards.r14":"Round 14｜Divination｜Grand Prize｜","awards.r16":"Round 16｜Academy｜Honorable Mention｜","awards.r17":"Round 17｜Black Humor｜Grand Prize｜","awards.r18":"Round 18｜SFW Simulator｜Grand Prize｜","awards.r21":"Round 21｜You in a Strange World｜Grand Prize｜","awards.tw4":"TC Round 4｜Minor Prize｜",
   "links.title":"Links","links.lead":"My other places, tools I use, friends' sites.",
   "links.h1":"Mine","links.1a":": all the cards live here","links.1b":": music for the cards","links.1c":": daily life and progress","links.1d":": card auditing tool",
   "links.h3":"The Delulu crew","links.3a":"(Friends' sites)","friend.anon":"A friend from Delulu","links.h2":"Friends","links.2a":"(inspiration for the room-style portfolio)"
@@ -460,7 +460,7 @@ window.I18N = {
   "worlds.3h":"Nanjie Yinzhen (Dadaocheng 1930)","worlds.3p":"La casa de té y el callejón del templo de la comedia de impostores.",
   "awards.title":"Premios","awards.lead":"Resultados de concursos oficiales de CAVEDUCK. Algunas tarjetas están ocultas; los enlaces requieren iniciar sesión con NSFW activado.",
   "awards.h1":"Concursos temáticos","awards.h2":"Concursos en chino tradicional",
-  "awards.r14":"Ronda 14｜Adivinación｜Gran premio｜","awards.r16":"Ronda 16｜Academia｜Mención de honor｜","awards.r17":"Ronda 17｜Humor negro｜Gran premio｜","awards.r18":"Ronda 18｜Simulador SFW｜Gran premio｜","awards.tw4":"Ronda 4 (ch. trad.)｜Premio menor｜",
+  "awards.r14":"Ronda 14｜Adivinación｜Gran premio｜","awards.r16":"Ronda 16｜Academia｜Mención de honor｜","awards.r17":"Ronda 17｜Humor negro｜Gran premio｜","awards.r18":"Ronda 18｜Simulador SFW｜Gran premio｜","awards.r21":"Ronda 21｜Tú en un mundo desconocido｜Gran premio｜","awards.tw4":"Ronda 4 (ch. trad.)｜Premio menor｜",
   "links.title":"Enlaces","links.lead":"Mis otros sitios, herramientas que uso, webs de amigos.",
   "links.h1":"Míos","links.1a":": todas las tarjetas están aquí","links.1b":": música para las tarjetas","links.1c":": día a día y progreso","links.1d":": herramienta de auditoría de tarjetas",
   "links.h3":"El grupo Delulu","links.3a":"(Webs amigas)","friend.anon":"Una amiga de Delulu","links.h2":"Amigos","links.2a":"(inspiración del portafolio tipo habitación)"
@@ -468,7 +468,7 @@ window.I18N = {
 };
 
 /* ---- 版本號：每次更新網站內容時改 SITE_VER ---- */
-window.SITE_VER="v1.2";window.SITE_BORN="2026.11.07";
+window.SITE_VER="v1.3";window.SITE_BORN="2026.11.07";
 
 /* ---- 共用：語言切換 ---- */
 window.LANGS=["zh","ja","ko","en","es"];

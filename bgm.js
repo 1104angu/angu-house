@@ -3,7 +3,8 @@ window.TRACKS=[
  {title:'UN/VEIL',sub:'白鎮 41 號',src:'https://files.catbox.moe/5ky4ir.mp3'},
  {title:'大稻埕迷途',sub:'南街殷賑主題曲',src:'https://files.catbox.moe/qqc6wt.mp3'},
  {title:'狛胡角色歌',sub:'梅花江湖易數算命師',src:'https://files.catbox.moe/skalez.mp3'},
- {title:'南洋一角色歌',sub:'真夜中の心霊なんてない',src:'https://files.catbox.moe/6u3fdq.mp4'}
+ {title:'南洋一角色歌',sub:'真夜中の心霊なんてない',src:'https://files.catbox.moe/6u3fdq.mp4'},
+ {title:'巴克・羅塞特角色歌',sub:'安谷屋的扭蛋推銷員',src:'https://files.catbox.moe/xqb9a2.mp3'}
 ];
 (function(){
   const css=document.createElement('style');css.textContent=`

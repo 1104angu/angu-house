@@ -10,8 +10,8 @@
 <title>安谷屋</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
-<script src="i18n.js?v=20261110c"></script>
-<script src="friends.js?v=20261110c"></script>
+<script src="i18n.js?v=20261113"></script>
+<script src="friends.js?v=20261113"></script>
 <style>
 :root{--bg:#0a0809;--gold:#c9a227;--gold2:#8a6d1c;--wine:#6b0f1a;--ink:#e8e0d0;--muted:#9a8f85}
 *{box-sizing:border-box}
@@ -275,7 +275,7 @@ function drawSoma(x,y,t){
 const P={x:7,y:6,dir:'down',step:0,moving:false,mx:0,my:0};
 
 /* ---------- 可替換素材 ---------- */
-const ROOM_VER=16; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
+const ROOM_VER=17; // 換底圖時把這個數字加一，瀏覽器才不會用舊圖
 const ASSETS={}; // name -> Image
 const ASSET_NAMES=['floor','wall','rug','window','bookshelf','desk','bed_head','bed_foot','trophy','candle','frame','mat','player','cat_poe','cat_ono','cat_bau','cat_col','cat_gal','cat_gar','buck','gramophone','statue','room','soma','player_down','player_down2','player_left','player_upleft','player_up','buck_down','buck_down2','buck_left','buck_upleft','buck_up','dl_banana','dl_pinkberet','dl_blueears','dl_orange','dl_eggplant','dl_cherry','dl_carrot','dl_fish','dl_cow'];
 let loaded=0;
